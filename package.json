@@ -1,5 +1,5 @@
 {
-  "name": "projen-extensions",
+  "name": "@gplassard/projen-extensions",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
