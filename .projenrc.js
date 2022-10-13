@@ -10,9 +10,10 @@ const project = new typescript.TypeScriptProject({
     projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
   },
   gitignore: ['*.iml', '.idea', '.vscode'],
+  sampleCode: false,
   packageName: '@gplassard/projen-extensions',
   jestOptions: {
-    configFilePath: 'jest.config.json'
+    configFilePath: 'jest.config.json',
   },
   publishTasks: true,
   depsUpgradeOptions: {
