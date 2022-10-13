@@ -1,5 +1,5 @@
 {
-  "name": "projen-extensions",
+  "name": "@gplassard/projen-extensions",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -12,6 +12,8 @@
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
+    "publish:github": "npx projen publish:github",
+    "publish:npm": "npx projen publish:npm",
     "release": "npx projen release",
     "test": "npx projen test",
     "test:watch": "npx projen test:watch",
@@ -40,47 +42,10 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.0.0",
-  "jest": {
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
-    ],
-    "clearMocks": true,
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "clover",
-      "cobertura",
-      "text"
-    ],
-    "coverageDirectory": "coverage",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "watchPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "reporters": [
-      "default",
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test-reports"
-        }
-      ]
-    ],
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json"
-      }
-    }
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
+  "version": "0.0.0",
   "types": "lib/index.d.ts",
   "resolutions": {
     "@types/responselike": "1.0.0",
