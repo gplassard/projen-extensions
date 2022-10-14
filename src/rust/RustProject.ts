@@ -1,10 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Component, Project, TomlFile, YamlFile } from 'projen';
+import { Project, ProjectOptions, TomlFile, YamlFile } from 'projen';
 
-export interface RustProjectOptions {
+export interface RustProjectOptions extends ProjectOptions {
   cargo: {
     package: {
-      name: string;
       version: string;
       authors: string[];
       edition: '2021';
@@ -13,12 +12,18 @@ export interface RustProjectOptions {
   };
 }
 
-export class RustProject extends Component {
-  constructor(project: Project, options: RustProjectOptions) {
-    super(project);
+export class RustProject extends Project {
+  constructor(options: RustProjectOptions) {
+    super(options);
 
-    new TomlFile(project, 'cargo.toml', {
-      obj: options.cargo,
+    new TomlFile(this, 'cargo.toml', {
+      obj: {
+        ...options.cargo,
+        package: {
+          ...options.cargo.package,
+          name: options.name
+        }
+      },
     });
 
     const checkout = {
@@ -36,7 +41,7 @@ export class RustProject extends Component {
       run: 'cargo test --verbose',
     };
 
-    new YamlFile(project, '.github/workflows/rust-release.yml', {
+    new YamlFile(this, '.github/workflows/rust-release.yml', {
       obj: {
         name: 'release',
         on: {
@@ -78,7 +83,7 @@ export class RustProject extends Component {
                 with: {
                   upload_url: '${{ steps.create_release.outputs.upload_url }}',
                   asset_path: 'Release ${{ github.ref }}',
-                  asset_name: options.cargo.package.name,
+                  asset_name: options.name,
                   asset_content_type: 'application/zip',
                 },
               },
@@ -88,7 +93,7 @@ export class RustProject extends Component {
       },
     });
 
-    new YamlFile(project, '.github/workflows/rust-build.yml', {
+    new YamlFile(this, '.github/workflows/rust-build.yml', {
       obj: {
         name: 'ci',
         on: {
