@@ -1,6 +1,6 @@
-import {GithubCredentials} from 'projen/lib/github';
-import {TypeScriptProject} from 'projen/lib/typescript';
-import {UpgradeDependenciesSchedule} from 'projen/lib/javascript';
+import { GithubCredentials } from 'projen/lib/github';
+import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
+import { TypeScriptProject } from 'projen/lib/typescript';
 
 const project = new TypeScriptProject({
   defaultReleaseBranch: 'main',
