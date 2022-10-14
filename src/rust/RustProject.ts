@@ -16,6 +16,18 @@ export class RustProject extends Project {
   constructor(options: RustProjectOptions) {
     super(options);
 
+    this.removeTask('eject');
+    this.removeTask('build');
+    this.removeTask('default');
+    this.addTask('default', {
+      description: 'Synthesize project files',
+      steps: [
+        {
+          exec: 'node .projenrc.js',
+        },
+      ],
+    });
+
     new TomlFile(this, 'cargo.toml', {
       obj: {
         ...options.cargo,
