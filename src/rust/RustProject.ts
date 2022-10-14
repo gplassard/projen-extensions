@@ -40,7 +40,7 @@ export class RustProject extends Project {
     });
 
     const checkout = {
-      uses: 'actions/checkout@v2',
+      uses: 'actions/checkout@v3',
       with: {
         'fetch-depth': 0,
       },
@@ -126,20 +126,9 @@ export class RustProject extends Project {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              {
-                uses: 'action/checkout@v2',
-                with: {
-                  'fetch-depth': 0,
-                },
-              },
-              {
-                name: 'Build',
-                run: 'cargo build --release',
-              },
-              {
-                name: 'Tests',
-                run: 'cargo test --verbose',
-              },
+              checkout,
+              build,
+              tests,
             ],
           },
         },
