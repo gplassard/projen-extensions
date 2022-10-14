@@ -23,9 +23,9 @@ export class RustProject extends Project {
       description: 'Synthesize project files',
       steps: [
         {
-          exec: 'node .projenrc.js'
-        }
-      ]
+          exec: 'node .projenrc.js',
+        },
+      ],
     });
 
     new TomlFile(this, 'cargo.toml', {
