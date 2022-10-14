@@ -21,8 +21,8 @@ export class RustProject extends Project {
         ...options.cargo,
         package: {
           ...options.cargo.package,
-          name: options.name
-        }
+          name: options.name,
+        },
       },
     });
 
