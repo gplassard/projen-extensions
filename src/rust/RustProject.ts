@@ -27,6 +27,7 @@ export class RustProject extends Project {
         },
       ],
     });
+    this.gitignore.addPatterns('target');
 
     new TomlFile(this, 'cargo.toml', {
       obj: {
@@ -81,6 +82,7 @@ export class RustProject extends Project {
                 with: {
                   tag_name: '${{ github.ref }}',
                   release_name: 'Release ${{ github.ref }}',
+                  body: 'Release ${{ github.ref }}',
                   draft: false,
                   prerelease: false,
                 },
@@ -94,7 +96,7 @@ export class RustProject extends Project {
                 },
                 with: {
                   upload_url: '${{ steps.create_release.outputs.upload_url }}',
-                  asset_path: 'Release ${{ github.ref }}',
+                  asset_path: `target/release/${options.name}`,
                   asset_name: options.name,
                   asset_content_type: 'application/zip',
                 },
