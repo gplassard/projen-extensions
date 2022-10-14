@@ -1,10 +1,11 @@
-const { typescript } = require('projen');
-const { GithubCredentials } = require('projen/lib/github');
-const { UpgradeDependenciesSchedule } = require('projen/lib/javascript');
+import { GithubCredentials } from 'projen/lib/github';
+import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
+import { TypeScriptProject } from 'projen/lib/typescript';
 
-const project = new typescript.TypeScriptProject({
+const project = new TypeScriptProject({
   defaultReleaseBranch: 'main',
   name: 'projen-extensions',
+  projenrcTs: true,
   githubOptions: {
     mergify: false,
     projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
