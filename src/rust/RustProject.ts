@@ -115,7 +115,7 @@ export class RustProject extends Project {
             branches: ['master'],
           },
           pull_request: {
-            types: ['opened', 'edited', 'reopened'],
+            types: ['opened', 'edited', 'synchronize', 'reopened'],
             branches: ['master'],
           },
         },
