@@ -10,6 +10,7 @@ export interface RustProjectOptions extends ProjectOptions {
     };
     dependencies: Record<string, string>;
   };
+  gitignore?: string[];
 }
 
 export class RustProject extends Project {
@@ -28,6 +29,7 @@ export class RustProject extends Project {
       ],
     });
     this.gitignore.addPatterns('target');
+    (options.gitignore ?? []).forEach(pattern => this.gitignore.addPatterns(pattern));
 
     new TomlFile(this, 'cargo.toml', {
       obj: {
