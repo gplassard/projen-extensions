@@ -5,4 +5,5 @@ const project = new TypescriptLibraryProject({
   packageName: '@gplassard/projen-extensions',
   deps: ['projen'],
 });
+project.deps.removeDependency('@gplassard/projen-extensions');
 project.synth();

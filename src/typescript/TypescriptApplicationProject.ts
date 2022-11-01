@@ -11,7 +11,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
 
   constructor(options: TypescriptApplicationProjectOptions) {
-    const typescriptProjectOptions = {
+    const typescriptProjectOptions: TypeScriptProjectOptions = {
       defaultReleaseBranch: 'main',
       projenrcTs: true,
       gitignore: TypescriptApplicationProject.DEFAULT_GITIGNORE,
@@ -38,10 +38,13 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
       },
+      devDeps: ['@gplassard/projen-extensions'],
     };
     super(typescriptProjectOptions);
 
-    const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
-    jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
+    if (typescriptProjectOptions.jestOptions?.configFilePath) {
+      const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
+      jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
+    }
   }
 }
