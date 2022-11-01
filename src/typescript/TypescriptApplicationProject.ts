@@ -46,5 +46,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
       jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
     }
+    const workflowInstalls = [{ file: 'build.yml', step: 'build' }, { file: 'release.yml', step: 'release' }, { file: 'upgrade-main.yml', step: 'upgrade' }];
+    workflowInstalls.forEach(({ file, step }) => {
+      this.tryFindObjectFile(`.github/workflows/${file}`)?.addOverride(`jobs.${step}.permissions.packages`, 'read');
+    });
   }
 }
