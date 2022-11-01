@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Project, ProjectOptions, TomlFile, YamlFile } from 'projen';
 
 export interface RustProjectOptions extends ProjectOptions {
