@@ -6,7 +6,7 @@ export type TypescriptLibraryProjectOptions = TypescriptApplicationProjectOption
 export class TypescriptLibraryProject extends TypescriptApplicationProject {
 
   constructor(options: TypescriptLibraryProjectOptions) {
-    const typescriptProjectOptions = {
+    const typescriptProjectOptions: TypescriptApplicationProjectOptions = {
       publishTasks: true,
       releaseToNpm: true,
       npmRegistryUrl: 'https://npm.pkg.github.com',
