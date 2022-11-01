@@ -1,8 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { GithubCredentials } from 'projen/lib/github';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 
 export type TypescriptLibraryProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
@@ -12,10 +9,10 @@ export type TypescriptLibraryProjectOptions = Omit<TypeScriptProjectOptions, 'de
 export class TypescriptLibraryProject extends TypeScriptProject {
   static readonly DEFAULT_GITIGNORE: string[] = ['*.iml', '.idea', '.vscode'];
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
-  static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] | undefined = undefined;
+  static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
 
   constructor(options: TypescriptLibraryProjectOptions) {
-    super({
+    const typescriptProjectOptions = {
       defaultReleaseBranch: 'main',
       projenrcTs: true,
       gitignore: TypescriptLibraryProject.DEFAULT_GITIGNORE,
@@ -27,24 +24,28 @@ export class TypescriptLibraryProject extends TypeScriptProject {
       githubOptions: {
         mergify: false,
         projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
-        ...options.githubOptions,
+        ...(options.githubOptions ?? {}),
       },
       jestOptions: {
         configFilePath: 'jest.config.json',
         jestConfig: {
           testMatch: TypescriptLibraryProject.DEFAULT_JEST_CONFIG_TEST_MATCH,
-          ...options.jestOptions?.jestConfig,
+          ...(options.jestOptions?.jestConfig ?? {}),
         },
-        ...options.jestOptions,
+        ...(options.jestOptions ?? {}),
       },
       depsUpgradeOptions: {
-        ...options.depsUpgradeOptions,
+        ...(options.depsUpgradeOptions ?? {}),
         workflowOptions: {
           labels: TypescriptLibraryProject.DEFAULT_UPGRADE_WORKFLOW_LABELS,
           schedule: UpgradeDependenciesSchedule.MONTHLY,
-          ...options.depsUpgradeOptions?.workflowOptions,
+          ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
       },
-    });
+    };
+    super(typescriptProjectOptions);
+
+    const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
+    jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptLibraryProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
   }
 }
