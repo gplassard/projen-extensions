@@ -38,7 +38,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
       },
-      devDeps: ['@gplassard/projen-extensions'],
+      devDeps: ['@gplassard/projen-extensions', ...(options.devDeps ?? [])],
     };
     super(typescriptProjectOptions);
 
