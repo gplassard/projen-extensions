@@ -30,6 +30,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
         id: create_patch
         run: |-
