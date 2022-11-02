@@ -9,7 +9,7 @@
 * nodejs
 * [access to github npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
 
-## In an existing project
+## For a rust project
 
 ```shell
 yarn init
@@ -19,11 +19,6 @@ yarn add -D projen @gplassard/projen-extensions
 
 Create a `.projenrc.js` file (see below)
 
-```shell
-yarn projen # will generate your project files
-```
-
-### Rust project
 
 ```javascript
 // .projenrc.js
@@ -44,6 +39,50 @@ const project = new RustProject({
    }
 });
 project.synth();
+```
+
+
+```shell
+yarn projen # will generate your project files
+```
+
+## For a typescript project
+
+```shell
+yarn init
+echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
+yarn add -D projen @gplassard/projen-extensions ts-node
+```
+
+Create a `.projenrc.ts` file (see below)
+
+### For an application
+```typescript
+// .projenrc.ts
+import { TypescriptApplicationProject } from '@gplassard/projen-extensions';
+
+// opinionated wrapper around projen TypeScriptProject
+const project = new TypescriptApplicationProject({
+    name: 'projectName',
+});
+project.synth();
+```
+
+### For a library
+```typescript
+// .projenrc.ts
+import { TypescriptLibraryProject } from '@gplassard/projen-extensions';
+
+// opinionated wrapper around projen TypeScriptProject for libraries
+const project = new TypescriptLibraryProject({
+    name: 'projectName', 
+    packageName: 'test-project-package-name',
+});
+project.synth();
+```
+
+```shell
+yarn ts-node .projenrc.ts # will generate your project files
 ```
 
 # Resources

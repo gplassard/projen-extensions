@@ -706,16 +706,6 @@ tsconfig.tsbuildinfo
         "name": "typescript",
         "type": "build",
       },
-      {
-        "name": "@types/responselike",
-        "type": "override",
-        "version": "1.0.0",
-      },
-      {
-        "name": "got",
-        "type": "override",
-        "version": "12.3.1",
-      },
     ],
   },
   ".projen/files.json": {
@@ -1262,10 +1252,6 @@ tsconfig.tsbuildinfo
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
-    "resolutions": {
-      "@types/responselike": "1.0.0",
-      "got": "12.3.1",
-    },
     "scripts": {
       "build": "npx projen build",
       "bump": "npx projen bump",

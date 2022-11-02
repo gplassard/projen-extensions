@@ -732,16 +732,6 @@ tsconfig.tsbuildinfo
         "name": "typescript",
         "type": "build",
       },
-      {
-        "name": "@types/responselike",
-        "type": "override",
-        "version": "1.0.0",
-      },
-      {
-        "name": "got",
-        "type": "override",
-        "version": "12.3.1",
-      },
     ],
   },
   ".projen/files.json": {
@@ -1326,10 +1316,6 @@ tsconfig.tsbuildinfo
     "name": "test-project-package-name",
     "publishConfig": {
       "registry": "https://npm.pkg.github.com/",
-    },
-    "resolutions": {
-      "@types/responselike": "1.0.0",
-      "got": "12.3.1",
     },
     "scripts": {
       "build": "npx projen build",
