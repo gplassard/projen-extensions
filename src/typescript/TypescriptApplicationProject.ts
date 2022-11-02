@@ -1,3 +1,4 @@
+import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
@@ -46,9 +47,38 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
       jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
     }
-    const workflowInstalls = [{ file: 'build.yml', step: 'build' }, { file: 'release.yml', step: 'release' }, { file: 'upgrade-main.yml', step: 'upgrade' }];
-    workflowInstalls.forEach(({ file, step }) => {
-      this.tryFindObjectFile(`.github/workflows/${file}`)?.addOverride(`jobs.${step}.permissions.packages`, 'read');
-    });
+
+    // TODO refactor
+    this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.permissions.packages', 'read');
+    this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
+    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/1', {
+      uses: 'actions/setup-node@v3',
+      with: {
+        'node-version': '14',
+        'registry-url': 'https://npm.pkg.github.com',
+        'cache': 'yarn',
+      },
+    }));
+
+    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.permissions.packages', 'read');
+    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/1', {
+      uses: 'actions/setup-node@v3',
+      with: {
+        'node-version': '14',
+        'registry-url': 'https://npm.pkg.github.com',
+        'cache': 'yarn',
+      },
+    }));
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/1', {
+      uses: 'actions/setup-node@v3',
+      with: {
+        'node-version': '14',
+        'registry-url': 'https://npm.pkg.github.com',
+        'cache': 'yarn',
+      },
+    }));
   }
 }
