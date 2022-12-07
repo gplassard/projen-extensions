@@ -51,7 +51,7 @@ yarn projen # will generate your project files
 ```shell
 yarn init
 echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
-yarn add -D projen @gplassard/projen-extensions ts-node
+yarn add -D projen @gplassard/projen-extensions ts-node typescript
 ```
 
 Create a `.projenrc.ts` file (see below)
