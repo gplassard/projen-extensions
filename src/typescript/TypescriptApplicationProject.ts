@@ -15,9 +15,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
       defaultReleaseBranch: 'main',
       projenrcTs: true,
-      gitignore: TypescriptApplicationProject.DEFAULT_GITIGNORE,
       sampleCode: false,
       ...options,
+      gitignore: [...TypescriptApplicationProject.DEFAULT_GITIGNORE, ... (options.gitignore || [])],
       githubOptions: {
         mergify: false,
         projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
