@@ -1,6 +1,6 @@
 import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
-import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
+import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
@@ -10,6 +10,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_GITIGNORE: string[] = ['*.iml', '.idea', '.vscode'];
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
+  static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
 
   constructor(options: TypescriptApplicationProjectOptions) {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
@@ -40,6 +41,13 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         },
       },
       devDeps: ['@gplassard/projen-extensions', ...(options.devDeps ?? [])],
+      tsconfig: {
+        ...(options.tsconfig ?? {}),
+        compilerOptions: {
+          ...TypescriptApplicationProject.DEFAULT_TS_COMPILER_CONFIG,
+          ...(options.tsconfig?.compilerOptions ?? {}),
+        },
+      },
     };
     super(typescriptProjectOptions);
 
