@@ -46,8 +46,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         compilerOptions: {
           ...TypescriptApplicationProject.DEFAULT_TS_COMPILER_CONFIG,
           ...(options.tsconfig?.compilerOptions ?? {}),
-        }
-      }
+        },
+      },
     };
     super(typescriptProjectOptions);
 
