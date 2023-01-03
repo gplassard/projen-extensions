@@ -1,20 +1,18 @@
-import { Project, ProjectOptions, TomlFile, YamlFile } from 'projen';
+import { Project, ProjectOptions } from 'projen';
+import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
+import { Cargo, CargoProps } from './Cargo';
+import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 
 export interface RustProjectOptions extends ProjectOptions {
-  cargo: {
-    package: {
-      version: string;
-      authors: string[];
-      edition: '2021';
-    };
-    dependencies: Record<string, string>;
-  };
-  gitignore?: string[];
+  cargo: CargoProps;
+  customGitignore?: CustomGitignoreProps;
+  rustReleaseActions?: RustReleaseActionsProps;
 }
 
 export class RustProject extends Project {
   constructor(options: RustProjectOptions) {
     super(options);
+    new CustomGitignore(this, options.customGitignore);
 
     this.removeTask('eject');
     this.removeTask('build');
@@ -27,113 +25,8 @@ export class RustProject extends Project {
         },
       ],
     });
-    this.gitignore.addPatterns('target');
-    (options.gitignore ?? []).forEach(pattern => this.gitignore.addPatterns(pattern));
 
-    new TomlFile(this, 'cargo.toml', {
-      obj: {
-        ...options.cargo,
-        package: {
-          ...options.cargo.package,
-          name: options.name,
-        },
-      },
-    });
-
-    const checkout = {
-      uses: 'actions/checkout@v3',
-      with: {
-        'fetch-depth': 0,
-      },
-    };
-    const build = {
-      name: 'Build',
-      run: 'cargo build --release',
-    };
-    const tests = {
-      name: 'Tests',
-      run: 'cargo test --verbose',
-    };
-
-    new YamlFile(this, '.github/workflows/rust-release.yml', {
-      obj: {
-        name: 'release',
-        on: {
-          push: {
-            tags: ['v*'],
-          },
-        },
-        env: {
-          CARGO_TERM_COLOR: 'always',
-        },
-        jobs: {
-          build: {
-            'runs-on': 'ubuntu-latest',
-            'steps': [
-              checkout,
-              build,
-              tests,
-              {
-                name: 'Create release',
-                id: 'create-release',
-                uses: 'actions/create-release@v1',
-                env: {
-                  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-                },
-                with: {
-                  tag_name: '${{ github.ref }}',
-                  release_name: 'Release ${{ github.ref }}',
-                  body: 'Release ${{ github.ref }}',
-                  draft: false,
-                  prerelease: false,
-                },
-              },
-              {
-                name: 'Upload release assets',
-                id: 'upload-release-assets',
-                uses: 'actions/upload-release-asset@v1',
-                env: {
-                  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-                },
-                with: {
-                  upload_url: '${{ steps.create_release.outputs.upload_url }}',
-                  asset_path: `target/release/${options.name}`,
-                  asset_name: options.name,
-                  asset_content_type: 'application/zip',
-                },
-              },
-            ],
-          },
-        },
-      },
-    });
-
-    new YamlFile(this, '.github/workflows/rust-build.yml', {
-      obj: {
-        name: 'ci',
-        on: {
-          push: {
-            branches: ['master'],
-          },
-          pull_request: {
-            types: ['opened', 'edited', 'synchronize', 'reopened'],
-            branches: ['master'],
-          },
-        },
-        env: {
-          CARGO_TERM_COLOR: 'always',
-        },
-        jobs: {
-          build: {
-            'runs-on': 'ubuntu-latest',
-            'steps': [
-              checkout,
-              build,
-              tests,
-            ],
-          },
-        },
-      },
-    });
+    new Cargo(this, options.cargo);
+    new RustReleaseActions(this, options.rustReleaseActions);
   }
 }
