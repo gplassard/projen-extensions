@@ -2,12 +2,12 @@ import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
-& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>>;
+& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & {customGitignore?: CustomGitignoreProps};
 
 export class TypescriptApplicationProject extends TypeScriptProject {
-  static readonly DEFAULT_GITIGNORE: string[] = ['*.iml', '.idea', '.vscode'];
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
@@ -18,7 +18,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       projenrcTs: true,
       sampleCode: false,
       ...options,
-      gitignore: [...TypescriptApplicationProject.DEFAULT_GITIGNORE, ... (options.gitignore || [])],
       githubOptions: {
         mergify: false,
         projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
@@ -50,6 +49,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       },
     };
     super(typescriptProjectOptions);
+    new CustomGitignore(this, options.customGitignore);
 
     if (typescriptProjectOptions.jestOptions?.configFilePath) {
       const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);

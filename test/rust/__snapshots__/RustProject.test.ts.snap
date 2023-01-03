@@ -79,8 +79,12 @@ node_modules/
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
-target
+.idea
+*.iml
+.vscode
+.DS_Store
 !/cargo.toml
+target
 !/.github/workflows/rust-release.yml
 !/.github/workflows/rust-build.yml
 ",
