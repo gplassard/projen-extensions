@@ -1,7 +1,7 @@
 import { Project, ProjectOptions } from 'projen';
-import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
 import { Cargo, CargoProps } from './Cargo';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
+import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
