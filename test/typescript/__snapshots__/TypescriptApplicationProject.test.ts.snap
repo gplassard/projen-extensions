@@ -498,12 +498,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
     if: \${{ needs.upgrade.outputs.patch_created }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: main
+          token: \${{ secrets.GITHUB_TOKEN }}
       - name: Download patch
         uses: actions/download-artifact@v3
         with:
