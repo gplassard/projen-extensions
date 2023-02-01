@@ -1,3 +1,4 @@
+import { DependencyType } from 'projen';
 import { TypescriptLibraryProject } from './src';
 
 const project = new TypescriptLibraryProject({
@@ -6,4 +7,5 @@ const project = new TypescriptLibraryProject({
   deps: ['projen'],
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
+project.deps.removeDependency('projen', DependencyType.BUILD);
 project.synth();
