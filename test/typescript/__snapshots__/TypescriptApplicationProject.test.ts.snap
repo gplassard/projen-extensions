@@ -604,6 +604,7 @@ junit.xml
 /.projen/
 /test-reports/
 junit.xml
+/jest.config.json
 /coverage/
 permissions-backup.acl
 /dist/changelog.md
@@ -674,10 +675,6 @@ tsconfig.tsbuildinfo
         "name": "jest-junit",
         "type": "build",
         "version": "^13",
-      },
-      {
-        "name": "json-schema",
-        "type": "build",
       },
       {
         "name": "npm-check-updates",
@@ -1241,7 +1238,6 @@ tsconfig.tsbuildinfo
       "eslint-plugin-import": "*",
       "jest": "*",
       "jest-junit": "^13",
-      "json-schema": "*",
       "npm-check-updates": "^16",
       "projen": "*",
       "standard-version": "^9",

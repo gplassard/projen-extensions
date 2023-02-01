@@ -1,5 +1,5 @@
-import { TypescriptLibraryProject } from './src';
 import { DependencyType } from 'projen';
+import { TypescriptLibraryProject } from './src';
 
 const project = new TypescriptLibraryProject({
   name: 'projen-extensions',
