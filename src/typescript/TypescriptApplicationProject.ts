@@ -89,5 +89,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         'cache': 'yarn',
       },
     }));
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
   }
 }
