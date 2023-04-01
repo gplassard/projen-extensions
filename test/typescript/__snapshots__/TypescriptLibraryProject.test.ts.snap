@@ -871,6 +871,24 @@ tsconfig.tsbuildinfo
           },
         ],
       },
+      "install": {
+        "description": "Install project dependencies and update lockfile (non-frozen)",
+        "name": "install",
+        "steps": [
+          {
+            "exec": "yarn install --check-files",
+          },
+        ],
+      },
+      "install:ci": {
+        "description": "Install project dependencies using frozen lockfile",
+        "name": "install:ci",
+        "steps": [
+          {
+            "exec": "yarn install --check-files --frozen-lockfile",
+          },
+        ],
+      },
       "package": {
         "description": "Creates the distribution package",
         "name": "package",
