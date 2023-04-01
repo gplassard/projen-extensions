@@ -12,7 +12,6 @@ exports[`TypescriptApplicationProject with default settings synthesizes 1`] = `
     ],
     "ignorePatterns": [
       "*.js",
-      "!.projenrc.ts",
       "*.d.ts",
       "node_modules/",
       "*.generated.ts",
@@ -118,7 +117,6 @@ exports[`TypescriptApplicationProject with default settings synthesizes 1`] = `
           "devDependencies": [
             "**/test/**",
             "**/build-tools/**",
-            "**/projenrc/**",
             ".projenrc.ts",
             "projenrc/**/*.ts",
           ],
@@ -431,7 +429,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -640,7 +638,7 @@ tsconfig.tsbuildinfo
       {
         "name": "@types/node",
         "type": "build",
-        "version": "^14",
+        "version": "^16",
       },
       {
         "name": "@typescript-eslint/eslint-plugin",
@@ -676,7 +674,7 @@ tsconfig.tsbuildinfo
       {
         "name": "jest-junit",
         "type": "build",
-        "version": "^13",
+        "version": "^15",
       },
       {
         "name": "npm-check-updates",
@@ -1249,7 +1247,7 @@ tsconfig.tsbuildinfo
     "devDependencies": {
       "@gplassard/projen-extensions": "*",
       "@types/jest": "*",
-      "@types/node": "^14",
+      "@types/node": "^16",
       "@typescript-eslint/eslint-plugin": "^5",
       "@typescript-eslint/parser": "^5",
       "eslint": "^8",
@@ -1257,7 +1255,7 @@ tsconfig.tsbuildinfo
       "eslint-import-resolver-typescript": "*",
       "eslint-plugin-import": "*",
       "jest": "*",
-      "jest-junit": "^13",
+      "jest-junit": "^15",
       "npm-check-updates": "^16",
       "projen": "*",
       "standard-version": "^9",
