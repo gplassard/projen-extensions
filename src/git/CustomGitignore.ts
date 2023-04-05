@@ -1,4 +1,4 @@
-import { Component, Project} from 'projen';
+import { Component, Project } from 'projen';
 
 
 export interface CustomGitignoreProps {

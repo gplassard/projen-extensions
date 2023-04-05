@@ -1,9 +1,9 @@
 import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
+import { AppPermission } from 'projen/lib/github/workflows-model';
 import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
-import { AppPermission } from 'projen/lib/github/workflows-model';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & {customGitignore?: CustomGitignoreProps};
@@ -25,7 +25,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           permissions: {
             pullRequests: AppPermission.WRITE,
             contents: AppPermission.WRITE,
-          }
+          },
         }),
         ...(options.githubOptions ?? {}),
       },
