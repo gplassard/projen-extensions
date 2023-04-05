@@ -1,5 +1,6 @@
 import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
+import { AppPermission } from 'projen/lib/github/workflows-model';
 import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
@@ -20,7 +21,12 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       ...options,
       githubOptions: {
         mergify: false,
-        projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'GITHUB_TOKEN' }),
+        projenCredentials: GithubCredentials.fromApp({
+          permissions: {
+            pullRequests: AppPermission.WRITE,
+            contents: AppPermission.WRITE,
+          },
+        }),
         ...(options.githubOptions ?? {}),
       },
       jestOptions: {
