@@ -61,7 +61,7 @@ jobs:
         with:
           app_id: ${{ secrets.PROJEN_APP_ID }}
           private_key: ${{ secrets.PROJEN_APP_PRIVATE_KEY }}
-          permissions: '{"pull_requests":"write","contents":"write"}'
+          permissions: '{"pull_requests":"write","contents":"write","workflows":"write"}'
       - name: Checkout
         uses: actions/checkout@v3
         with:
