@@ -25,6 +25,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           permissions: {
             pullRequests: AppPermission.WRITE,
             contents: AppPermission.WRITE,
+            workflows: AppPermission.WRITE,
           },
         }),
         ...(options.githubOptions ?? {}),
