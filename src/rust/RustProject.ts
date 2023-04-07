@@ -1,12 +1,13 @@
 import { Project, ProjectOptions } from 'projen';
 import { Cargo, CargoProps } from './Cargo';
-import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
-import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
+import { RustBuildActions, RustBuildActionsProps, RustReleaseActions, RustReleaseActionsProps } from './workflows';
+import { CustomGitignore, CustomGitignoreProps } from '../git';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
   customGitignore?: CustomGitignoreProps;
   rustReleaseActions?: RustReleaseActionsProps;
+  rustBuildActions?: RustBuildActionsProps;
 }
 
 export class RustProject extends Project {
@@ -28,5 +29,6 @@ export class RustProject extends Project {
 
     new Cargo(this, options.cargo);
     new RustReleaseActions(this, options.rustReleaseActions);
+    new RustBuildActions(this, options.rustBuildActions);
   }
 }

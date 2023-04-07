@@ -1,4 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
+import { buildTask, checkoutTask, testsTask } from './common';
 
 export interface RustReleaseActionsProps {
 
@@ -7,21 +8,6 @@ export class RustReleaseActions extends Component {
 
   constructor(project: Project, _props?: RustReleaseActionsProps) {
     super(project);
-
-    const checkout = {
-      uses: 'actions/checkout@v3',
-      with: {
-        'fetch-depth': 0,
-      },
-    };
-    const build = {
-      name: 'Build',
-      run: 'cargo build --release',
-    };
-    const tests = {
-      name: 'Tests',
-      run: 'cargo test --verbose',
-    };
 
     new YamlFile(project, '.github/workflows/rust-release.yml', {
       obj: {
@@ -38,9 +24,9 @@ export class RustReleaseActions extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              checkout,
-              build,
-              tests,
+              checkoutTask,
+              buildTask,
+              testsTask,
               {
                 name: 'Create release',
                 id: 'create-release',
@@ -70,34 +56,6 @@ export class RustReleaseActions extends Component {
                   asset_content_type: 'application/zip',
                 },
               },
-            ],
-          },
-        },
-      },
-    });
-
-    new YamlFile(project, '.github/workflows/rust-build.yml', {
-      obj: {
-        name: 'ci',
-        on: {
-          push: {
-            branches: ['main'],
-          },
-          pull_request: {
-            types: ['opened', 'edited', 'synchronize', 'reopened'],
-            branches: ['main'],
-          },
-        },
-        env: {
-          CARGO_TERM_COLOR: 'always',
-        },
-        jobs: {
-          build: {
-            'runs-on': 'ubuntu-latest',
-            'steps': [
-              checkout,
-              build,
-              tests,
             ],
           },
         },
