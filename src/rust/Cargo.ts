@@ -14,7 +14,7 @@ export class Cargo extends Component {
   constructor(project: Project, props: CargoProps) {
     super(project);
 
-    new TomlFile(project, 'cargo.toml', {
+    new TomlFile(project, 'Cargo.toml', {
       obj: {
         ...props,
         package: {
