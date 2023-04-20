@@ -28,6 +28,30 @@ export class RustReleaseActions extends Component {
               buildTask,
               testsTask,
               {
+                name: 'Generate a changelog for current release',
+                uses: 'orhun/git-cliff-action@v1',
+                id: 'git-cliff',
+                with: {
+                  config: 'cliff.toml',
+                  args: '-vv --latest --strip header',
+                },
+                env: {
+                  OUTPUT: 'CHANGES.md',
+                },
+              },
+              {
+                name: 'Set the release body',
+                id: 'release',
+                shell: 'bash',
+                run: [
+                  'r=$(cat ${{ steps.git-cliff.outputs.changelog }})',
+                  "r=\"${r//'%'/'%25'}\"      # Multiline escape sequences for %",
+                  "r=\"${r//$'\\n'/'%0A'}\"   # Multiline escape sequences for '\\n'",
+                  "r=\"${r//$'\\r'/'%0D'}\"   # Multiline escape sequences for '\\r'",
+                  'echo "::set-output name=RELEASE_BODY::$r"',
+                ].join('\n'),
+              },
+              {
                 name: 'Create release',
                 id: 'create-release',
                 uses: 'actions/create-release@v1',
@@ -37,7 +61,7 @@ export class RustReleaseActions extends Component {
                 with: {
                   tag_name: '${{ github.ref }}',
                   release_name: 'Release ${{ github.ref }}',
-                  body: 'Release ${{ github.ref }}',
+                  body: '${{ steps.release.outputs.RELEASE_BODY }}',
                   draft: false,
                   prerelease: false,
                 },
@@ -54,6 +78,27 @@ export class RustReleaseActions extends Component {
                   asset_path: `target/release/${project.name}`,
                   asset_name: project.name,
                   asset_content_type: 'application/zip',
+                },
+              },
+              {
+                name: 'Generate full changelog',
+                uses: 'orhun/git-cliff-action@v1',
+                with: {
+                  config: 'cliff.toml',
+                  args: '--verbose',
+                },
+                env: {
+                  OUTPUT: 'Changelog.md',
+                },
+              },
+              {
+                name: 'Commit changelog file',
+                uses: 'stefanzweifel/git-auto-commit-action@v4',
+                with: {
+                  commit_message: 'Update changelog',
+                  file_pattern: 'Changelog.md',
+                  branch: 'main',
+                  push_options: '',
                 },
               },
             ],

@@ -14,11 +14,11 @@ export class RustBuildActions extends Component {
         name: 'ci',
         on: {
           push: {
-            branches: ['master'],
+            branches: ['main'],
           },
           pull_request: {
             types: ['opened', 'edited', 'synchronize', 'reopened'],
-            branches: ['master'],
+            branches: ['main'],
           },
         },
         env: {
