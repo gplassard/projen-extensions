@@ -248,6 +248,7 @@ exports[`TypescriptApplicationProject with default settings synthesizes 1`] = `
 /.github/workflows/upgrade-main.yml linguist-generated
 /.gitignore linguist-generated
 /.npmignore linguist-generated
+/.npmrc linguist-generated
 /.projen/** linguist-generated
 /.projen/deps.json linguist-generated
 /.projen/files.json linguist-generated
@@ -602,6 +603,7 @@ junit.xml
 !/.github/workflows/release.yml
 !/.github/workflows/upgrade-main.yml
 !/.github/pull_request_template.md
+!/.npmrc
 !/test/
 !/tsconfig.json
 !/tsconfig.dev.json
@@ -730,6 +732,7 @@ tsconfig.tsbuildinfo
       ".github/workflows/upgrade-main.yml",
       ".gitignore",
       ".npmignore",
+      ".npmrc",
       ".projen/deps.json",
       ".projen/files.json",
       ".projen/tasks.json",
