@@ -70,7 +70,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
 
     // TODO refactor
-    this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.permissions.packages', 'read');
+    /*this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/1', {
       uses: 'actions/setup-node@v3',
@@ -79,7 +79,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'yarn',
       },
-    }));
+    }));*/
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
