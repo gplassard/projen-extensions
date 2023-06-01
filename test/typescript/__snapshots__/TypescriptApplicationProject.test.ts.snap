@@ -707,10 +707,6 @@ tsconfig.tsbuildinfo
         "version": "^16",
       },
       {
-        "name": "projen",
-        "type": "build",
-      },
-      {
         "name": "standard-version",
         "type": "build",
         "version": "^9",
@@ -1283,7 +1279,6 @@ tsconfig.tsbuildinfo
       "jest": "*",
       "jest-junit": "^15",
       "npm-check-updates": "^16",
-      "projen": "*",
       "standard-version": "^9",
       "ts-jest": "*",
       "ts-node": "*",
