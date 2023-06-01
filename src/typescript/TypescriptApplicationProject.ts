@@ -24,7 +24,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           semanticTitleOptions: {
             types: ['feat', 'fix', 'chore', 'refactor', 'build', 'docs', 'ci', 'perf', 'style', 'test'],
             requireScope: true,
-          }
+          },
         },
         mergify: false,
         projenCredentials: GithubCredentials.fromApp({
