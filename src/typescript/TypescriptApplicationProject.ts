@@ -75,7 +75,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/1', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '14',
+        'node-version': '18',
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'yarn',
       },
@@ -86,7 +86,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/1', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '14',
+        'node-version': '18',
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'yarn',
       },
@@ -97,7 +97,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/1', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '14',
+        'node-version': '18',
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'yarn',
       },

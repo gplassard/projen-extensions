@@ -284,7 +284,7 @@ jobs:
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Install dependencies
@@ -410,7 +410,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Set git identity
@@ -511,7 +511,7 @@ jobs:
           ref: main
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Install dependencies
