@@ -1,4 +1,4 @@
-import { JsonPatch } from 'projen';
+import { DependencyType, JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -62,6 +62,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       },
     };
     super(typescriptProjectOptions);
+    // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
+    this.deps.removeDependency('projen', DependencyType.BUILD);
     new CustomGitignore(this, options.customGitignore);
 
     if (typescriptProjectOptions.jestOptions?.configFilePath) {
