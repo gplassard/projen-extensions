@@ -1,11 +1,13 @@
 import { Project, ProjectOptions } from 'projen';
 import { Cargo, CargoProps } from './Cargo';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
-import { CustomGitignore, CustomGitignoreProps } from '../git/CustomGitignore';
+import { CustomGitignore, CustomGitignoreProps } from '../git';
+import { Npmrc, NpmrcProps } from '../npmrc';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
   customGitignore?: CustomGitignoreProps;
+  npmrc?: NpmrcProps;
   rustReleaseActions?: RustReleaseActionsProps;
 }
 
@@ -28,5 +30,6 @@ export class RustProject extends Project {
 
     new Cargo(this, options.cargo);
     new RustReleaseActions(this, options.rustReleaseActions);
+    new Npmrc(this, options.npmrc);
   }
 }
