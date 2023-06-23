@@ -6,7 +6,7 @@ import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescri
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
-& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & {customGitignore?: CustomGitignoreProps};
+& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & {customGitignore?: CustomGitignoreProps; disableGplassardRegistry?: boolean};
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
@@ -65,6 +65,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     this.deps.removeDependency('projen', DependencyType.BUILD);
     new CustomGitignore(this, options.customGitignore);
+    if (!options.disableGplassardRegistry) {
+      this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
+    }
 
     if (typescriptProjectOptions.jestOptions?.configFilePath) {
       const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
