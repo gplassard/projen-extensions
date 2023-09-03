@@ -6,7 +6,18 @@ import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescri
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
-& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & {customGitignore?: CustomGitignoreProps; disableGplassardRegistry?: boolean};
+& Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
+
+type CustomProps = {
+  customGitignore?: CustomGitignoreProps;
+  disableGplassardRegistry?: boolean;
+  /**
+   * Release rank of this application / library
+   * Used to define the day of the auto upgrade workflow
+   * @default 1 (1st day of the month)
+   **/
+  releaseRank?: number;
+}
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
@@ -48,7 +59,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         ...(options.depsUpgradeOptions ?? {}),
         workflowOptions: {
           labels: TypescriptApplicationProject.DEFAULT_UPGRADE_WORKFLOW_LABELS,
-          schedule: UpgradeDependenciesSchedule.MONTHLY,
+          schedule: UpgradeDependenciesSchedule.expressions([
+            `0 0 ${((options.releaseRank ?? 1) - 1) * 2 + 1} * *`,
+          ]),
           ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
       },
