@@ -284,7 +284,7 @@ jobs:
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Install dependencies
@@ -411,7 +411,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Set git identity
@@ -447,7 +447,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.x
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -473,7 +473,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.x
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -512,7 +512,7 @@ jobs:
           ref: main
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
           registry-url: https://npm.pkg.github.com
           cache: yarn
       - name: Install dependencies
