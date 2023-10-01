@@ -1,7 +1,7 @@
 import { DependencyType, JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
-import { TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
+import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 
@@ -29,6 +29,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       defaultReleaseBranch: 'main',
       projenrcTs: true,
       sampleCode: false,
+      packageManager: NodePackageManager.PNPM,
+      pnpmVersion: '8',
       ...options,
       githubOptions: {
         pullRequestLintOptions: {
@@ -95,7 +97,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': '20',
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'yarn',
+        'cache': 'pnpm',
       },
     }));
 
@@ -106,7 +108,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': '20',
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'yarn',
+        'cache': 'pnpm',
       },
     }));
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_github.steps.0.with.node-version', '20.x');
@@ -120,7 +122,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': '20',
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'yarn',
+        'cache': 'pnpm',
       },
     }));
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');

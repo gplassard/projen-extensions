@@ -25,15 +25,19 @@ jobs:
         with:
           node-version: "20"
           registry-url: https://npm.pkg.github.com
-          cache: yarn
+          cache: pnpm
       - name: Set git identity
         run: |-
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-      - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: "8"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
       - name: release
         run: npx projen release
       - name: Check for new commits

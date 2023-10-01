@@ -24,11 +24,15 @@ jobs:
         with:
           node-version: "20"
           registry-url: https://npm.pkg.github.com
-          cache: yarn
-      - name: Install dependencies
-        run: yarn install --check-files
+          cache: pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: "8"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: pnpm i --no-frozen-lockfile
       - name: build
         run: npx projen build
       - name: Find mutations
