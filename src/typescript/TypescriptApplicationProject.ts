@@ -92,7 +92,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     // TODO refactor
     this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/1', {
+    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/2', {
       uses: 'actions/setup-node@v3',
       with: {
         'node-version': '20',
@@ -103,7 +103,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/1', {
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/3', {
       uses: 'actions/setup-node@v3',
       with: {
         'node-version': '20',
@@ -117,7 +117,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/1', {
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/2', {
       uses: 'actions/setup-node@v3',
       with: {
         'node-version': '20',
