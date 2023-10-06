@@ -1,6 +1,6 @@
+import { NodePackageManager } from 'projen/lib/javascript';
 import { synthSnapshot } from 'projen/lib/util/synth';
 import { TypescriptApplicationProject } from '../../src';
-import { NodePackageManager } from 'projen/lib/javascript';
 
 describe('TypescriptApplicationProject with default settings', () => {
   it('synthesizes', () => {

@@ -898,10 +898,10 @@ tsconfig.tsbuildinfo
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist\\js",
+            "exec": "mkdir -p dist/js",
           },
           {
-            "exec": "mv $(npm pack) dist\\js/",
+            "exec": "mv $(npm pack) dist/js/",
           },
         ],
       },
@@ -1254,6 +1254,8 @@ tsconfig.tsbuildinfo
     "testMatch": [
       "**/__tests__/**/*.[jt]s?(x)",
       "**/?(*.)+(spec|test).[jt]s?(x)",
+      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
+      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)",
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)",
     ],
