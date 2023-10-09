@@ -17,14 +17,14 @@ type CustomProps = {
    * @default 1 (1st day of the month)
    **/
   releaseRank?: number;
-  voltaNodeVersion?: string;
+  nodeVersion?: string;
 }
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
-  static readonly DEFAULT_VOLTA_NODE_VERSION: string = '20.8.0';
+  static readonly DEFAULT_NODE_VERSION: string = '20.8.0';
 
   constructor(options: TypescriptApplicationProjectOptions) {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
@@ -33,6 +33,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       sampleCode: false,
       packageManager: NodePackageManager.PNPM,
       pnpmVersion: '8',
+      workflowNodeVersion: nodeVersion(options),
       ...options,
       githubOptions: {
         pullRequestLintOptions: {
@@ -97,7 +98,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/2', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '20',
+        'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'pnpm',
       },
@@ -108,7 +109,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/3', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '20',
+        'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'pnpm',
       },
@@ -122,7 +123,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/2', {
       uses: 'actions/setup-node@v3',
       with: {
-        'node-version': '20',
+        'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
         'cache': 'pnpm',
       },
@@ -131,6 +132,10 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.contents', 'write');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
 
-    this.tryFindObjectFile('package.json')?.addOverride('volta.node', options.voltaNodeVersion ?? TypescriptApplicationProject.DEFAULT_VOLTA_NODE_VERSION);
+    this.tryFindObjectFile('package.json')?.addOverride('volta.node', nodeVersion(options));
   }
+}
+
+function nodeVersion(options: TypescriptApplicationProjectOptions): string {
+  return options.nodeVersion ?? TypescriptApplicationProject.DEFAULT_NODE_VERSION;
 }
