@@ -14,7 +14,7 @@ type CustomProps = {
   /**
    * Release rank of this application / library
    * Used to define the day of the auto upgrade workflow
-   * @default 1 (1st day of the month)
+   * @default 2 (1st day of the month)
    **/
   releaseRank?: number;
   nodeVersion?: string;
@@ -65,7 +65,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         workflowOptions: {
           labels: TypescriptApplicationProject.DEFAULT_UPGRADE_WORKFLOW_LABELS,
           schedule: UpgradeDependenciesSchedule.expressions([
-            `0 0 ${((options.releaseRank ?? 1) - 1) * 2 + 1} * *`,
+            `0 0 ${((options.releaseRank ?? 2) - 1) * 2 + 1} * *`,
           ]),
           ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
