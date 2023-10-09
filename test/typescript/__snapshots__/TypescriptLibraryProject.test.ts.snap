@@ -290,9 +290,13 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.8.0
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
       - name: build
@@ -425,9 +429,13 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.8.0
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
       - name: release
@@ -526,13 +534,17 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.8.0
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
       - name: Upgrade dependencies
         run: npx projen upgrade
       - name: Find mutations
@@ -1385,6 +1397,9 @@ resolution-mode=highest
     },
     "types": "lib/index.d.ts",
     "version": "0.0.0",
+    "volta": {
+      "node": "20.8.0",
+    },
   },
   "tsconfig.dev.json": {
     "compilerOptions": {
