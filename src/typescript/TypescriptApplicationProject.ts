@@ -114,8 +114,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         'cache': 'pnpm',
       },
     }));
-    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_github.steps.0.with.node-version', '20.x');
-    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', '20.x');
+    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_github.steps.0.with.node-version', nodeVersion(options));
+    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', nodeVersion(options));
 
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
