@@ -17,12 +17,14 @@ type CustomProps = {
    * @default 1 (1st day of the month)
    **/
   releaseRank?: number;
+  voltaNodeVersion?: string;
 }
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
+  static readonly DEFAULT_VOLTA_NODE_VERSION: string = '20.8.0';
 
   constructor(options: TypescriptApplicationProjectOptions) {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
@@ -128,5 +130,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.contents', 'write');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
+
+    this.tryFindObjectFile('package.json')?.addOverride('volta.node', options.voltaNodeVersion ?? TypescriptApplicationProject.DEFAULT_VOLTA_NODE_VERSION);
   }
 }
