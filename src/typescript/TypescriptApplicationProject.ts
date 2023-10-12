@@ -100,7 +100,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'pnpm',
+        'cache': options.packageManager ?? 'pnpm',
       },
     }));
 
@@ -111,11 +111,10 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'pnpm',
+        'cache': options.packageManager ?? 'pnpm',
       },
     }));
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_github.steps.0.with.node-version', nodeVersion(options));
-    this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', nodeVersion(options));
 
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
@@ -125,7 +124,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
-        'cache': 'pnpm',
+        'cache': options.packageManager ?? 'pnpm',
       },
     }));
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
@@ -136,6 +135,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   }
 }
 
-function nodeVersion(options: TypescriptApplicationProjectOptions): string {
+export function nodeVersion(options: TypescriptApplicationProjectOptions): string {
   return options.nodeVersion ?? TypescriptApplicationProject.DEFAULT_NODE_VERSION;
 }
