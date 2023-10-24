@@ -4,6 +4,7 @@ import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
@@ -36,12 +37,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       workflowNodeVersion: nodeVersion(options),
       ...options,
       githubOptions: {
-        pullRequestLintOptions: {
-          semanticTitleOptions: {
-            types: ['feat', 'fix', 'chore', 'refactor', 'build', 'docs', 'ci', 'perf', 'style', 'test'],
-            requireScope: true,
-          },
-        },
+        pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
         mergify: false,
         projenCredentials: GithubCredentials.fromApp({
           permissions: {

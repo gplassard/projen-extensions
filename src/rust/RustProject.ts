@@ -1,7 +1,9 @@
 import { Project, ProjectOptions } from 'projen';
+import { GitHub } from 'projen/lib/github';
 import { Cargo, CargoProps } from './Cargo';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 import { Npmrc, NpmrcProps } from '../npmrc';
 
 export interface RustProjectOptions extends ProjectOptions {
@@ -31,5 +33,10 @@ export class RustProject extends Project {
     new Cargo(this, options.cargo);
     new RustReleaseActions(this, options.rustReleaseActions);
     new Npmrc(this, options.npmrc);
+    new GitHub(this, {
+      mergify: false,
+      pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
+    });
+
   }
 }
