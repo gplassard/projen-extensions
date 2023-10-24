@@ -944,10 +944,10 @@ resolution-mode=highest
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist/js",
+            "exec": "mkdir -p dist\\js",
           },
           {
-            "exec": "mv $(npm pack) dist/js/",
+            "exec": "mv $(npm pack) dist\\js/",
           },
         ],
       },
