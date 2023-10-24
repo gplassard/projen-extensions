@@ -3,8 +3,8 @@ import { GitHub } from 'projen/lib/github';
 import { Cargo, CargoProps } from './Cargo';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { Npmrc, NpmrcProps } from '../npmrc';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
+import { Npmrc, NpmrcProps } from '../npmrc';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
