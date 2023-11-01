@@ -23,21 +23,15 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
         with:
           version: "8"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.8.0
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
       - name: Find mutations
