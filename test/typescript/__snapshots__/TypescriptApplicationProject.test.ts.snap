@@ -721,6 +721,10 @@ tsconfig.tsbuildinfo
         "version": "^16",
       },
       {
+        "name": "projen",
+        "type": "build",
+      },
+      {
         "name": "standard-version",
         "type": "build",
         "version": "^9",
@@ -994,13 +998,13 @@ tsconfig.tsbuildinfo
             "exec": "yarn upgrade npm-check-updates",
           },
           {
-            "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,standard-version,ts-jest,ts-node,typescript",
+            "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,projen,standard-version,ts-jest,ts-node,typescript",
           },
           {
             "exec": "yarn install --check-files",
           },
           {
-            "exec": "yarn upgrade @gplassard/projen-extensions @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit npm-check-updates standard-version ts-jest ts-node typescript",
+            "exec": "yarn upgrade @gplassard/projen-extensions @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit npm-check-updates projen standard-version ts-jest ts-node typescript",
           },
           {
             "exec": "npx projen",
@@ -1286,6 +1290,7 @@ tsconfig.tsbuildinfo
       "jest": "*",
       "jest-junit": "^15",
       "npm-check-updates": "^16",
+      "projen": "*",
       "standard-version": "^9",
       "ts-jest": "*",
       "ts-node": "*",
@@ -2123,6 +2128,10 @@ resolution-mode=highest
         "version": "^16",
       },
       {
+        "name": "projen",
+        "type": "build",
+      },
+      {
         "name": "standard-version",
         "type": "build",
         "version": "^9",
@@ -2396,13 +2405,13 @@ resolution-mode=highest
             "exec": "pnpm update npm-check-updates",
           },
           {
-            "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,standard-version,ts-jest,ts-node,typescript",
+            "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,projen,standard-version,ts-jest,ts-node,typescript",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit npm-check-updates standard-version ts-jest ts-node typescript",
+            "exec": "pnpm update @gplassard/projen-extensions @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit npm-check-updates projen standard-version ts-jest ts-node typescript",
           },
           {
             "exec": "npx projen",
@@ -2686,6 +2695,7 @@ resolution-mode=highest
       "jest": "*",
       "jest-junit": "^15",
       "npm-check-updates": "^16",
+      "projen": "*",
       "standard-version": "^9",
       "ts-jest": "*",
       "ts-node": "*",
