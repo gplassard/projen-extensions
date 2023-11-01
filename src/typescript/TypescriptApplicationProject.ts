@@ -102,14 +102,14 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       JsonPatch.add('/jobs/release_github/steps/0/with/node-version', nodeVersion(options)),
     );
 
-
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/2', this.setupNode(options)));
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.contents', 'write');
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(
+        JsonPatch.add('/jobs/upgrade/permissions/packages', 'read'),
+        JsonPatch.replace('/jobs/upgrade/steps/2', this.setupNode(options)),
+        JsonPatch.add('/jobs/upgrade/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+        JsonPatch.add('/jobs/pr/permissions/pull-requests', 'write'),
+        JsonPatch.add('/jobs/pr/permissions/contents', 'write'),
+        JsonPatch.add('/jobs/pr/steps/0/with/token', '${{ secrets.GITHUB_TOKEN }}'),
+    );
 
     this.tryFindObjectFile('package.json')?.addOverride('volta.node', nodeVersion(options));
   }
