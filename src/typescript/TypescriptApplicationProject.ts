@@ -89,45 +89,37 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
 
     // TODO refactor
-    this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.permissions.packages', 'read');
-    this.tryFindObjectFile('.github/workflows/build.yml')?.addOverride('jobs.build.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(JsonPatch.add('/jobs/build/steps/2', {
-      uses: 'actions/setup-node@v3',
-      with: {
-        'node-version': nodeVersion(options),
-        'registry-url': 'https://npm.pkg.github.com',
-        'cache': options.packageManager ?? 'pnpm',
-      },
-    }));
+    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
+      JsonPatch.add('/jobs/build/permissions/packages', 'read'),
+      JsonPatch.replace('/jobs/build/steps/2', this.setupNode(options)),
+      JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+    );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/3', {
-      uses: 'actions/setup-node@v3',
-      with: {
-        'node-version': nodeVersion(options),
-        'registry-url': 'https://npm.pkg.github.com',
-        'cache': options.packageManager ?? 'pnpm',
-      },
-    }));
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(JsonPatch.add('/jobs/release/steps/3', this.setupNode(options)));
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_github.steps.0.with.node-version', nodeVersion(options));
 
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.permissions.packages', 'read');
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.1.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.upgrade.steps.2.env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' });
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/2', {
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(JsonPatch.add('/jobs/upgrade/steps/2', this.setupNode(options)));
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.contents', 'write');
+    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
+
+    this.tryFindObjectFile('package.json')?.addOverride('volta.node', nodeVersion(options));
+  }
+
+  public setupNode(options: TypescriptApplicationProjectOptions) {
+    return {
       uses: 'actions/setup-node@v3',
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
         'cache': options.packageManager ?? 'pnpm',
       },
-    }));
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.pull-requests', 'write');
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.permissions.contents', 'write');
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.addOverride('jobs.pr.steps.0.with.token', '${{ secrets.GITHUB_TOKEN }}');
-
-    this.tryFindObjectFile('package.json')?.addOverride('volta.node', nodeVersion(options));
+    };
   }
 }
 
