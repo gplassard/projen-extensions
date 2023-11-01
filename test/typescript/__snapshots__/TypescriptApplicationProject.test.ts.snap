@@ -286,17 +286,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: yarn
-      - name: Install dependencies
-        run: yarn install --check-files
       - name: build
         run: npx projen build
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -421,17 +419,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: yarn
-      - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
       - name: release
         run: npx projen release
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Check for new commits
         id: git_remote
         run: echo "latest_commit=$(git ls-remote origin -h \${{ github.ref }} | cut -f1)" >> $GITHUB_OUTPUT
@@ -496,19 +492,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: yarn
-      - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
         id: create_patch
         run: |-
@@ -1689,19 +1681,15 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
         with:
           version: "8"
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.8.0
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: npx projen build
       - name: Find mutations
@@ -1828,19 +1816,15 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
         with:
           version: "8"
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.8.0
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: release
         run: npx projen release
       - name: Check for new commits
@@ -1907,21 +1891,15 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
         with:
           version: "8"
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version: 20.8.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.8.0
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
       - name: Find mutations
