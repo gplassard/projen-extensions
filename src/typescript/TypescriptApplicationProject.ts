@@ -66,7 +66,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           ...(options.depsUpgradeOptions?.workflowOptions ?? {}),
         },
       },
-      devDeps: ['@gplassard/projen-extensions', 'projen', ...(options.devDeps ?? [])],
+      devDeps: ['@gplassard/projen-extensions', ...(options.devDeps ?? [])],
       tsconfig: {
         ...(options.tsconfig ?? {}),
         compilerOptions: {
@@ -77,7 +77,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     };
     super(typescriptProjectOptions);
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
-    this.deps.removeDependency('projen', DependencyType.BUILD);
     new CustomGitignore(this, options.customGitignore);
     if (!options.disableGplassardRegistry) {
       this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
