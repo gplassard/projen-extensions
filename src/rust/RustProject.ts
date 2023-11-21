@@ -1,6 +1,7 @@
 import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
 import { Cargo, CargoProps } from './Cargo';
+import { RustLintAction, RustLintActionProps } from './RustLintAction';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
@@ -11,6 +12,7 @@ export interface RustProjectOptions extends ProjectOptions {
   customGitignore?: CustomGitignoreProps;
   npmrc?: NpmrcProps;
   rustReleaseActions?: RustReleaseActionsProps;
+  rustLintActions?: RustLintActionProps;
 }
 
 export class RustProject extends Project {
@@ -32,6 +34,7 @@ export class RustProject extends Project {
 
     new Cargo(this, options.cargo);
     new RustReleaseActions(this, options.rustReleaseActions);
+    new RustLintAction(this, options.rustLintActions);
     new Npmrc(this, options.npmrc);
     new GitHub(this, {
       mergify: false,
