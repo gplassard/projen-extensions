@@ -1069,7 +1069,7 @@ resolution-mode=highest
             "exec": "pnpm update npm-check-updates",
           },
           {
-            "exec": "npm-check-updates --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,projen,standard-version,ts-jest,ts-node,typescript",
+            "exec": "npm-check-updates --upgrade --target=latest --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,npm-check-updates,projen,standard-version,ts-jest,ts-node,typescript",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
