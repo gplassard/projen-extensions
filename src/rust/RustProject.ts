@@ -9,7 +9,6 @@ import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
   customGitignore?: CustomGitignoreProps;
-  npmrc?: NpmrcProps;
   rustReleaseActions?: RustReleaseActionsProps;
   rustLintActions?: RustLintActionProps;
 }
