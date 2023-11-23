@@ -11,7 +11,6 @@ export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions,
 
 type CustomProps = {
   customGitignore?: CustomGitignoreProps;
-  disableGplassardRegistry?: boolean;
   /**
    * Release rank of this application / library
    * Used to define the day of the auto upgrade workflow
@@ -79,9 +78,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     super(typescriptProjectOptions);
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
-    if (!options.disableGplassardRegistry) {
-      this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
-    }
 
     if (typescriptProjectOptions.jestOptions?.configFilePath) {
       const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
