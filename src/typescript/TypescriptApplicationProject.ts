@@ -1,4 +1,4 @@
-import { DependencyType, JsonPatch } from 'projen';
+import { JsonPatch } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -57,6 +57,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         ...(options.jestOptions ?? {}),
       },
       depsUpgradeOptions: {
+        target: 'latest',
         ...(options.depsUpgradeOptions ?? {}),
         workflowOptions: {
           labels: TypescriptApplicationProject.DEFAULT_UPGRADE_WORKFLOW_LABELS,
