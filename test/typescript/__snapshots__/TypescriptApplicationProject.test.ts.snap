@@ -1234,12 +1234,6 @@ tsconfig.tsbuildinfo
       "cobertura",
       "text",
     ],
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json",
-      },
-    },
-    "preset": "ts-jest",
     "reporters": [
       "default",
       [
@@ -1260,6 +1254,14 @@ tsconfig.tsbuildinfo
     "testPathIgnorePatterns": [
       "/node_modules/",
     ],
+    "transform": {
+      "^.+\\.[t]sx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json",
+        },
+      ],
+    },
     "watchPathIgnorePatterns": [
       "/node_modules/",
     ],
@@ -2297,7 +2299,7 @@ resolution-mode=highest
             "exec": "mkdir -p dist/js",
           },
           {
-            "exec": "mv $(npm pack) dist/js/",
+            "exec": "mv $(pnpm pack) dist/js/",
           },
         ],
       },
@@ -2629,12 +2631,6 @@ resolution-mode=highest
       "cobertura",
       "text",
     ],
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json",
-      },
-    },
-    "preset": "ts-jest",
     "reporters": [
       "default",
       [
@@ -2653,6 +2649,14 @@ resolution-mode=highest
     "testPathIgnorePatterns": [
       "/node_modules/",
     ],
+    "transform": {
+      "^.+\\.[t]sx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json",
+        },
+      ],
+    },
     "watchPathIgnorePatterns": [
       "/node_modules/",
     ],
