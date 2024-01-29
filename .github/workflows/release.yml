@@ -31,7 +31,7 @@ jobs:
           version: "8"
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.8.0
+          node-version: 20.11.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -63,7 +63,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.8.0
+          node-version: 20.11.0
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.8.0
+          node-version: 20.11.0
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
