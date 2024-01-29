@@ -3,6 +3,7 @@ import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { version as nodeJsVersion } from './nodejs.json';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 
@@ -24,7 +25,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
-  static readonly DEFAULT_NODE_VERSION: string = '20.11.0';
+  static readonly DEFAULT_NODE_VERSION: string = nodeJsVersion.replace('v', '');
 
   constructor(options: TypescriptApplicationProjectOptions) {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
