@@ -58,7 +58,7 @@ export class RustLintAction extends Component {
                 with: {
                   author_name: 'github-actions',
                   author_email: 'github-actions@github.com',
-                  message: 'chore: self mutation',
+                  message: 'style(formatting): self mutation',
                 },
               },
             ],
