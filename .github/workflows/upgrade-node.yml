@@ -18,7 +18,11 @@ jobs:
         with:
           ref: main
       - name: Get latest NodeJS LTS
-        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/nodejs/node/releases --jq '.[] | select(.name | contains(\"LTS\")) | .tag_name' | head -n 1 > NODE_VERSION"
+        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/nodejs/node/releases --jq 'map(select(.name | contains(\"LTS\"))) | map({version: .tag_name})[0]' > src/typescript/nodejs.json"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add linebreak
+        run: "echo \"\" >> src/typescript/nodejs.json"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
