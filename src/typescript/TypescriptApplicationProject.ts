@@ -24,7 +24,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
   static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
-  static readonly DEFAULT_NODE_VERSION: string = '20.8.0';
+  static readonly DEFAULT_NODE_VERSION: string = '20.11.0';
 
   constructor(options: TypescriptApplicationProjectOptions) {
     const typescriptProjectOptions: TypeScriptProjectOptions = {
