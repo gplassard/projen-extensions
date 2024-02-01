@@ -1,6 +1,6 @@
+import { Testing } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
 import { TypescriptApplicationProject } from '../../src';
-import { Testing } from 'projen';
 
 describe('TypescriptApplicationProject with default settings', () => {
   it('synthesizes', () => {
