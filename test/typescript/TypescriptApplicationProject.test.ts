@@ -1,22 +1,22 @@
 import { NodePackageManager } from 'projen/lib/javascript';
-import { synthSnapshot } from 'projen/lib/util/synth';
 import { TypescriptApplicationProject } from '../../src';
+import { Testing } from 'projen';
 
 describe('TypescriptApplicationProject with default settings', () => {
   it('synthesizes', () => {
     const project = new TypescriptApplicationProject({
       name: 'test-project',
     });
-    const output = synthSnapshot(project);
+    const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
 
   it('can still use yarn', () => {
     const project = new TypescriptApplicationProject({
       name: 'test-project',
-      packageManager: NodePackageManager.YARN,
+      packageManager: NodePackageManager.YARN_CLASSIC,
     });
-    const output = synthSnapshot(project);
+    const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
 });

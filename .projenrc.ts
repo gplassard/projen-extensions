@@ -7,4 +7,5 @@ const project = new TypescriptLibraryProject({
   releaseRank: 1,
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
+project.jest?.addSetupFile('./test/jest.setup.ts');
 project.synth();

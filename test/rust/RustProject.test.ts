@@ -1,4 +1,4 @@
-import { synthSnapshot } from 'projen/lib/util/synth';
+import { Testing } from 'projen';
 import { RustProject } from '../../src';
 
 describe('RustProject with default settings', () => {
@@ -15,7 +15,7 @@ describe('RustProject with default settings', () => {
         },
       },
     });
-    const output = synthSnapshot(project);
+    const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
 });
