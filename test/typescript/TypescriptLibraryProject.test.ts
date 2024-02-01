@@ -1,4 +1,4 @@
-import { synthSnapshot } from 'projen/lib/util/synth';
+import { Testing } from 'projen';
 import { TypescriptLibraryProject } from '../../src';
 
 describe('TypescriptLibraryProject with default settings', () => {
@@ -7,7 +7,7 @@ describe('TypescriptLibraryProject with default settings', () => {
       name: 'test-project',
       packageName: 'test-project-package-name',
     });
-    const output = synthSnapshot(project);
+    const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
 });
