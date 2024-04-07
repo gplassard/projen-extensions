@@ -6,3 +6,10 @@ export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
     requireScope: true,
   },
 };
+
+export const CHECKOUT_STEP = {
+  uses: 'actions/checkout@v3',
+  with: {
+    'fetch-depth': 0,
+  },
+};

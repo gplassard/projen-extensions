@@ -1,4 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
+import { CHECKOUT_STEP } from '../github/utils';
 
 export interface RustReleaseActionsProps {
 
@@ -8,12 +9,6 @@ export class RustReleaseActions extends Component {
   constructor(project: Project, _props?: RustReleaseActionsProps) {
     super(project);
 
-    const checkout = {
-      uses: 'actions/checkout@v3',
-      with: {
-        'fetch-depth': 0,
-      },
-    };
     const build = {
       name: 'Build',
       run: 'cargo build --release',
@@ -38,7 +33,7 @@ export class RustReleaseActions extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              checkout,
+              CHECKOUT_STEP,
               build,
               tests,
               {
@@ -95,7 +90,7 @@ export class RustReleaseActions extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              checkout,
+              CHECKOUT_STEP,
               build,
               tests,
             ],
