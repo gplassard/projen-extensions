@@ -22,9 +22,10 @@ export function configureAWSCredentialsStep(roleName: string) {
 export const GENERATE_CODE_ARTIFACT_TOKEN_STEP = {
   name: 'Generate code artifact token',
   id: 'code-artifact-token',
-  run: `
-   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-   echo "::add-mask::$the_secret"
-   echo "token=$the_secret" >> "$GITHUB_OUTPUT"
- `,
+  run: [
+    'the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)',
+    'echo "::add-mask::$the_secret"',
+    'echo "token=$the_secret" >> "$GITHUB_OUTPUT"',
+  ].join('\n')
+  ,
 };

@@ -33,15 +33,10 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
@@ -117,15 +112,10 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
@@ -160,15 +150,10 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
@@ -387,25 +372,16 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
           CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
           CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
       - - name: Publish package
-          run: ./gradlew :sub-project-one:publishAllPublicationsToGithubPackagesRepository
-          env:
-            GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        - name: Publish package
           run: ./gradlew :sub-project-one:publishAllPublicationsToGithubPackagesRepository
           env:
             GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -434,25 +410,16 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
           CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
           CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
       - - name: Publish package
-          run: ./gradlew :sub-project-one:publishAllPublicationsToCodeArtifactRepository
-          env:
-            CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
-        - name: Publish package
           run: ./gradlew :sub-project-one:publishAllPublicationsToCodeArtifactRepository
           env:
             CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
@@ -565,25 +532,16 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
           CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
           CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
       - - name: Publish package
-          run: ./gradlew :sub-project-two:publishAllPublicationsToGithubPackagesRepository
-          env:
-            GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        - name: Publish package
           run: ./gradlew :sub-project-two:publishAllPublicationsToGithubPackagesRepository
           env:
             GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -612,25 +570,16 @@ jobs:
           aws-region: us-east-1
       - name: Generate code artifact token
         id: code-artifact-token
-        run: "
-
-          \\   the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
-
-          \\   echo \\"::add-mask::$the_secret\\"
-
-          \\   echo \\"token=$the_secret\\" >> \\"$GITHUB_OUTPUT\\"
-
-          \\ "
+        run: |-
+          the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)
+          echo "::add-mask::$the_secret"
+          echo "token=$the_secret" >> "$GITHUB_OUTPUT"
       - name: Build
         run: ./gradlew build -x integrationTest
         env:
           CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
           CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
       - - name: Publish package
-          run: ./gradlew :sub-project-two:publishAllPublicationsToCodeArtifactRepository
-          env:
-            CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
-        - name: Publish package
           run: ./gradlew :sub-project-two:publishAllPublicationsToCodeArtifactRepository
           env:
             CODEARTIFACT_AUTH_TOKEN: \${{ steps.code-artifact-token.outputs.token }}
