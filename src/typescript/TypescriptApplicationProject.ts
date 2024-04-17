@@ -33,7 +33,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       projenrcTs: true,
       sampleCode: false,
       packageManager: NodePackageManager.PNPM,
-      pnpmVersion: '8',
+      pnpmVersion: '9',
       workflowNodeVersion: nodeVersion(options),
       ...options,
       githubOptions: {
