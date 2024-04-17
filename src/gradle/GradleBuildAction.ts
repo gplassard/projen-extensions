@@ -22,7 +22,7 @@ export class GradleBuildAction extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'env': {
-              CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL}}',
+              CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL }}',
             },
             'permissions': {
               'id-token': 'write',
