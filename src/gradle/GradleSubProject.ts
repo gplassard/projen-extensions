@@ -1,5 +1,5 @@
-import { GradleReleaseAction, GradleReleaseActionProps } from './GradleReleaseAction';
 import { Construct } from 'constructs';
+import { GradleReleaseAction, GradleReleaseActionProps } from './GradleReleaseAction';
 
 export interface GradleSubProjectOptions {
   gradleReleaseAction?: GradleReleaseActionProps;
