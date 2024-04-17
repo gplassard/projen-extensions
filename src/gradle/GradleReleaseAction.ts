@@ -32,7 +32,7 @@ export class GradleReleaseAction extends Component {
               GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
             },
           }),
-          'publish-codeArtifact': this.releaseJob({
+          'publish-code-artifact': this.releaseJob({
             codeArtifactRole: 'CODE_ARTIFACT_WRITE_ROLE',
             publishTasks: props.gradle.codeArtifactPublishTasks,
             publishTaskEnv: {
