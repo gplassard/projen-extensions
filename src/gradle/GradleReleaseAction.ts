@@ -74,11 +74,11 @@ export class GradleReleaseAction extends Component {
             CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL }}',
           },
         },
-        input.publishTasks.map(task => ({
+        ...(input.publishTasks.map(task => ({
           name: 'Publish package',
           run: `./gradlew ${task}`,
           env: input.publishTaskEnv,
-        })),
+        }))),
       ],
     };
   }
