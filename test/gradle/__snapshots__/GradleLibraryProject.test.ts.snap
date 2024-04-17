@@ -125,7 +125,7 @@ jobs:
         run: ./gradlew publishAllPublicationsToGithubPackagesRepository
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-  publish-codeArtifact:
+  publish-code-artifact:
     runs-on: ubuntu-latest
     env:
       CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL}}
@@ -309,7 +309,7 @@ jobs:
         run: ./gradlew :sub-project-one:publishAllPublicationsToGithubPackagesRepository
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-  publish-codeArtifact:
+  publish-code-artifact:
     runs-on: ubuntu-latest
     env:
       CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL}}
@@ -394,7 +394,7 @@ jobs:
         run: ./gradlew :sub-project-two:publishAllPublicationsToGithubPackagesRepository
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-  publish-codeArtifact:
+  publish-code-artifact:
     runs-on: ubuntu-latest
     env:
       CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL}}
