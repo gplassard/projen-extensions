@@ -53,7 +53,7 @@ export class GradleReleaseAction extends Component {
     return {
       'runs-on': 'ubuntu-latest',
       'env': {
-        CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL}}',
+        CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL }}',
       },
       'permissions': {
         'contents': 'read',
