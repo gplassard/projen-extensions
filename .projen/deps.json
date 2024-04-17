@@ -68,6 +68,10 @@
       "type": "build"
     },
     {
+      "name": "constructs",
+      "type": "runtime"
+    },
+    {
       "name": "projen",
       "type": "runtime"
     }

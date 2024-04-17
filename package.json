@@ -40,6 +40,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "constructs": "^10.3.0",
     "projen": "^0.80.15"
   },
   "pnpm": {},
