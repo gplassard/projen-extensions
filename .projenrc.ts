@@ -3,7 +3,7 @@ import { TypescriptLibraryProject } from './src';
 const project = new TypescriptLibraryProject({
   name: 'projen-extensions',
   packageName: '@gplassard/projen-extensions',
-  deps: ['projen'],
+  deps: ['projen', 'constructs'],
   releaseRank: 1,
 });
 project.deps.removeDependency('@gplassard/projen-extensions');

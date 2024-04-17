@@ -1,3 +1,4 @@
+import { IConstruct } from 'constructs';
 import { Component, Project, YamlFile } from 'projen';
 import { configureAWSCredentialsStep, GENERATE_CODE_ARTIFACT_TOKEN_STEP, SETUP_JDK_STEP } from './utils';
 import { CHECKOUT_STEP } from '../github/utils';
@@ -12,10 +13,10 @@ export interface GradleReleaseActionProps {
 }
 export class GradleReleaseAction extends Component {
 
-  constructor(project: Project, props: GradleReleaseActionProps) {
-    super(project);
+  constructor(scope: IConstruct, props: GradleReleaseActionProps) {
+    super(scope);
 
-    new YamlFile(project, `.github/workflows/release-${props.libraryName}.yml`, {
+    new YamlFile(Project.of(scope).root, `.github/workflows/release-${props.libraryName}.yml`, {
       obj: {
         name: `Java release ${props.libraryName}`,
         on: {
