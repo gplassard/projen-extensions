@@ -1,5 +1,6 @@
 import { Testing } from 'projen';
 import { GradleLibraryProject, RustProject } from '../../src';
+import { GradleSubProject } from '../../src/gradle/GradleSubProject';
 
 describe('GradleLibraryProject', () => {
   it('synthesizes', () => {
@@ -28,40 +29,27 @@ describe('GradleLibraryProject', () => {
     const project = new GradleLibraryProject({
       name: 'root-project',
     });
-    new GradleLibraryProject({
-      parent: project,
-      name: 'sub-project-one',
-      outdir: './sub-project-one',
-      gradleReleaseAction: {
-        gradle: {
-          codeArtifactPublishTasks: [
-            ':sub-project-one:publishAllPublicationsToCodeArtifactRepository',
-          ],
-          githubRegistryPublishTasks: [
-            ':sub-project-one:publishAllPublicationsToGithubPackagesRepository',
-          ],
+    const projects = [
+      'sub-project-one',
+      'sub-project-two',
+    ];
+    for (const subProject of projects) {
+      new GradleSubProject(project, subProject, {
+        gradleReleaseAction: {
+          gradle: {
+            codeArtifactPublishTasks: [
+              `:${subProject}:publishAllPublicationsToCodeArtifactRepository`,
+            ],
+            githubRegistryPublishTasks: [
+              `:${subProject}:publishAllPublicationsToGithubPackagesRepository`,
+            ],
+          },
+          libraryName: subProject,
+          tagPattern: `${subProject}-*`,
         },
-        libraryName: 'sub-project-one',
-        tagPattern: 'sub-project-one-*',
-      },
-    });
-    new GradleLibraryProject({
-      parent: project,
-      name: 'sub-project-two',
-      outdir: './sub-project-two',
-      gradleReleaseAction: {
-        gradle: {
-          codeArtifactPublishTasks: [
-            ':sub-project-two:publishAllPublicationsToCodeArtifactRepository',
-          ],
-          githubRegistryPublishTasks: [
-            ':sub-project-two:publishAllPublicationsToGithubPackagesRepository',
-          ],
-        },
-        libraryName: 'sub-project-two',
-        tagPattern: 'sub-project-two-*',
-      },
-    });
+      });
+    }
+
     const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
