@@ -12,8 +12,8 @@ importers:
         specifier: ^10.3.0
         version: 10.3.0
       projen:
-        specifier: ^0.81.0
-        version: 0.81.0(constructs@10.3.0)
+        specifier: ^0.81.5
+        version: 0.81.5(constructs@10.3.0)
     devDependencies:
       '@types/jest':
         specifier: ^29.5.12
@@ -1930,8 +1930,8 @@ packages:
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
-  projen@0.81.0:
-    resolution: {integrity: sha512-JfEJs45TYsXlz/Nf9oVzEHztUNFVkO9d0SgJ3cG0vDTmrKACse44lB37I86orueW7iuw8pXGqwU6m4Kg2LdAkQ==}
+  projen@0.81.5:
+    resolution: {integrity: sha512-INiusfzl31lnBkSxrwgsZ5gEgoIE8WufZ2ihDjYzn0BqJcWuFhLX+ayi0vZ9HS7mjyUx3KSy2gTLznt2t+OgpQ==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
     peerDependencies:
@@ -4813,7 +4813,7 @@ snapshots:
 
   process-nextick-args@2.0.1: {}
 
-  projen@0.81.0(constructs@10.3.0):
+  projen@0.81.5(constructs@10.3.0):
     dependencies:
       constructs: 10.3.0
 
