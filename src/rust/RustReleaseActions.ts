@@ -1,5 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
-import { CHECKOUT_STEP } from '../github/utils';
+import { WorkflowActionsX } from '../github';
 
 export interface RustReleaseActionsProps {
 
@@ -33,7 +33,7 @@ export class RustReleaseActions extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              CHECKOUT_STEP,
+              WorkflowActionsX.checkout({}),
               build,
               tests,
               {
@@ -90,7 +90,7 @@ export class RustReleaseActions extends Component {
           build: {
             'runs-on': 'ubuntu-latest',
             'steps': [
-              CHECKOUT_STEP,
+              WorkflowActionsX.checkout({}),
               build,
               tests,
             ],

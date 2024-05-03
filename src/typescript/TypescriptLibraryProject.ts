@@ -1,4 +1,5 @@
-import { nodeVersion, TypescriptApplicationProject, TypescriptApplicationProjectOptions } from './TypescriptApplicationProject';
+import { TypescriptApplicationProject, TypescriptApplicationProjectOptions } from './TypescriptApplicationProject';
+import { nodeVersion } from '../github';
 
 export type TypescriptLibraryProjectOptions = TypescriptApplicationProjectOptions
 & Required<Pick<TypescriptApplicationProjectOptions, 'packageName'>>;

@@ -1,4 +1,7 @@
 import { PullRequestLintOptions } from 'projen/lib/github';
+import { version as nodeJsVersion } from './nodejs.json';
+
+const DEFAULT_NODE_VERSION: string = nodeJsVersion.replace('v', '');
 
 export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
   semanticTitleOptions: {
@@ -7,9 +10,6 @@ export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
   },
 };
 
-export const CHECKOUT_STEP = {
-  uses: 'actions/checkout@v3',
-  with: {
-    'fetch-depth': 0,
-  },
-};
+export function nodeVersion(options: { nodeVersion?: string; packageManager?: string }): string {
+  return options.nodeVersion ?? DEFAULT_NODE_VERSION;
+}
