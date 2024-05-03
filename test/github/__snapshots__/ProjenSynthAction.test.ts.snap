@@ -15,6 +15,10 @@ jobs:
     permissions:
       contents: read
       packages: read
+    outputs:
+      self_mutation_happened: \${{ steps.self_mutation.outputs.self_mutation_happened }}
+    env:
+      CI: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,14 +39,14 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Run projen
         run: pnpm run projen
-      - name: Find mutations
-        id: self_mutation
+      - id: self_mutation
+        name: Find mutations
         run: |-
           git add .
           git diff --staged --patch --exit-code > .repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT
-        working-directory: ./
-      - name: Upload patch
-        if: steps.self_mutation.outputs.self_mutation_happened
+        workingDirectory: ./
+      - if: steps.self_mutation.outputs.self_mutation_happened
+        name: Upload patch
         uses: actions/upload-artifact@v4
         with:
           name: .repo.patch
@@ -71,7 +75,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}

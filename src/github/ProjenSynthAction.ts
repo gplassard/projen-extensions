@@ -1,5 +1,7 @@
 import { IConstruct } from 'constructs';
 import { Component, Project, YamlFile } from 'projen';
+import { WorkflowActions, GithubCredentials, workflows } from 'projen/lib/github';
+import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface ProjenSynthActionProps {
@@ -25,6 +27,12 @@ export class ProjenSynthAction extends Component {
               contents: 'read',
               packages: 'read',
             },
+            'outputs': {
+              self_mutation_happened: '${{ steps.self_mutation.outputs.self_mutation_happened }}',
+            },
+            'env': {
+              CI: 'true',
+            },
             'steps': [
               WorkflowActionsX.checkout({}),
               WorkflowActionsX.setupPnpm({}),
@@ -34,25 +42,10 @@ export class ProjenSynthAction extends Component {
                 name: 'Run projen',
                 run: 'pnpm run projen',
               },
-              {
-                'name': 'Find mutations',
-                'id': 'self_mutation',
-                'run': [
-                  'git add .',
-                  'git diff --staged --patch --exit-code > .repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT',
-                ].join('\n'),
-                'working-directory': './',
-              },
-              {
-                name: 'Upload patch',
-                if: 'steps.self_mutation.outputs.self_mutation_happened',
-                uses: 'actions/upload-artifact@v4',
-                with: {
-                  name: '.repo.patch',
-                  path: '.repo.patch',
-                  overwrite: true,
-                },
-              },
+              ...WorkflowActions.uploadGitPatch({
+                stepId: 'self_mutation',
+                outputName: 'self_mutation_happened',
+              }),
               {
                 name: 'Fail build on mutation',
                 if: 'steps.self_mutation.outputs.self_mutation_happened',
@@ -64,7 +57,6 @@ export class ProjenSynthAction extends Component {
               },
             ],
           },
-
           'self-mutation': {
             'needs': 'build',
             'runs-on': 'ubuntu-latest',
@@ -73,33 +65,18 @@ export class ProjenSynthAction extends Component {
             },
             'if': 'always() && needs.build.outputs.self_mutation_happened && !(github.event.pull_request.head.repo.full_name != github.repository)',
             'steps': [
-              {
-                name: 'Generate token',
-                id: 'generate_token',
-                uses: 'tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a',
-                with: {
-                  app_id: '${{ secrets.PROJEN_APP_ID }}',
-                  private_key: '${{ secrets.PROJEN_APP_PRIVATE_KEY }}',
-                  permissions: '{"pull_requests":"write","contents":"write","workflows":"write"}',
+              ...GithubCredentials.fromApp({
+                permissions: {
+                  pullRequests: AppPermission.WRITE,
+                  contents: AppPermission.WRITE,
+                  workflows: AppPermission.WRITE,
                 },
-              },
-              WorkflowActionsX.checkout({
+              }).setupSteps,
+              ...WorkflowActions.checkoutWithPatch({
                 token: '${{ steps.generate_token.outputs.token }}',
                 ref: '${{ github.event.pull_request.head.ref }}',
                 repository: '${{ github.event.pull_request.head.repo.full_name }}',
               }),
-              {
-                name: 'Download patch',
-                uses: 'actions/download-artifact@v4',
-                with: {
-                  name: '.repo.patch',
-                  path: '${{ runner.temp }}',
-                },
-              },
-              {
-                name: 'Apply patch',
-                run: '[ -s ${{ runner.temp }}/.repo.patch ] && git apply ${{ runner.temp }}/.repo.patch || echo "Empty patch. Skipping."',
-              },
               {
                 name: 'Set git identity',
                 run: [
