@@ -10,7 +10,7 @@ export class WorkflowActionsX {
       uses: 'actions/checkout@v4',
       with: {
         'fetch-depth': 0,
-        withOptions,
+        ...withOptions,
       },
     };
   }
