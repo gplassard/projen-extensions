@@ -126,6 +126,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
   }
 }
 
-export function nodeVersion(options: TypescriptApplicationProjectOptions): string {
+export function nodeVersion(options: { nodeVersion?: string; packageManager?: string }): string {
   return options.nodeVersion ?? TypescriptApplicationProject.DEFAULT_NODE_VERSION;
 }

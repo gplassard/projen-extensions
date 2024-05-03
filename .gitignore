@@ -52,4 +52,5 @@ junit.xml
 *.iml
 .vscode
 .DS_Store
+!/.github/workflows/upgrade-node.yml
 !/.projenrc.ts
