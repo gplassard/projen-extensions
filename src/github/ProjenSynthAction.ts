@@ -1,6 +1,5 @@
-import { IConstruct } from 'constructs';
-import { Component, Project, YamlFile } from 'projen';
-import { WorkflowActions, GitHub, GithubCredentials, workflows, GithubWorkflow } from 'projen/lib/github';
+import { Component } from 'projen';
+import { WorkflowActions, GitHub, GithubCredentials, GithubWorkflow } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
