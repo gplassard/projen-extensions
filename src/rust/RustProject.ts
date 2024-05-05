@@ -4,8 +4,8 @@ import { Cargo, CargoProps } from './Cargo';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps } from '../github';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
@@ -44,6 +44,6 @@ export class RustProject extends Project {
     });
     (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined)
     && new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
-  (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
+    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
   }
 }
