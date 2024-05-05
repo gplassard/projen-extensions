@@ -6,9 +6,7 @@ describe('GradleLibraryProject', () => {
   it('synthesizes', () => {
     const project = new GradleLibraryProject({
       name: 'test-project',
-      githubLint: {},
-      gradleBuildAction: {},
-      gradleReleaseAction: {
+      gradleReleaseActionOptions: {
         gradle: {
           codeArtifactPublishTasks: [
             'publishAllPublicationsToCodeArtifactRepository',
@@ -35,7 +33,7 @@ describe('GradleLibraryProject', () => {
     ];
     for (const subProject of projects) {
       new GradleSubProject(project, subProject, {
-        gradleReleaseAction: {
+        gradleReleaseActionOptions: {
           gradle: {
             codeArtifactPublishTasks: [
               `:${subProject}:publishAllPublicationsToCodeArtifactRepository`,
