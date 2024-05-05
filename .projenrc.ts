@@ -34,7 +34,7 @@ upgradeNodeWorkflow.addJob('upgrade', {
     WorkflowActionsX.checkout({ ref: 'main' }),
     {
       name: 'Get latest NodeJS LTS',
-      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.name | contains("LTS"))) | map({version: .tag_name})[0]\' > src/typescript/nodejs.json',
+      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.name | contains("LTS"))) | map({version: .tag_name})[0]\' > src/github/nodejs.json',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
