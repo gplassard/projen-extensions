@@ -18,7 +18,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
         { cron: '0 0 3 * *' },
       ],
     });
-    workflow.addJob('build', {
+    workflow.addJob('upgrade', {
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.READ,
