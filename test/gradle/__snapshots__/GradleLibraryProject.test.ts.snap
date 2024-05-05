@@ -271,7 +271,7 @@ on:
   schedule:
     - cron: 0 0 3 * *
 jobs:
-  build:
+  upgrade:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -830,7 +830,7 @@ on:
   schedule:
     - cron: 0 0 3 * *
 jobs:
-  build:
+  upgrade:
     runs-on: ubuntu-latest
     permissions:
       contents: read
