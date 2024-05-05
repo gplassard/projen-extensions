@@ -4,11 +4,19 @@ import { GradleBuildAction, GradleBuildActionProps } from './GradleBuildAction';
 import { GradleReleaseAction, GradleReleaseActionProps } from './GradleReleaseAction';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
+import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps } from '../github';
 
 export interface GradleLibraryProjectOptions extends ProjectOptions {
-  githubLint?: Record<string, unknown>;
-  gradleBuildAction?: GradleBuildActionProps;
-  gradleReleaseAction?: GradleReleaseActionProps;
+  githubLint?: boolean;
+  githubLintOptions?: Record<string, unknown>;
+  gradleBuildAction?: boolean;
+  gradleBuildActionOptions?: GradleBuildActionProps;
+  gradleReleaseActionOptions?: GradleReleaseActionProps;
+  nodeJSDependenciesUpgradeAction?: boolean;
+  nodeJSDependenciesUpgradeActionOptions?: NodeJSDependenciesUpgradeActionProps;
+  projenSynthAction?: boolean;
+  projenSynthActionOptions?: ProjenSynthActionProps;
+
   customGitignore?: CustomGitignoreProps;
 }
 
@@ -23,11 +31,18 @@ export class GradleLibraryProject extends Project {
         ...(options.customGitignore?.additionalGitignore ?? []),
       ],
     });
-    options.githubLint && new GitHub(this, {
+    const github = new GitHub(this, {
       mergify: false,
-      pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
-    });
-    options.gradleReleaseAction && new GradleReleaseAction(this, options.gradleReleaseAction);
-    options.gradleBuildAction && new GradleBuildAction(this, options.gradleBuildAction);
+      pullRequestLint: options.githubLint || options.githubLint == undefined,
+      pullRequestLintOptions: {
+        ...DEFAULT_PULL_REQUEST_LINT_OPTIONS,
+        ...(options.githubLintOptions ?? {}),
+      }
+    })
+    
+    options.gradleReleaseActionOptions && new GradleReleaseAction(this, options.gradleReleaseActionOptions);
+    (options.gradleBuildAction || options.gradleBuildAction == undefined) && new GradleBuildAction(this, options.gradleBuildActionOptions ?? {});
+    (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined) && new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
+    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(github, options.projenSynthActionOptions ?? {})
   }
 }
