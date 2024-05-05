@@ -274,6 +274,11 @@ jobs:
         uses: pnpm/action-setup@v3
         with:
           version: "9"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.12.2
+          registry-url: https://npm.pkg.github.com
+          cache: pnpm
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
