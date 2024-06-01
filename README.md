@@ -12,9 +12,9 @@
 ## For a rust project
 
 ```shell
-yarn init
+pnpm init
 echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
-yarn add -D projen @gplassard/projen-extensions
+pnpm install --save-dev projen @gplassard/projen-extensions
 ```
 
 Create a `.projenrc.js` file (see below)
@@ -43,15 +43,15 @@ project.synth();
 
 
 ```shell
-yarn projen # will generate your project files
+node .projenrc.js # will generate your project files
 ```
 
 ## For a typescript project
 
 ```shell
-yarn init
+pnpm init
 echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
-yarn add -D projen @gplassard/projen-extensions ts-node typescript
+pnpm install --save-dev projen @gplassard/projen-extensions ts-node typescript
 ```
 
 Create a `.projenrc.ts` file (see below)
@@ -82,7 +82,7 @@ project.synth();
 ```
 
 ```shell
-yarn ts-node .projenrc.ts # will generate your project files
+pnpm run ts-node .projenrc.ts # will generate your project files
 ```
 
 # Resources
