@@ -82,7 +82,7 @@ project.synth();
 ```
 
 ```shell
-pnpm run ts-node .projenrc.ts # will generate your project files
+pnpm ts-node .projenrc.ts # will generate your project files
 ```
 
 # Resources
