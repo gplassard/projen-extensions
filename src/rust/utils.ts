@@ -1,11 +1,3 @@
-export const SETUP_RUST = {
-  name: 'Set up Rust',
-  uses: 'actions-rs/roolchain@v1',
-  with: {
-    toolchain: 'stable',
-    override: true,
-  },
-};
 export const CARGO_BUILD = {
   name: 'Build',
   run: 'cargo build --release',
