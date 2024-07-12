@@ -166,11 +166,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Rust
-        uses: actions-rs/roolchain@v1
-        with:
-          toolchain: stable
-          override: true
       - name: Build
         run: cargo build --release
       - name: Tests
@@ -258,11 +253,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Rust
-        uses: actions-rs/roolchain@v1
-        with:
-          toolchain: stable
-          override: true
       - name: Build
         run: cargo build --release
       - name: Tests
