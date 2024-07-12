@@ -2,9 +2,7 @@
   "coverageProvider": "v8",
   "testMatch": [
     "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[jt]s?(x)",
-    "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-    "<rootDir>/@(test|src)/**/*(*.)@(spec|test).ts?(x)"
+    "**/?(*.)+(spec|test).[jt]s?(x)"
   ],
   "clearMocks": true,
   "collectCoverage": true,
