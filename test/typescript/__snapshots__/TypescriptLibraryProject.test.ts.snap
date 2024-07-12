@@ -1339,8 +1339,6 @@ use-node-version=20.15.0
     "testMatch": [
       "**/__tests__/**/*.[jt]s?(x)",
       "**/?(*.)+(spec|test).[jt]s?(x)",
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/@(test|src)/**/*(*.)@(spec|test).ts?(x)",
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
