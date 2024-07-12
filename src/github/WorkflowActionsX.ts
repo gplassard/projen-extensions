@@ -16,7 +16,7 @@ export class WorkflowActionsX {
 
   static setupNode(options: { nodeVersion?: string; packageManager?: string }): JobStep {
     return {
-      uses: 'actions/setup-node@v3',
+      uses: 'actions/setup-node@v4',
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
@@ -28,7 +28,7 @@ export class WorkflowActionsX {
   static setupPnpm(_options: {}): JobStep {
     return {
       name: 'Setup pnpm',
-      uses: 'pnpm/action-setup@v3',
+      uses: 'pnpm/action-setup@v4',
       with: {
         version: '9',
       },

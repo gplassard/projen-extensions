@@ -1,6 +1,6 @@
 export const SETUP_JDK_STEP = {
   name: 'Set up JDK',
-  uses: 'actions/setup-java@v3',
+  uses: 'actions/setup-java@v4',
   with: {
     'java-version': '21',
     'distribution': 'temurin',
