@@ -16,7 +16,10 @@ export class ProjenSynthAction extends Component {
       push: {
         branches: ['main'],
       },
-      pullRequest: {},
+      pullRequest: {
+        types: ['opened', 'edited', 'synchronize', 'reopened'],
+        branches: ['main'],
+      },
     });
     workflow.addJob('build', {
       runsOn: ['ubuntu-latest'],

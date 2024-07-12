@@ -1,11 +1,17 @@
 import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
 import { Cargo, CargoProps } from './Cargo';
+import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps } from '../github';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
+import {
+  DEFAULT_PULL_REQUEST_LINT_OPTIONS,
+  NodeJSDependenciesUpgradeAction,
+  NodeJSDependenciesUpgradeActionProps,
+  ProjenSynthAction,
+  ProjenSynthActionProps,
+} from '../github';
 
 export interface RustProjectOptions extends ProjectOptions {
   cargo: CargoProps;
@@ -14,6 +20,7 @@ export interface RustProjectOptions extends ProjectOptions {
   nodeJSDependenciesUpgradeActionOptions?: NodeJSDependenciesUpgradeActionProps;
   projenSynthAction?: boolean;
   projenSynthActionOptions?: ProjenSynthActionProps;
+  rustBuildAction?: RustBuildActionProps;
   rustReleaseActions?: RustReleaseActionsProps;
   rustLintActions?: RustLintActionProps;
 }
@@ -36,14 +43,18 @@ export class RustProject extends Project {
     });
 
     new Cargo(this, options.cargo);
+    new RustBuildAction(this, options.rustBuildAction);
     new RustReleaseActions(this, options.rustReleaseActions);
     new RustLintAction(this, options.rustLintActions);
     const github = new GitHub(this, {
       mergify: false,
       pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
     });
-    (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined)
-    && new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
-    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
+    if (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined) {
+      new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
+    }
+    if (options.projenSynthAction || options.projenSynthAction == undefined) {
+      new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
+    }
   }
 }

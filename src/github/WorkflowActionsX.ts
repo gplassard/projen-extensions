@@ -1,6 +1,5 @@
-import { version } from 'os';
 import { JobStep } from 'projen/lib/github/workflows-model';
-import { nodeVersion } from '../github';
+import { nodeVersion } from './utils';
 
 export class WorkflowActionsX {
 
