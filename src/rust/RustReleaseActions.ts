@@ -1,5 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
-import { CARGO_BUILD, CARGO_CACHES, CARGO_TEST } from './utils';
+import { CARGO_TEST, cargoBuild, cargoCaches } from './utils';
 import { WorkflowActionsX } from '../github';
 
 export interface RustReleaseActionsProps {
@@ -10,6 +10,26 @@ export class RustReleaseActions extends Component {
   constructor(project: Project, _props?: RustReleaseActionsProps) {
     super(project);
 
+    const buildMatrix = [
+      {
+        build: 'linux',
+        os: 'ubuntu-latest',
+        target: 'x86_64-unknown-linux-musl',
+        suffix: '',
+      },
+      {
+        build: 'macos',
+        os: 'macos-latest',
+        target: 'x86_64-apple-darwin',
+        suffix: '',
+      },
+      {
+        build: 'windows-gnu',
+        os: 'windows-latest',
+        target: 'x86_64-pc-windows-gnu',
+        suffix: '.exe',
+      },
+    ];
 
     new YamlFile(project, '.github/workflows/rust-release.yml', {
       obj: {
@@ -28,20 +48,27 @@ export class RustReleaseActions extends Component {
             'runs-on': '${{ matrix.os }}',
             'strategy': {
               matrix: {
-                os: ['ubuntu-latest', 'windows-latest', 'macOS-latest'],
+                include: buildMatrix,
               },
             },
             'steps': [
               WorkflowActionsX.checkout({}),
-              CARGO_BUILD,
+              {
+                name: 'Install toolchain',
+                uses: 'dtolnay/rust-toolchain@stable',
+                with: {
+                  targets: '${{ matrix.target }}',
+                },
+              },
+              cargoBuild({ release: true, target: '${{ matrix.target }}' }),
               CARGO_TEST,
-              ...CARGO_CACHES,
+              ...cargoCaches({ cachePrefix: '${{ matrix.target }}-' }),
               {
                 name: 'Upload Artifacts',
                 uses: 'actions/upload-artifact@v4',
                 with: {
-                  name: '${{ runner.os}}-binaries',
-                  path: 'target/release/',
+                  name: '${{ matrix.target }}-binaries',
+                  path: `target/$\{{ matrix.target }}/release/${project.name}\${{ matrix.suffix }}`,
                 },
               },
             ],
@@ -69,20 +96,20 @@ export class RustReleaseActions extends Component {
                   prerelease: false,
                 },
               },
-              {
-                name: 'Upload release assets',
-                id: 'upload-release-assets',
+              ...buildMatrix.map(matrix => ({
+                name: `Upload release assets (${matrix.target})`,
+                id: `upload-release-assets-${matrix.target}`,
                 uses: 'actions/upload-release-asset@v1',
                 env: {
                   GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
                 },
                 with: {
                   upload_url: '${{ steps.create_release.outputs.upload_url }}',
-                  asset_path: `target/release/${project.name}`,
-                  asset_name: project.name,
-                  asset_content_type: 'application/zip',
+                  asset_path: `${matrix.target}-binaries/${project.name}${matrix.suffix}`,
+                  asset_name: `${project.name}-${matrix.target}${matrix.suffix}`,
+                  asset_content_type: 'application/octet-stream',
                 },
-              },
+              })),
             ],
           },
         },
