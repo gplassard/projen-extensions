@@ -1,5 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
-import { CARGO_BUILD, CARGO_CACHES, CARGO_TEST } from './utils';
+import { CARGO_TEST, cargoBuild, cargoCaches } from './utils';
 import { WorkflowActionsX } from '../github';
 
 export interface RustBuildActionProps {
@@ -31,9 +31,9 @@ export class RustBuildAction extends Component {
             'runs-on': 'ubuntu-latest',
             'steps': [
               WorkflowActionsX.checkout({}),
-              CARGO_BUILD,
+              cargoBuild(),
               CARGO_TEST,
-              ...CARGO_CACHES,
+              ...cargoCaches(),
             ],
           },
         },
