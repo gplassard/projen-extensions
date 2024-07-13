@@ -294,7 +294,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      content: write
+      contents: write
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
