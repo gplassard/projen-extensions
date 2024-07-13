@@ -77,7 +77,7 @@ export class RustReleaseActions extends Component {
             'needs': 'build',
             'runs-on': 'ubuntu-latest',
             'permissions': {
-              content: 'write',
+              contents: 'write',
             },
             'steps': [
               {
