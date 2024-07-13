@@ -76,6 +76,9 @@ export class RustReleaseActions extends Component {
           release: {
             'needs': 'build',
             'runs-on': 'ubuntu-latest',
+            'permissions': {
+              content: 'write',
+            },
             'steps': [
               {
                 name: 'Download Artifacts',
