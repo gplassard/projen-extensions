@@ -14,7 +14,7 @@ export class RustReleaseActions extends Component {
       {
         build: 'linux',
         os: 'ubuntu-latest',
-        target: 'x86_64-unknown-linux-musl',
+        target: 'x86_64-unknown-linux-gnu',
         suffix: '',
       },
       {
