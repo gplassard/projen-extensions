@@ -1,6 +1,5 @@
 import { Testing } from 'projen';
-import { GradleLibraryProject, RustProject } from '../../src';
-import { GradleSubProject } from '../../src/gradle/GradleSubProject';
+import { GradleLibraryProject, GradleSubProject } from '../../src';
 
 describe('GradleLibraryProject', () => {
   it('synthesizes', () => {
@@ -17,6 +16,10 @@ describe('GradleLibraryProject', () => {
         },
         libraryName: 'my-awesome-library',
         tagPattern: 'v*',
+      },
+      gradleBuildActionOptions: {
+        withCodeArtifactAccess: true,
+        gradleCommand: './gradlew build -x integrationTest',
       },
     });
     const output = Testing.synth(project);
