@@ -5,6 +5,7 @@ import { WorkflowActionsX } from '../github';
 
 export interface GradleBuildActionProps {
   withCodeArtifactAccess?: boolean;
+  gradleCommand?: string;
 }
 export class GradleBuildAction extends Component {
 
@@ -42,7 +43,7 @@ export class GradleBuildAction extends Component {
               props.withCodeArtifactAccess && GENERATE_CODE_ARTIFACT_TOKEN_STEP,
               {
                 name: 'Build',
-                run: './gradlew build -x integrationTest',
+                run: props.gradleCommand ?? './gradlew build',
                 env: props.withCodeArtifactAccess && {
                   CODEARTIFACT_AUTH_TOKEN: '${{ steps.code-artifact-token.outputs.token }}',
                   CODE_ARTIFACT_URL: '${{ secrets.CODE_ARTIFACT_URL }}',
