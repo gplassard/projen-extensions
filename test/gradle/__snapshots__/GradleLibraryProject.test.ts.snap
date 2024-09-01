@@ -84,7 +84,7 @@ jobs:
           version: "9"
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.16.0
+          node-version: 20.17.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -300,7 +300,7 @@ jobs:
           version: "9"
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.16.0
+          node-version: 20.17.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -556,7 +556,7 @@ jobs:
           version: "9"
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.16.0
+          node-version: 20.17.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -859,7 +859,7 @@ jobs:
           version: "9"
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.16.0
+          node-version: 20.17.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
