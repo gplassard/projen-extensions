@@ -24,7 +24,7 @@ export class ProjenSynthAction extends Component {
     workflow.addJob('build', {
       runsOn: ['ubuntu-latest'],
       permissions: {
-        contents: JobPermission.READ,
+        contents: JobPermission.WRITE,
         packages: JobPermission.READ,
       },
       outputs: {
