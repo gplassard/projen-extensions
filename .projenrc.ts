@@ -5,7 +5,8 @@ import { TypescriptLibraryProject, WorkflowActionsX } from './src';
 const project = new TypescriptLibraryProject({
   name: 'projen-extensions',
   packageName: '@gplassard/projen-extensions',
-  deps: ['projen', 'constructs'],
+  devDeps: ['projen', 'constructs'],
+  peerDeps: ['projen', 'constructs'],
   releaseRank: 1,
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
