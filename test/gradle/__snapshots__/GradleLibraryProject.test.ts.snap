@@ -18,7 +18,7 @@ jobs:
     env:
       CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
     permissions:
-      content: read
+      contents: read
       id-token: write
     steps:
       - name: Checkout
@@ -505,7 +505,7 @@ jobs:
     runs-on: ubuntu-latest
     env: {}
     permissions:
-      content: read
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
