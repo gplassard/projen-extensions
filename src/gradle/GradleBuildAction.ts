@@ -29,7 +29,10 @@ export class GradleBuildAction extends Component {
           push: {
             branches: 'main',
           },
-          pull_request: {},
+          pull_request: {
+            types: ['opened', 'edited', 'synchronize', 'reopened'],
+            branches: ['main'],
+          },
         },
         jobs: {
           build: {
