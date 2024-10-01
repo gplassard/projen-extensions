@@ -400,6 +400,9 @@ on:
     branches:
       - main
   workflow_dispatch: {}
+concurrency:
+  group: \${{ github.workflow }}
+  cancel-in-progress: false
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -729,7 +732,6 @@ use-node-version=20.17.0
       {
         "name": "@types/node",
         "type": "build",
-        "version": "^18",
       },
       {
         "name": "@typescript-eslint/eslint-plugin",
@@ -1083,7 +1085,7 @@ use-node-version=20.17.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript",
+            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
@@ -1363,7 +1365,7 @@ use-node-version=20.17.0
     "devDependencies": {
       "@gplassard/projen-extensions": "*",
       "@types/jest": "*",
-      "@types/node": "^18",
+      "@types/node": "*",
       "@typescript-eslint/eslint-plugin": "^7",
       "@typescript-eslint/parser": "^7",
       "commit-and-tag-version": "^12",
