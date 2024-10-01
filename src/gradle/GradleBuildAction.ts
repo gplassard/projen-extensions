@@ -14,7 +14,7 @@ export class GradleBuildAction extends Component {
 
     const env: Record<string, any> = {};
     const permissions: Record<string, any> = {
-      content: 'read',
+      contents: 'read',
     };
 
     if (props.withCodeArtifactAccess) {
