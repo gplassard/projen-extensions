@@ -23,6 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      FOO: BAR
       CODE_ARTIFACT_URL: \${{ secrets.CODE_ARTIFACT_URL }}
     permissions:
       contents: read

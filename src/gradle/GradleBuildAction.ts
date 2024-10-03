@@ -6,13 +6,14 @@ import { WorkflowActionsX } from '../github';
 export interface GradleBuildActionProps {
   withCodeArtifactAccess?: boolean;
   gradleCommand?: string;
+  additionalEnvs?: Record<string, string>;
 }
 export class GradleBuildAction extends Component {
 
   constructor(scope: IConstruct, props: GradleBuildActionProps) {
     super(scope);
 
-    const env: Record<string, any> = {};
+    const env: Record<string, any> = props.additionalEnvs ?? {};
     const permissions: Record<string, any> = {
       contents: 'read',
     };
