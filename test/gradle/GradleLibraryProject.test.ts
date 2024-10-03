@@ -20,6 +20,9 @@ describe('GradleLibraryProject', () => {
       gradleBuildActionOptions: {
         withCodeArtifactAccess: true,
         gradleCommand: './gradlew build -x integrationTest',
+        additionalEnvs: {
+          FOO: 'BAR',
+        },
       },
     });
     const output = Testing.synth(project);
