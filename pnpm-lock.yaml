@@ -42,8 +42,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.10.3)(ts-node@10.9.2(@types/node@22.10.3)(typescript@5.7.2))
       jest-junit:
-        specifier: ^15
-        version: 15.0.0
+        specifier: ^16.0.0
+        version: 16.0.0
       projen:
         specifier: ^0.91.5
         version: 0.91.5(constructs@10.4.2)
@@ -1643,8 +1643,8 @@ packages:
     resolution: {integrity: sha512-fP8u2pyfqx0K1rGn1R9pyE0/KTn+G7PxktWidOBTqFPLYX0b9ksaMFkhK5vrS3DVun09pckLdlx90QthlW7AmA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-junit@15.0.0:
-    resolution: {integrity: sha512-Z5sVX0Ag3HZdMUnD5DFlG+1gciIFSy7yIVPhOdGUi8YJaI9iLvvBb530gtQL2CHmv0JJeiwRZenr0VrSR7frvg==}
+  jest-junit@16.0.0:
+    resolution: {integrity: sha512-A94mmw6NfJab4Fg/BlvVOUXzXgF0XIH6EmTgJ5NDPp4xoKq0Kr7sErb+4Xs9nZvu58pJojz5RFGpqnZYJTrRfQ==}
     engines: {node: '>=10.12.0'}
 
   jest-leak-detector@29.7.0:
@@ -4658,7 +4658,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  jest-junit@15.0.0:
+  jest-junit@16.0.0:
     dependencies:
       mkdirp: 1.0.4
       strip-ansi: 6.0.1
