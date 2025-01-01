@@ -48,6 +48,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       },
       jestOptions: {
         configFilePath: 'jest.config.json',
+        junitReporting: false,
         jestConfig: {
           testMatch: TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH,
           ...(options.jestOptions?.jestConfig ?? {}),
