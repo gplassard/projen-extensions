@@ -51,7 +51,7 @@ node .projenrc.js # will generate your project files
 ```shell
 pnpm init
 echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
-pnpm install --save-dev projen @gplassard/projen-extensions ts-node typescript
+pnpm install --save-dev projen @gplassard/projen-extensions tsx typescript
 ```
 
 Create a `.projenrc.ts` file (see below)
@@ -82,7 +82,7 @@ project.synth();
 ```
 
 ```shell
-pnpm ts-node .projenrc.ts # will generate your project files
+pnpm tsx .projenrc.ts # will generate your project files
 ```
 
 # Resources
