@@ -42,7 +42,7 @@ upgradeNodeWorkflow.addJob('upgrade', {
     },
     {
       name: 'Get latest PNPM',
-      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/pnpm/pnpm/releases | map({version: .tag_name})[0]\' > src/github/pnpm.json',
+      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/pnpm/pnpm/releases --jq \'map({version: .tag_name})[0]\' > src/github/pnpm.json',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
