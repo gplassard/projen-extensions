@@ -1,9 +1,9 @@
 import { PullRequestLintOptions } from 'projen/lib/github';
 import { version as nodeJsVersion } from './nodejs.json';
-import { version as pnpmVersion } from './pnpm.json';
+import { version as pnpmDefaultVersion } from './pnpm.json';
 
 const DEFAULT_NODE_VERSION: string = nodeJsVersion.replace('v', '');
-const DEFAULT_PNPM_VERSION: string = pnpmVersion.replace('v', '');
+const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersion.replace('v', '');
 
 export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
   semanticTitleOptions: {
