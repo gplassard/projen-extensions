@@ -1,5 +1,5 @@
 import { JobStep } from 'projen/lib/github/workflows-model';
-import { nodeVersion } from './utils';
+import { nodeVersion, pnpmVersion } from './utils';
 
 export class WorkflowActionsX {
 
@@ -30,7 +30,7 @@ export class WorkflowActionsX {
       name: 'Setup pnpm',
       uses: 'pnpm/action-setup@v4',
       with: {
-        version: '9',
+        version: pnpmVersion(),
       },
     };
   }
