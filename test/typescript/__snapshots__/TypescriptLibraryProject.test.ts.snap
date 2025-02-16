@@ -557,6 +557,10 @@ jobs:
         run: npx projen upgrade
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Update dependencies
+        run: pnpm update --no-save
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
         id: create_patch
         run: |-

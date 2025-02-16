@@ -527,6 +527,10 @@ jobs:
         working-directory: ./
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Update dependencies
+        run: pnpm update --no-save
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upload patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@v4.4.0
@@ -1933,6 +1937,10 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Update dependencies
+        run: pnpm update --no-save
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
