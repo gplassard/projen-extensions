@@ -50,5 +50,5 @@ jspm_packages/
 *.iml
 .vscode
 .DS_Store
-!/.github/workflows/upgrade-node.yml
+!/.github/workflows/upgrade-node-and-pnpm.yml
 !/.projenrc.ts

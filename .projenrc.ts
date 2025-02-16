@@ -11,14 +11,14 @@ const project = new TypescriptLibraryProject({
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
 project.jest?.addSetupFile('./test/jest.setup.ts');
-const upgradeNodeWorkflow = new GithubWorkflow(project.github!, 'upgrade-node', {});
-upgradeNodeWorkflow.on({
+const upgradeNodeAndPnpmWorkflow = new GithubWorkflow(project.github!, 'upgrade-node-and-pnpm', {});
+upgradeNodeAndPnpmWorkflow.on({
   workflowDispatch: {},
   schedule: [{
     cron: '0 0 1 * *',
   }],
 });
-upgradeNodeWorkflow.addJob('upgrade', {
+upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
   name: 'Upgrade',
   runsOn: ['ubuntu-latest'],
   outputs: {
@@ -53,18 +53,18 @@ upgradeNodeWorkflow.addJob('upgrade', {
     }),
   ],
 });
-upgradeNodeWorkflow.addJob('pr',
+upgradeNodeAndPnpmWorkflow.addJob('pr',
   WorkflowJobs.pullRequestFromPatch( {
     credentials: GithubCredentials.fromApp(),
     patch: {
       jobId: 'upgrade',
       outputName: 'patch_created',
     },
-    workflowName: 'upgrade-node',
-    pullRequestTitle: 'chore(deps): upgrade NodeJS',
+    workflowName: 'upgrade-node-and-pnpm',
+    pullRequestTitle: 'chore(deps): upgrade NodeJS and PNPM',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS version to the latest LTS version.',
+      'Upgrades NodeJS and PNPM to their latest LTS version.',
     ].join('\n\n'),
   }),
 );
