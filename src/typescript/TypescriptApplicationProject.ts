@@ -4,7 +4,7 @@ import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, WorkflowActionsX } from '../github';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, WorkflowActionsX } from '../github';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
@@ -31,7 +31,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       projenrcTs: true,
       sampleCode: false,
       packageManager: NodePackageManager.PNPM,
-      pnpmVersion: '9',
+      pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
       ...options,
       githubOptions: {
@@ -112,5 +112,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     );
 
     this.tryFindObjectFile('package.json')?.addOverride('volta.node', nodeVersion(options));
+    this.tryFindObjectFile('package.json')?.addOverride('volta.pnpm', pnpmVersion());
   }
 }

@@ -40,6 +40,13 @@ upgradeNodeWorkflow.addJob('upgrade', {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
     },
+    {
+      name: 'Get latest PNPM',
+      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/pnpm/pnpm/releases --jq \'map({version: .tag_name})[0]\' > src/github/pnpm.json',
+      env: {
+        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    },
     ...WorkflowActions.uploadGitPatch({
       stepId: 'create_patch',
       outputName: 'patch_created',
