@@ -105,6 +105,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       JsonPatch.replace('/jobs/upgrade/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/upgrade/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
       JsonPatch.add('/jobs/upgrade/steps/4/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      JsonPatch.add('/jobs/upgrade/steps/5', WorkflowActionsX.pnpmUpdate({ noSave: true })),
       JsonPatch.add('/jobs/pr/permissions/pull-requests', 'write'),
       JsonPatch.add('/jobs/pr/permissions/contents', 'write'),
       JsonPatch.add('/jobs/pr/steps/0/with/token', '${{ secrets.GITHUB_TOKEN }}'),

@@ -44,4 +44,14 @@ export class WorkflowActionsX {
       },
     };
   }
+
+  static pnpmUpdate(options: {noSave?: boolean}): JobStep {
+    return {
+      name: 'Update dependencies',
+      run: `pnpm update ${options.noSave ? '--no-save' : ''}`,
+      env: {
+        NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    };
+  }
 }
