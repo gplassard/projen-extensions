@@ -38,10 +38,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.4.0
+          version: 10.7.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 18.20.8
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -368,10 +368,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.4.0
+          version: 10.7.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 18.20.8
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
