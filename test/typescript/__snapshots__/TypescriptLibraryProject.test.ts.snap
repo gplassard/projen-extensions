@@ -327,11 +327,13 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5
         with:
-          app_id: \${{ secrets.PROJEN_APP_ID }}
-          private_key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
-          permissions: '{"pull_requests":"write","contents":"write","workflows":"write"}'
+          app-id: \${{ secrets.PROJEN_APP_ID }}
+          private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+          permission-contents: write
+          permission-workflows: write
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -487,9 +489,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: \${{ github.repository }}
-          GITHUB_REF: \${{ github.sha }}
-        run: errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_REF 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi
+        run: errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_SHA 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi
   release_npm:
     name: Publish to npm
     needs: release
@@ -585,11 +585,13 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5
         with:
-          app_id: \${{ secrets.PROJEN_APP_ID }}
-          private_key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
-          permissions: '{"pull_requests":"write","contents":"write","workflows":"write"}'
+          app-id: \${{ secrets.PROJEN_APP_ID }}
+          private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+          permission-contents: write
+          permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
         uses: actions/checkout@v4
@@ -988,15 +990,13 @@ use-node-version=22.14.0
         "name": "publish:github",
         "requiredEnv": [
           "GITHUB_TOKEN",
-          "GITHUB_REPOSITORY",
-          "GITHUB_REF",
         ],
         "steps": [
           {
             "exec": "test "$(git branch --show-current)" = "main"",
           },
           {
-            "exec": "errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_REF 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi",
+            "exec": "errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_SHA 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi",
           },
         ],
       },
@@ -1426,7 +1426,7 @@ use-node-version=22.14.0
       "inlineSourceMap": true,
       "inlineSources": true,
       "lib": [
-        "es2019",
+        "es2020",
       ],
       "module": "CommonJS",
       "noEmitOnError": false,
@@ -1442,7 +1442,7 @@ use-node-version=22.14.0
       "strictNullChecks": true,
       "strictPropertyInitialization": true,
       "stripInternal": true,
-      "target": "ES2019",
+      "target": "ES2020",
     },
     "exclude": [
       "node_modules",
@@ -1463,7 +1463,7 @@ use-node-version=22.14.0
       "inlineSourceMap": true,
       "inlineSources": true,
       "lib": [
-        "es2019",
+        "es2020",
       ],
       "module": "CommonJS",
       "noEmitOnError": false,
@@ -1481,7 +1481,7 @@ use-node-version=22.14.0
       "strictNullChecks": true,
       "strictPropertyInitialization": true,
       "stripInternal": true,
-      "target": "ES2019",
+      "target": "ES2020",
     },
     "exclude": [],
     "include": [
