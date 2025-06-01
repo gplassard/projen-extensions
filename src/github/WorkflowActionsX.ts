@@ -35,7 +35,7 @@ export class WorkflowActionsX {
     };
   }
 
-  static installDependencies(options: {noFrozenLockfile?: boolean}): JobStep {
+  static installDependencies(options: { noFrozenLockfile?: boolean }): JobStep {
     return {
       name: 'Install dependencies',
       run: `pnpm i --${options.noFrozenLockfile ? 'no-' : ''}frozen-lockfile`,
@@ -45,7 +45,7 @@ export class WorkflowActionsX {
     };
   }
 
-  static pnpmUpdate(options: {noSave?: boolean}): JobStep {
+  static pnpmUpdate(options: { noSave?: boolean }): JobStep {
     return {
       name: 'Update dependencies',
       run: `pnpm update ${options.noSave ? '--no-save' : ''}`,

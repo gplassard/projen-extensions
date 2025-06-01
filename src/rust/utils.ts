@@ -1,4 +1,4 @@
-export function cargoBuild(config?: {release?: boolean; target?: string}) {
+export function cargoBuild(config?: { release?: boolean; target?: string }) {
   const releaseFlag = config?.release ? '--release' : '';
   const targetFlag = config?.target ? `--target ${config.target}` : '';
   return {
@@ -12,7 +12,7 @@ export const CARGO_TEST = {
   run: 'cargo test --verbose',
 };
 
-export function cargoCaches(config?: {cachePrefix?: string}) {
+export function cargoCaches(config?: { cachePrefix?: string }) {
   const cachePrefix = config?.cachePrefix ?? '';
   return [
     {

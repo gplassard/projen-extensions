@@ -18,7 +18,7 @@ type CustomProps = {
    **/
   releaseRank?: number;
   nodeVersion?: string;
-}
+};
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
