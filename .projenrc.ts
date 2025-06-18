@@ -10,7 +10,6 @@ const project = new TypescriptLibraryProject({
   releaseRank: 1,
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
-project.jest?.addSetupFile('./test/jest.setup.ts');
 const upgradeNodeAndPnpmWorkflow = new GithubWorkflow(project.github!, 'upgrade-node-and-pnpm', {});
 upgradeNodeAndPnpmWorkflow.on({
   workflowDispatch: {},

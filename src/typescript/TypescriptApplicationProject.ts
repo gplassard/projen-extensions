@@ -1,4 +1,4 @@
-import { JsonPatch } from 'projen';
+import { JsonPatch, SampleFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -22,7 +22,7 @@ type CustomProps = {
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
-  static readonly DEFAULT_JEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
+  static readonly DEFAULT_VITEST_CONFIG_INCLUDE: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
 
   constructor(options: TypescriptApplicationProjectOptions) {
@@ -46,15 +46,24 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         }),
         ...(options.githubOptions ?? {}),
       },
-      jestOptions: {
-        configFilePath: 'jest.config.json',
-        junitReporting: false,
-        jestConfig: {
-          testMatch: TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH,
-          ...(options.jestOptions?.jestConfig ?? {}),
+      // Using Vitest instead of Jest
+      tsconfigDev: {
+        compilerOptions: {
+          types: ['vitest/globals'],
+          ...(options.tsconfigDev?.compilerOptions ?? {}),
         },
-        ...(options.jestOptions ?? {}),
+        include: [
+          'src/**/*.ts',
+          'test/**/*.ts',
+          '.projenrc.ts',
+          'projenrc/**/*.ts',
+          'vitest.config.ts',
+          ...(options.tsconfigDev?.include ?? []),
+        ],
+        ...(options.tsconfigDev ?? {}),
       },
+      // Remove jestOptions as we're using Vitest now
+      jestOptions: undefined,
       depsUpgradeOptions: {
         target: 'latest',
         ...(options.depsUpgradeOptions ?? {}),
@@ -81,16 +90,73 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
 
-    if (typescriptProjectOptions.jestOptions?.configFilePath) {
-      const jestConfig = this.tryFindObjectFile(typescriptProjectOptions.jestOptions?.configFilePath);
-      jestConfig?.addOverride('testMatch', typescriptProjectOptions.jestOptions.jestConfig?.testMatch ?? TypescriptApplicationProject.DEFAULT_JEST_CONFIG_TEST_MATCH);
+    // Add Vitest configuration and remove Jest
+    this.addDevDeps('vitest');
+    this.deps.removeDependency('@types/jest');
+    this.deps.removeDependency('jest');
+    this.deps.removeDependency('ts-jest');
+    this.deps.removeDependency('jest-junit');
+
+    // Add test scripts
+    this.setScript('test', 'vitest run');
+    this.setScript('test:watch', 'vitest watch');
+
+    // Modify the test task to use Vitest instead of Jest
+    this.tasks.tryFind('test')?.reset();
+    this.tasks.tryFind('test')?.exec('vitest run -u', { receiveArgs: true });
+
+    // Also update test:watch task
+    const testWatchTask = this.tasks.tryFind('test:watch');
+    if (testWatchTask) {
+      testWatchTask.reset();
+      testWatchTask.exec('vitest watch');
+      // Update the description to mention Vitest instead of Jest
+      testWatchTask.description = 'Run vitest in watch mode';
     }
+
+    // Add a task to check for TypeScript errors in the vitest.config.ts file
+    this.addTask('check-vitest-config', {
+      description: 'Check for TypeScript errors in the vitest.config.ts file',
+      exec: 'tsc --noEmit --project tsconfig.dev.json',
+    });
+
+    // Add the check-vitest-config task to the pre-compile task
+    const checkVitestConfigTask = this.tasks.tryFind('check-vitest-config');
+    if (checkVitestConfigTask) {
+      this.tasks.tryFind('pre-compile')?.spawn(checkVitestConfigTask);
+    }
+
+    // Remove Jest configuration
+    this.tryFindObjectFile('package.json')?.addDeletionOverride('jest');
+
+    // Create a simple vitest.config.ts file
+    new SampleFile(this, 'vitest.config.ts', {
+      contents: `import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'node',
+    include: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE)},
+    setupFiles: ['./test/vitest.setup.ts'],
+  },
+});
+`,
+    });
+
+    // Create vitest setup file
+    new SampleFile(this, 'test/vitest.setup.ts', {
+      contents: `process.env.PROJEN_SELF_TEST = 'true';
+`,
+    });
 
     // TODO refactor
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      // Use the default build command which now uses Vitest
+      JsonPatch.replace('/jobs/build/steps/4/run', 'npx projen build'),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
