@@ -1,5 +1,6 @@
 import { Project, Testing } from 'projen';
 import { GitHub } from 'projen/lib/github';
+import { describe, it, expect } from 'vitest';
 import { NodeJSDependenciesUpgradeAction } from '../../src';
 
 describe('NodeJSDependenciesUpgradeAction', () => {

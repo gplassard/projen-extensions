@@ -30,7 +30,8 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
-!/jest.config.json
+/test-reports/
+junit.xml
 /coverage/
 !/.github/workflows/build.yml
 /dist/changelog.md

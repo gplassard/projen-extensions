@@ -1,5 +1,6 @@
 import { Testing } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
+import { describe, it, expect } from 'vitest';
 import { TypescriptApplicationProject } from '../../src';
 
 describe('TypescriptApplicationProject with default settings', () => {
