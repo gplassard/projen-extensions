@@ -20,10 +20,6 @@
       "type": "build"
     },
     {
-      "name": "@vitest/coverage-v8",
-      "type": "build"
-    },
-    {
       "name": "commit-and-tag-version",
       "version": "^12",
       "type": "build"

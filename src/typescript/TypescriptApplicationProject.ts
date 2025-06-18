@@ -83,7 +83,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     new CustomGitignore(this, options.customGitignore);
 
     // Add Vitest configuration and remove Jest
-    this.addDevDeps('vitest', '@vitest/coverage-v8');
+    this.addDevDeps('vitest');
     this.deps.removeDependency('@types/jest');
     this.deps.removeDependency('jest');
     this.deps.removeDependency('ts-jest');
@@ -92,7 +92,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     // Add test scripts
     this.setScript('test', 'vitest run');
     this.setScript('test:watch', 'vitest watch');
-    this.setScript('test:coverage', 'vitest run --coverage');
 
     // Modify the test task to use Vitest instead of Jest
     this.tasks.tryFind('test')?.reset();
@@ -119,11 +118,6 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     testMatch: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_TEST_MATCH)},
-    coverage: {
-      provider: 'v8',
-      reporter: ['json', 'lcov', 'clover', 'cobertura', 'text'],
-      exclude: ['**/node_modules/**'],
-    },
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });

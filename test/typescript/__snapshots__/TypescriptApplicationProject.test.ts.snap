@@ -701,10 +701,6 @@ use-node-version=22.16.0
         "version": "^8",
       },
       {
-        "name": "@vitest/coverage-v8",
-        "type": "build",
-      },
-      {
         "name": "commit-and-tag-version",
         "type": "build",
         "version": "^12",
@@ -999,13 +995,13 @@ use-node-version=22.16.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "npx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,@vitest/coverage-v8,eslint-import-resolver-typescript,eslint-plugin-import,projen,ts-node,typescript,vitest",
+            "exec": "npx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "yarn install --check-files",
           },
           {
-            "exec": "yarn upgrade @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vitest/coverage-v8 commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint projen ts-node typescript vitest",
+            "exec": "yarn upgrade @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint projen ts-node typescript vitest",
           },
           {
             "exec": "npx projen",
@@ -1238,7 +1234,6 @@ use-node-version=22.16.0
       "@types/node": "*",
       "@typescript-eslint/eslint-plugin": "^8",
       "@typescript-eslint/parser": "^8",
-      "@vitest/coverage-v8": "*",
       "commit-and-tag-version": "^12",
       "constructs": "^10.0.0",
       "eslint": "^9",
@@ -1270,7 +1265,6 @@ use-node-version=22.16.0
       "projen": "npx projen",
       "release": "npx projen release",
       "test": "vitest run",
-      "test:coverage": "vitest run --coverage",
       "test:watch": "vitest watch",
       "unbump": "npx projen unbump",
       "upgrade": "npx projen upgrade",
@@ -1366,11 +1360,6 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     testMatch: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
-    coverage: {
-      provider: 'v8',
-      reporter: ['json', 'lcov', 'clover', 'cobertura', 'text'],
-      exclude: ['**/node_modules/**'],
-    },
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });
@@ -2088,10 +2077,6 @@ use-node-version=22.16.0
         "version": "^8",
       },
       {
-        "name": "@vitest/coverage-v8",
-        "type": "build",
-      },
-      {
         "name": "commit-and-tag-version",
         "type": "build",
         "version": "^12",
@@ -2386,13 +2371,13 @@ use-node-version=22.16.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,@vitest/coverage-v8,eslint-import-resolver-typescript,eslint-plugin-import,projen,ts-node,typescript,vitest",
+            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser @vitest/coverage-v8 commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint projen ts-node typescript vitest",
+            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint projen ts-node typescript vitest",
           },
           {
             "exec": "npx projen",
@@ -2625,7 +2610,6 @@ use-node-version=22.16.0
       "@types/node": "*",
       "@typescript-eslint/eslint-plugin": "^8",
       "@typescript-eslint/parser": "^8",
-      "@vitest/coverage-v8": "*",
       "commit-and-tag-version": "^12",
       "constructs": "^10.0.0",
       "eslint": "^9",
@@ -2658,7 +2642,6 @@ use-node-version=22.16.0
       "projen": "npx projen",
       "release": "npx projen release",
       "test": "vitest run",
-      "test:coverage": "vitest run --coverage",
       "test:watch": "vitest watch",
       "unbump": "npx projen unbump",
       "upgrade": "npx projen upgrade",
@@ -2754,11 +2737,6 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     testMatch: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
-    coverage: {
-      provider: 'v8',
-      reporter: ['json', 'lcov', 'clover', 'cobertura', 'text'],
-      exclude: ['**/node_modules/**'],
-    },
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });
