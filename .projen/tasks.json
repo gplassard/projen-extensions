@@ -42,6 +42,15 @@
       ],
       "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
     },
+    "check-vitest-config": {
+      "name": "check-vitest-config",
+      "description": "Check for TypeScript errors in the vitest.config.ts file",
+      "steps": [
+        {
+          "exec": "tsc --noEmit --project tsconfig.dev.json"
+        }
+      ]
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -157,7 +166,12 @@
     },
     "pre-compile": {
       "name": "pre-compile",
-      "description": "Prepare the project for compilation"
+      "description": "Prepare the project for compilation",
+      "steps": [
+        {
+          "spawn": "check-vitest-config"
+        }
+      ]
     },
     "publish:github": {
       "name": "publish:github",

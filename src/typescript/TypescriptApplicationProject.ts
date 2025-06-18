@@ -22,7 +22,7 @@ type CustomProps = {
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
-  static readonly DEFAULT_VITEST_CONFIG_TEST_MATCH: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
+  static readonly DEFAULT_VITEST_CONFIG_INCLUDE: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
 
   constructor(options: TypescriptApplicationProjectOptions) {
@@ -52,6 +52,14 @@ export class TypescriptApplicationProject extends TypeScriptProject {
           types: ['vitest/globals'],
           ...(options.tsconfigDev?.compilerOptions ?? {}),
         },
+        include: [
+          'src/**/*.ts',
+          'test/**/*.ts',
+          '.projenrc.ts',
+          'projenrc/**/*.ts',
+          'vitest.config.ts',
+          ...(options.tsconfigDev?.include ?? []),
+        ],
         ...(options.tsconfigDev ?? {}),
       },
       // Remove jestOptions as we're using Vitest now
@@ -106,6 +114,18 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       testWatchTask.description = 'Run vitest in watch mode';
     }
 
+    // Add a task to check for TypeScript errors in the vitest.config.ts file
+    this.addTask('check-vitest-config', {
+      description: 'Check for TypeScript errors in the vitest.config.ts file',
+      exec: 'tsc --noEmit --project tsconfig.dev.json',
+    });
+
+    // Add the check-vitest-config task to the pre-compile task
+    const checkVitestConfigTask = this.tasks.tryFind('check-vitest-config');
+    if (checkVitestConfigTask) {
+      this.tasks.tryFind('pre-compile')?.spawn(checkVitestConfigTask);
+    }
+
     // Remove Jest configuration
     this.tryFindObjectFile('package.json')?.addDeletionOverride('jest');
 
@@ -117,7 +137,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    testMatch: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_TEST_MATCH)},
+    include: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE)},
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });

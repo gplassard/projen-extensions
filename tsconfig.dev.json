@@ -33,7 +33,8 @@
     "src/**/*.ts",
     "test/**/*.ts",
     ".projenrc.ts",
-    "projenrc/**/*.ts"
+    "projenrc/**/*.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     "node_modules"

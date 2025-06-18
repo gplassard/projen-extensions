@@ -3,6 +3,7 @@
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
+    "check-vitest-config": "npx projen check-vitest-config",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",
