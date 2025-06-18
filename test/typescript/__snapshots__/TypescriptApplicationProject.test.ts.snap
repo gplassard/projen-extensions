@@ -810,6 +810,15 @@ use-node-version=22.16.0
           },
         ],
       },
+      "check-vitest-config": {
+        "description": "Check for TypeScript errors in the vitest.config.ts file",
+        "name": "check-vitest-config",
+        "steps": [
+          {
+            "exec": "tsc --noEmit --project tsconfig.dev.json",
+          },
+        ],
+      },
       "clobber": {
         "condition": "git diff --exit-code > /dev/null",
         "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -926,6 +935,11 @@ use-node-version=22.16.0
       "pre-compile": {
         "description": "Prepare the project for compilation",
         "name": "pre-compile",
+        "steps": [
+          {
+            "spawn": "check-vitest-config",
+          },
+        ],
       },
       "release": {
         "description": "Prepare a release from "main" branch",
@@ -1253,6 +1267,7 @@ use-node-version=22.16.0
     "scripts": {
       "build": "npx projen build",
       "bump": "npx projen bump",
+      "check-vitest-config": "npx projen check-vitest-config",
       "clobber": "npx projen clobber",
       "compile": "npx projen compile",
       "default": "npx projen default",
@@ -1317,6 +1332,7 @@ use-node-version=22.16.0
       "test/**/*.ts",
       ".projenrc.ts",
       "projenrc/**/*.ts",
+      "vitest.config.ts",
     ],
   },
   "tsconfig.json": {
@@ -1359,7 +1375,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    testMatch: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
+    include: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });
@@ -2186,6 +2202,15 @@ use-node-version=22.16.0
           },
         ],
       },
+      "check-vitest-config": {
+        "description": "Check for TypeScript errors in the vitest.config.ts file",
+        "name": "check-vitest-config",
+        "steps": [
+          {
+            "exec": "tsc --noEmit --project tsconfig.dev.json",
+          },
+        ],
+      },
       "clobber": {
         "condition": "git diff --exit-code > /dev/null",
         "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -2302,6 +2327,11 @@ use-node-version=22.16.0
       "pre-compile": {
         "description": "Prepare the project for compilation",
         "name": "pre-compile",
+        "steps": [
+          {
+            "spawn": "check-vitest-config",
+          },
+        ],
       },
       "release": {
         "description": "Prepare a release from "main" branch",
@@ -2630,6 +2660,7 @@ use-node-version=22.16.0
     "scripts": {
       "build": "npx projen build",
       "bump": "npx projen bump",
+      "check-vitest-config": "npx projen check-vitest-config",
       "clobber": "npx projen clobber",
       "compile": "npx projen compile",
       "default": "npx projen default",
@@ -2694,6 +2725,7 @@ use-node-version=22.16.0
       "test/**/*.ts",
       ".projenrc.ts",
       "projenrc/**/*.ts",
+      "vitest.config.ts",
     ],
   },
   "tsconfig.json": {
@@ -2736,7 +2768,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    testMatch: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
+    include: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
     setupFiles: ['./test/vitest.setup.ts'],
   },
 });
