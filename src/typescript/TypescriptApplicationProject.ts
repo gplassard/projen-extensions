@@ -94,6 +94,19 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.setScript('test:watch', 'vitest watch');
     this.setScript('test:coverage', 'vitest run --coverage');
 
+    // Modify the test task to use Vitest instead of Jest
+    this.tasks.tryFind('test')?.reset();
+    this.tasks.tryFind('test')?.exec('vitest run -u', { receiveArgs: true });
+
+    // Also update test:watch task
+    const testWatchTask = this.tasks.tryFind('test:watch');
+    if (testWatchTask) {
+      testWatchTask.reset();
+      testWatchTask.exec('vitest watch');
+      // Update the description to mention Vitest instead of Jest
+      testWatchTask.description = 'Run vitest in watch mode';
+    }
+
     // Remove Jest configuration
     this.tryFindObjectFile('package.json')?.addDeletionOverride('jest');
 
@@ -128,6 +141,8 @@ export default defineConfig({
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      // Use the default build command which now uses Vitest
+      JsonPatch.replace('/jobs/build/steps/4/run', 'npx projen build'),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(

@@ -222,20 +222,17 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --updateSnapshot",
+          "exec": "vitest run -u",
           "receiveArgs": true
-        },
-        {
-          "spawn": "eslint"
         }
       ]
     },
     "test:watch": {
       "name": "test:watch",
-      "description": "Run jest in watch mode",
+      "description": "Run vitest in watch mode",
       "steps": [
         {
-          "exec": "jest --watch"
+          "exec": "vitest watch"
         }
       ]
     },
