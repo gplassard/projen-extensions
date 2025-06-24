@@ -291,6 +291,8 @@ jobs:
           git add .
           git diff --staged --patch --exit-code > repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT
         working-directory: ./
+      - name: build-tests
+        run: pnpm run test:compile
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
         uses: actions/upload-artifact@v4.4.0
@@ -958,8 +960,16 @@ use-node-version=22.16.0
         "name": "test",
         "steps": [
           {
-            "exec": "vitest run -u --typecheck",
+            "exec": "vitest run -u",
             "receiveArgs": true,
+          },
+        ],
+      },
+      "test:compile": {
+        "name": "test:compile",
+        "steps": [
+          {
+            "exec": "tsc --noEmit --project tsconfig.dev.json",
           },
         ],
       },
@@ -1267,6 +1277,7 @@ use-node-version=22.16.0
       "projen": "npx projen",
       "release": "npx projen release",
       "test": "npx projen test",
+      "test:compile": "npx projen test:compile",
       "test:watch": "npx projen test:watch",
       "unbump": "npx projen unbump",
       "upgrade": "npx projen upgrade",
@@ -1652,6 +1663,8 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: npx projen build
+      - name: build-tests
+        run: pnpm run test:compile
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -2330,8 +2343,16 @@ use-node-version=22.16.0
         "name": "test",
         "steps": [
           {
-            "exec": "vitest run -u --typecheck",
+            "exec": "vitest run -u",
             "receiveArgs": true,
+          },
+        ],
+      },
+      "test:compile": {
+        "name": "test:compile",
+        "steps": [
+          {
+            "exec": "tsc --noEmit --project tsconfig.dev.json",
           },
         ],
       },
@@ -2640,6 +2661,7 @@ use-node-version=22.16.0
       "projen": "npx projen",
       "release": "npx projen release",
       "test": "npx projen test",
+      "test:compile": "npx projen test:compile",
       "test:watch": "npx projen test:watch",
       "unbump": "npx projen unbump",
       "upgrade": "npx projen upgrade",

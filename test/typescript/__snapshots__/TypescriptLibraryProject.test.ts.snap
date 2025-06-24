@@ -287,6 +287,8 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: npx projen build
+      - name: build-tests
+        run: pnpm run test:compile
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -1030,8 +1032,16 @@ use-node-version=22.16.0
         "name": "test",
         "steps": [
           {
-            "exec": "vitest run -u --typecheck",
+            "exec": "vitest run -u",
             "receiveArgs": true,
+          },
+        ],
+      },
+      "test:compile": {
+        "name": "test:compile",
+        "steps": [
+          {
+            "exec": "tsc --noEmit --project tsconfig.dev.json",
           },
         ],
       },
@@ -1343,6 +1353,7 @@ use-node-version=22.16.0
       "publish:npm": "npx projen publish:npm",
       "release": "npx projen release",
       "test": "npx projen test",
+      "test:compile": "npx projen test:compile",
       "test:watch": "npx projen test:watch",
       "unbump": "npx projen unbump",
       "upgrade": "npx projen upgrade",
