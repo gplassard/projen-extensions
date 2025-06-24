@@ -16,6 +16,7 @@
     "publish:npm": "npx projen publish:npm",
     "release": "npx projen release",
     "test": "npx projen test",
+    "test:compile": "npx projen test:compile",
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",

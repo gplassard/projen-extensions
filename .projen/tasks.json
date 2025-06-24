@@ -227,6 +227,14 @@
         }
       ]
     },
+    "test:compile": {
+      "name": "test:compile",
+      "steps": [
+        {
+          "exec": "tsc --noEmit --project tsconfig.dev.json"
+        }
+      ]
+    },
     "test:watch": {
       "name": "test:watch",
       "description": "Run vitest in watch mode",

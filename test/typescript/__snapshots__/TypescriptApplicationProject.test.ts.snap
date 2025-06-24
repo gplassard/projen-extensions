@@ -958,7 +958,7 @@ use-node-version=22.16.0
         "name": "test",
         "steps": [
           {
-            "exec": "vitest run -u",
+            "exec": "vitest run -u --typecheck",
             "receiveArgs": true,
           },
         ],
@@ -1305,9 +1305,6 @@ use-node-version=22.16.0
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
-      "types": [
-        "vitest/globals",
-      ],
     },
     "exclude": [
       "node_modules",
@@ -1315,9 +1312,9 @@ use-node-version=22.16.0
     "include": [
       "src/**/*.ts",
       "test/**/*.ts",
+      "vitest.config.ts",
       ".projenrc.ts",
       "projenrc/**/*.ts",
-      "vitest.config.ts",
     ],
   },
   "tsconfig.json": {
@@ -1360,7 +1357,6 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
     environment: 'node',
     include: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
   },
@@ -2334,7 +2330,7 @@ use-node-version=22.16.0
         "name": "test",
         "steps": [
           {
-            "exec": "vitest run -u",
+            "exec": "vitest run -u --typecheck",
             "receiveArgs": true,
           },
         ],
@@ -2682,9 +2678,6 @@ use-node-version=22.16.0
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
-      "types": [
-        "vitest/globals",
-      ],
     },
     "exclude": [
       "node_modules",
@@ -2692,9 +2685,9 @@ use-node-version=22.16.0
     "include": [
       "src/**/*.ts",
       "test/**/*.ts",
+      "vitest.config.ts",
       ".projenrc.ts",
       "projenrc/**/*.ts",
-      "vitest.config.ts",
     ],
   },
   "tsconfig.json": {
@@ -2737,7 +2730,6 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
     environment: 'node',
     include: ["**/__tests__/**/*.[jt]s?(x)","**/?(*.)+(spec|test).[jt]s?(x)"],
   },

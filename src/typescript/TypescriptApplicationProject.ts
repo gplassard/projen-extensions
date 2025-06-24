@@ -103,19 +103,22 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
     environment: 'node',
     include: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE)},
   },
 });
 `,
     });
+    this.addTask('test:compile', {
+      exec: 'tsc --noEmit --project tsconfig.dev.json',
+    })
 
     // TODO refactor
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+        JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
