@@ -1,4 +1,5 @@
 import { Testing } from 'projen';
+import { describe, it, expect } from 'vitest';
 import { RustProject } from '../../src';
 
 describe('RustProject with default settings', () => {
