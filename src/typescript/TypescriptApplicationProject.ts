@@ -46,22 +46,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         }),
         ...(options.githubOptions ?? {}),
       },
-      // Using Vitest instead of Jest
-      tsconfigDev: {
-        compilerOptions: {
-          types: ['vitest/globals'],
-          ...(options.tsconfigDev?.compilerOptions ?? {}),
-        },
-        include: [
-          'src/**/*.ts',
-          'test/**/*.ts',
-          '.projenrc.ts',
-          'projenrc/**/*.ts',
-          'vitest.config.ts',
-          ...(options.tsconfigDev?.include ?? []),
-        ],
-        ...(options.tsconfigDev ?? {}),
-      },
       jestOptions: undefined,
       depsUpgradeOptions: {
         target: 'latest',
@@ -96,6 +80,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.deps.removeDependency('ts-jest');
     this.deps.removeDependency('jest-junit');
     this.tryFindObjectFile('package.json')?.addDeletionOverride('jest');
+    this.tsconfigDev.addInclude('vitest.config.ts');
 
     // Modify the test task to use Vitest instead of Jest
     this.tasks.tryFind('test')?.reset();

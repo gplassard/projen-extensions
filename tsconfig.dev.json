@@ -24,17 +24,14 @@
     "strictPropertyInitialization": true,
     "stripInternal": true,
     "target": "ES2020",
-    "skipLibCheck": true,
-    "types": [
-      "vitest/globals"
-    ]
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
+    "vitest.config.ts",
     ".projenrc.ts",
-    "projenrc/**/*.ts",
-    "vitest.config.ts"
+    "projenrc/**/*.ts"
   ],
   "exclude": [
     "node_modules"
