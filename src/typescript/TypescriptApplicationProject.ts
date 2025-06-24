@@ -22,7 +22,7 @@ type CustomProps = {
 
 export class TypescriptApplicationProject extends TypeScriptProject {
   static readonly DEFAULT_UPGRADE_WORKFLOW_LABELS: string[] = ['dependencies'];
-  static readonly DEFAULT_VITEST_CONFIG_INCLUDE: string[] = ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'];
+  static readonly DEFAULT_VITEST_CONFIG_INCLUDE: string[] = ['**/?(*.)+(spec|test).ts?(x)'];
   static readonly DEFAULT_TS_COMPILER_CONFIG: TypeScriptCompilerOptions = { skipLibCheck: true, noUnusedLocals: false };
 
   constructor(options: TypescriptApplicationProjectOptions) {
@@ -104,21 +104,21 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     environment: 'node',
-    include: ${JSON.stringify(TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE)},
+    include: ['${TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE.join('\', \'')}'],
   },
 });
 `,
     });
     this.addTask('test:compile', {
       exec: 'tsc --noEmit --project tsconfig.dev.json',
-    })
+    });
 
     // TODO refactor
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
-        JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
