@@ -18,6 +18,11 @@ type CustomProps = {
    **/
   releaseRank?: number;
   nodeVersion?: string;
+  /**
+   * Allow vitest to pass when no tests are found
+   * @default false
+   */
+  vitestPassWithNoTests?: boolean;
 };
 
 export class TypescriptApplicationProject extends TypeScriptProject {
@@ -105,6 +110,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['${TypescriptApplicationProject.DEFAULT_VITEST_CONFIG_INCLUDE.join('\', \'')}'],
+    ${options.vitestPassWithNoTests ? 'passWithNoTests: true,' : ''}
   },
 });
 `,

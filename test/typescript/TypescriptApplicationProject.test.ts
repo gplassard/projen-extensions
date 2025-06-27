@@ -20,4 +20,14 @@ describe('TypescriptApplicationProject with default settings', () => {
     const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
+
+  it('can configure vitest to pass with no tests', () => {
+    const project = new TypescriptApplicationProject({
+      name: 'test-project',
+      vitestPassWithNoTests: true,
+    });
+    const output = Testing.synth(project);
+    expect(output).toMatchSnapshot();
+    expect(output['vitest.config.ts']).toContain('passWithNoTests: true');
+  });
 });
