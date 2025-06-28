@@ -86,7 +86,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     new CustomGitignore(this, options.customGitignore);
 
     if (options.datadog?.softwareCompositionAnalysis ?? true) {
-      new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog?.softwareCompositionAnalysisOptions ?? {});
+      new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog?.softwareCompositionAnalysisOptions ?? {
+        ddService: options.name,
+      });
     }
     if (options.datadog?.staticAnalysis ?? true) {
       new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});

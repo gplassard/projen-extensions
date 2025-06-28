@@ -6,6 +6,7 @@ import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface DatadogSoftwareCompositionAnalysisActionProps {
   ddSite?: string;
+  ddService: string;
 }
 
 export class DatadogSoftwareCompositionAnalysisAction extends Component {
@@ -33,6 +34,7 @@ export class DatadogSoftwareCompositionAnalysisAction extends Component {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',
             dd_site: props.ddSite ?? 'datadoghq.eu',
+            dd_service: props.ddService,
           },
         },
       ],
