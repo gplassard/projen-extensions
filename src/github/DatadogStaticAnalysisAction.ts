@@ -5,11 +5,11 @@ import { NodeJSDependenciesUpgradeActionProps } from './NodeJSDependenciesUpgrad
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface DatadogStaticAnalysisActionProps {
-
+  ddSite?: string;
 }
 
 export class DatadogStaticAnalysisAction extends Component {
-  constructor(scope: GitHub, _props: DatadogStaticAnalysisActionProps) {
+  constructor(scope: GitHub, props: DatadogStaticAnalysisActionProps) {
     super(scope);
 
     const workflow = new GithubWorkflow(scope, 'Datadog Static Analysis');
@@ -32,7 +32,7 @@ export class DatadogStaticAnalysisAction extends Component {
           with: {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',
-            dd_site: 'datadoghq.com',
+            dd_site: props.ddSite ?? 'datadoghq.eu',
             cpu_count: 2,
             enable_performance_statistics: true,
           },

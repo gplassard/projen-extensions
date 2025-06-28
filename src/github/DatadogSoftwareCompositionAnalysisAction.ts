@@ -5,11 +5,11 @@ import { NodeJSDependenciesUpgradeActionProps } from './NodeJSDependenciesUpgrad
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface DatadogSoftwareCompositionAnalysisActionProps {
-
+  ddSite?: string;
 }
 
 export class DatadogSoftwareCompositionAnalysisAction extends Component {
-  constructor(scope: GitHub, _props: DatadogSoftwareCompositionAnalysisActionProps) {
+  constructor(scope: GitHub, props: DatadogSoftwareCompositionAnalysisActionProps) {
     super(scope);
 
     const workflow = new GithubWorkflow(scope, 'Datadog Software Composition Analysis');
@@ -32,7 +32,7 @@ export class DatadogSoftwareCompositionAnalysisAction extends Component {
           with: {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',
-            dd_site: 'datadoghq.com',
+            dd_site: props.ddSite ?? 'datadoghq.eu',
           },
         },
       ],
