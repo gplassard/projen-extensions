@@ -51,5 +51,7 @@ junit.xml
 *.iml
 .vscode
 .DS_Store
+!/.github/workflows/datadog-software-composition-analysis.yml
+!/.github/workflows/datadog-static-analysis.yml
 !/.github/workflows/upgrade-node-and-pnpm.yml
 !/.projenrc.ts

@@ -5,6 +5,11 @@ import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSched
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, WorkflowActionsX } from '../github';
+import {
+  DatadogSoftwareCompositionAnalysisAction,
+  DatadogSoftwareCompositionAnalysisActionProps,
+} from '../github/DatadogSoftwareCompositionAnalysisAction';
+import { DatadogStaticAnalysisAction, DatadogStaticAnalysisActionProps } from '../github/DatadogStaticAnalysisAction';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
@@ -18,6 +23,13 @@ type CustomProps = {
    **/
   releaseRank?: number;
   nodeVersion?: string;
+
+  datadog?: {
+    softwareCompositionAnalysis?: boolean;
+    softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
+    staticAnalysis?: boolean;
+    staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+  };
 };
 
 export class TypescriptApplicationProject extends TypeScriptProject {
@@ -72,6 +84,15 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.npmrc.addConfig('use-node-version', nodeVersion(options));
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
+
+    if (options.datadog?.softwareCompositionAnalysis ?? true) {
+      new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog?.softwareCompositionAnalysisOptions ?? {
+        ddService: options.name,
+      });
+    }
+    if (options.datadog?.staticAnalysis ?? true) {
+      new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});
+    }
 
     // Add Vitest configuration and remove Jest
     this.addDevDeps('vitest');
