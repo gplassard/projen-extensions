@@ -12,7 +12,7 @@ export class DatadogStaticAnalysisAction extends Component {
   constructor(scope: GitHub, props: DatadogStaticAnalysisActionProps) {
     super(scope);
 
-    const workflow = new GithubWorkflow(scope, 'Datadog Static Analysis');
+    const workflow = new GithubWorkflow(scope, 'Datadog-Static-Analysis');
     workflow.on({
       pullRequest: {
         branches: ['main'],

@@ -12,7 +12,7 @@ export class DatadogSoftwareCompositionAnalysisAction extends Component {
   constructor(scope: GitHub, props: DatadogSoftwareCompositionAnalysisActionProps) {
     super(scope);
 
-    const workflow = new GithubWorkflow(scope, 'Datadog Software Composition Analysis');
+    const workflow = new GithubWorkflow(scope, 'Datadog-Software-Composition-Analysis');
     workflow.on({
       pullRequest: {
         branches: ['main'],
