@@ -24,7 +24,7 @@ type CustomProps = {
   releaseRank?: number;
   nodeVersion?: string;
 
-  datadog: {
+  datadog?: {
     softwareCompositionAnalysis?: boolean;
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     staticAnalysis?: boolean;
@@ -86,10 +86,10 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     new CustomGitignore(this, options.customGitignore);
 
     if (options.datadog?.softwareCompositionAnalysis ?? true) {
-      new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog.softwareCompositionAnalysisOptions ?? {});
+      new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog?.softwareCompositionAnalysisOptions ?? {});
     }
     if (options.datadog?.staticAnalysis ?? true) {
-      new DatadogStaticAnalysisAction(this.github!, options.datadog.staticAnalysisOptions ?? {});
+      new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});
     }
 
     // Add Vitest configuration and remove Jest
