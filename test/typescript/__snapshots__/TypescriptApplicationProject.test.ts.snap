@@ -363,7 +363,8 @@ on:
 jobs:
   software-composition-analysis:
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -390,7 +391,8 @@ on:
 jobs:
   static-analysis:
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -1805,7 +1807,8 @@ on:
 jobs:
   software-composition-analysis:
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -1832,7 +1835,8 @@ on:
 jobs:
   static-analysis:
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4

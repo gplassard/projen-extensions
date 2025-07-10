@@ -24,7 +24,9 @@ export class DatadogSoftwareCompositionAnalysisAction extends Component {
     });
     workflow.addJob('software-composition-analysis', {
       runsOn: ['ubuntu-latest'],
-      permissions: {},
+      permissions: {
+        contents: JobPermission.READ,
+      },
       steps: [
         WorkflowActionsX.checkout({}),
         {
