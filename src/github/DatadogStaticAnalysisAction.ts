@@ -23,7 +23,9 @@ export class DatadogStaticAnalysisAction extends Component {
     });
     workflow.addJob('static-analysis', {
       runsOn: ['ubuntu-latest'],
-      permissions: {},
+      permissions: {
+        contents: JobPermission.READ,
+      },
       steps: [
         WorkflowActionsX.checkout({}),
         {
