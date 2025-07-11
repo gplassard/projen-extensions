@@ -26,3 +26,4 @@ jobs:
           dd_site: datadoghq.eu
           cpu_count: 2
           enable_performance_statistics: true
+permissions: {}
