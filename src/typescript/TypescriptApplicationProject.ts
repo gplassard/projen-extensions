@@ -94,6 +94,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});
     }
 
+    this.addDevDeps('eslint-plugin-unused-imports');
+    this.eslint?.addRules({'unused-imports/no-unused-imports': 'error'});
+    this.eslint?.addPlugins('eslint-plugin-unused-imports');
     // Add Vitest configuration and remove Jest
     this.addDevDeps('vitest');
     this.deps.removeDependency('@types/jest');
