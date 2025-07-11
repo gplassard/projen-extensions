@@ -1,4 +1,4 @@
-import { Component, Project, YamlFile } from 'projen';
+import { Component } from 'projen';
 import { GithubCredentials, GithubWorkflow, GitHub, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { WorkflowActionsX } from './WorkflowActionsX';

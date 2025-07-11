@@ -40,6 +40,7 @@ exports[`TypescriptLibraryProject with default settings > synthesizes 1`] = `
       "@typescript-eslint",
       "import",
       "@stylistic",
+      "eslint-plugin-unused-imports",
     ],
     "root": true,
     "rules": {
@@ -209,6 +210,7 @@ exports[`TypescriptLibraryProject with default settings > synthesizes 1`] = `
       "no-shadow": [
         "off",
       ],
+      "unused-imports/no-unused-imports": "error",
     },
     "settings": {
       "import/parsers": {
@@ -291,6 +293,8 @@ jobs:
         run: npx projen build
       - name: build-tests
         run: pnpm run test:compile
+      - name: lint
+        run: npx projen eslint
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -826,6 +830,10 @@ use-node-version=22.17.0
         "type": "build",
       },
       {
+        "name": "eslint-plugin-unused-imports",
+        "type": "build",
+      },
+      {
         "name": "eslint",
         "type": "build",
         "version": "^9",
@@ -1147,13 +1155,13 @@ use-node-version=22.17.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,projen,ts-node,typescript,vitest",
+            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint projen ts-node typescript vitest",
+            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
           },
           {
             "exec": "npx projen",
@@ -1391,6 +1399,7 @@ use-node-version=22.17.0
       "eslint": "^9",
       "eslint-import-resolver-typescript": "*",
       "eslint-plugin-import": "*",
+      "eslint-plugin-unused-imports": "*",
       "projen": "*",
       "ts-node": "*",
       "typescript": "*",

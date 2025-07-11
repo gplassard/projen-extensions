@@ -1,4 +1,4 @@
-import { JobStep, Job } from 'projen/lib/github/workflows-model';
+import { JobStep } from 'projen/lib/github/workflows-model';
 import { nodeVersion, pnpmVersion } from './utils';
 
 export class WorkflowActionsX {
