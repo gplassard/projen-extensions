@@ -1,4 +1,4 @@
-import { Component } from 'projen';
+import { Component, JsonPatch } from 'projen';
 import { GitHub, GithubCredentials, GithubWorkflow, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { NodeJSDependenciesUpgradeActionProps } from './NodeJSDependenciesUpgradeAction';
@@ -41,5 +41,8 @@ export class DatadogStaticAnalysisAction extends Component {
         },
       ],
     });
+    workflow?.file?.patch(
+      JsonPatch.add('/permissions', {}),
+    );
   }
 }

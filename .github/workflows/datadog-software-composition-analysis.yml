@@ -25,3 +25,4 @@ jobs:
           dd_api_key: ${{ secrets.DD_API_KEY }}
           dd_site: datadoghq.eu
           dd_service: projen-extensions
+permissions: {}
