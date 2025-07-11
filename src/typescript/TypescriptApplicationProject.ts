@@ -95,7 +95,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
 
     this.addDevDeps('eslint-plugin-unused-imports');
-    this.eslint?.addRules({'unused-imports/no-unused-imports': 'error'});
+    this.eslint?.addRules({ 'unused-imports/no-unused-imports': 'error' });
     this.eslint?.addPlugins('eslint-plugin-unused-imports');
     // Add Vitest configuration and remove Jest
     this.addDevDeps('vitest');
@@ -143,6 +143,7 @@ export default defineConfig({
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
       JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add('/jobs/build/steps/6', { name: 'lint', run: 'npx projen eslint' }),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
