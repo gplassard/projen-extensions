@@ -154,6 +154,8 @@
         "devDependencies": [
           "**/test/**",
           "**/build-tools/**",
+          "**/*.test.ts",
+          "**/*.test.tsx",
           ".projenrc.ts",
           "projenrc/**/*.ts"
         ],

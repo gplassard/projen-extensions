@@ -178,6 +178,8 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
           "devDependencies": [
             "**/test/**",
             "**/build-tools/**",
+            "**/*.test.ts",
+            "**/*.test.tsx",
             ".projenrc.ts",
             "projenrc/**/*.ts",
           ],
@@ -1631,6 +1633,8 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
           "devDependencies": [
             "**/test/**",
             "**/build-tools/**",
+            "**/*.test.ts",
+            "**/*.test.tsx",
             ".projenrc.ts",
             "projenrc/**/*.ts",
           ],
