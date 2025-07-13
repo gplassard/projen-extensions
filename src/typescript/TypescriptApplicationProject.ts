@@ -97,6 +97,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.addDevDeps('eslint-plugin-unused-imports');
     this.eslint?.addRules({ 'unused-imports/no-unused-imports': 'error' });
     this.eslint?.addPlugins('eslint-plugin-unused-imports');
+    this.eslint?.allowDevDeps('**/*.test.ts');
+    this.eslint?.allowDevDeps('**/*.test.tsx');
     // Add Vitest configuration and remove Jest
     this.addDevDeps('vitest');
     this.deps.removeDependency('@types/jest');

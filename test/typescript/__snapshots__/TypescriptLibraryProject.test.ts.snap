@@ -178,6 +178,8 @@ exports[`TypescriptLibraryProject with default settings > synthesizes 1`] = `
           "devDependencies": [
             "**/test/**",
             "**/build-tools/**",
+            "**/*.test.ts",
+            "**/*.test.tsx",
             ".projenrc.ts",
             "projenrc/**/*.ts",
           ],
