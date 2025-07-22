@@ -1,11 +1,1 @@
-{
-  "node20": {
-    "version": "v20.19.4"
-  },
-  "node22": {
-    "version": "v22.17.1"
-  },
-  "node24": {
-    "version": "v24.4.0"
-  }
-}
+{"node20":{"version":"v20.19.4"},"node22":{"version":"v22.17.1"},"node24":{"version":"v24.4.1"}}
