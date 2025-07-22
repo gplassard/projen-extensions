@@ -1,8 +1,16 @@
 import { PullRequestLintOptions } from 'projen/lib/github';
-import { version as nodeJsVersion } from './nodejs.json';
+import * as nodeJsVersions from './nodejs.json';
 import { version as pnpmDefaultVersion } from './pnpm.json';
 
-const DEFAULT_NODE_VERSION: string = nodeJsVersion.replace('v', '');
+
+export const NODEJS_VERSIONS = {
+  NODEJS_20_X: nodeJsVersions.node20.version.replace('v', ''),
+  NODEJS_22_X: nodeJsVersions.node22.version.replace('v', ''),
+  NODEJS_24_X: nodeJsVersions.node24.version.replace('v', ''),
+};
+
+const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_22_X; // LTS
+
 const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersion.replace('v', '');
 
 export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
