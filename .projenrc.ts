@@ -33,8 +33,8 @@ upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
   steps: [
     WorkflowActionsX.checkout({ ref: 'main' }),
     {
-      name: 'Get latest NodeJS LTS',
-      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.name | contains("LTS"))) | map({version: .tag_name})[0]\' > src/github/nodejs.json',
+      name: 'Get latest NodeJS versions',
+      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'{"node20": (map(select(.tag_name | startswith("v20."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node22": (map(select(.tag_name | startswith("v22."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node24": (map(select(.tag_name | startswith("v24."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}\' > src/github/nodejs.json',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
@@ -63,7 +63,7 @@ upgradeNodeAndPnpmWorkflow.addJob('pr',
     pullRequestTitle: 'chore(deps): upgrade NodeJS and PNPM',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS and PNPM to their latest LTS version.',
+      'Upgrades NodeJS (latest versions for Node.js 20, 22, and 24) and PNPM to their latest versions.',
     ].join('\n\n'),
   }),
 );
