@@ -1366,7 +1366,7 @@ use-node-version=22.17.1
     "version": "0.0.0",
     "volta": {
       "node": "22.17.1",
-      "pnpm": "10.12.4",
+      "pnpm": "10.13.1",
     },
   },
   "tsconfig.dev.json": {
@@ -1736,7 +1736,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 10.12.4
+          version: 10.13.1
       - uses: actions/setup-node@v4
         with:
           node-version: 22.17.1
@@ -1944,7 +1944,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 10.12.4
+          version: 10.13.1
       - uses: actions/setup-node@v4
         with:
           node-version: 22.17.1
@@ -2027,7 +2027,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 10.12.4
+          version: 10.13.1
       - uses: actions/setup-node@v4
         with:
           node-version: 22.17.1
@@ -2829,7 +2829,7 @@ use-node-version=22.17.1
     "version": "0.0.0",
     "volta": {
       "node": "22.17.1",
-      "pnpm": "10.12.4",
+      "pnpm": "10.13.1",
     },
   },
   "tsconfig.dev.json": {
