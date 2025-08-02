@@ -293,12 +293,10 @@ jobs:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: npx projen build
-      - name: lint
-        run: npx projen eslint
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
-        run: npx run test:ci
+        run: npx projen eslint
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -826,10 +824,6 @@ use-node-version=22.18.0
         "version": "^10.0.0",
       },
       {
-        "name": "dd-trace",
-        "type": "build",
-      },
-      {
         "name": "eslint-import-resolver-typescript",
         "type": "build",
       },
@@ -1121,14 +1115,6 @@ use-node-version=22.18.0
           },
         ],
       },
-      "test:ci": {
-        "name": "test:ci",
-        "steps": [
-          {
-            "exec": "NODE_OPTIONS="--import dd-trace/register.js -r dd-trace/ci/init \${NODE_OPTIONS:-}" vitest run -u",
-          },
-        ],
-      },
       "test:compile": {
         "name": "test:compile",
         "steps": [
@@ -1171,13 +1157,13 @@ use-node-version=22.18.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,dd-trace,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs dd-trace eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
+            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
           },
           {
             "exec": "npx projen",
@@ -1412,7 +1398,6 @@ use-node-version=22.18.0
       "@typescript-eslint/parser": "^8",
       "commit-and-tag-version": "^12",
       "constructs": "^10.0.0",
-      "dd-trace": "*",
       "eslint": "^9",
       "eslint-import-resolver-typescript": "*",
       "eslint-plugin-import": "*",
@@ -1447,7 +1432,6 @@ use-node-version=22.18.0
       "publish:npm": "npx projen publish:npm",
       "release": "npx projen release",
       "test": "npx projen test",
-      "test:ci": "npx projen test:ci",
       "test:compile": "npx projen test:compile",
       "test:watch": "npx projen test:watch",
       "unbump": "npx projen unbump",

@@ -30,10 +30,6 @@
       "type": "build"
     },
     {
-      "name": "dd-trace",
-      "type": "build"
-    },
-    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
