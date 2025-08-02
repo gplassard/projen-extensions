@@ -159,13 +159,15 @@ export default defineConfig({
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
       JsonPatch.add('/jobs/build/steps/5', { name: 'lint', run: 'npx projen eslint' }),
       JsonPatch.add('/jobs/build/steps/6', { name: 'build-tests', run: 'pnpm run test:compile' }),
-      JsonPatch.add('/jobs/build/steps/7', { name: 'lint', run: 'npx run test:ci' }),
+      JsonPatch.add('/jobs/build/steps/7', { name: 'test', run: 'pnpm run test:ci' }),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.add('/jobs/release/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/release/steps/3', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/release/steps/4/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      JsonPatch.add('/jobs/release/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add('/jobs/release/steps/6', { name: 'test', run: 'pnpm run test:ci' }),
       JsonPatch.add('/jobs/release_github/steps/0/with/node-version', nodeVersion(options)),
     );
 

@@ -39,8 +39,8 @@ jobs:
         run: npx projen eslint
       - name: build-tests
         run: pnpm run test:compile
-      - name: lint
-        run: npx run test:ci
+      - name: test
+        run: pnpm run test:ci
       - name: Find mutations
         id: self_mutation
         run: |-
