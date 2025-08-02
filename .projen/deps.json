@@ -30,7 +30,7 @@
       "type": "build"
     },
     {
-      "name": "cross-env",
+      "name": "dd-trace",
       "type": "build"
     },
     {
