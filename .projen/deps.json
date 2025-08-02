@@ -30,6 +30,10 @@
       "type": "build"
     },
     {
+      "name": "cross-env",
+      "type": "build"
+    },
+    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
