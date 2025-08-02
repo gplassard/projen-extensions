@@ -29,6 +29,7 @@ type CustomProps = {
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     staticAnalysis?: boolean;
     staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+    testOptimization?: boolean;
   };
 };
 
@@ -140,19 +141,54 @@ export default defineConfig({
     });
 
     // TODO refactor
-    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
+    const enableDatadogTestOptimization = options.datadog?.testOptimization ?? true;
+    const stepOffset = enableDatadogTestOptimization ? 1 : 0;
+
+    const buildPatches = [
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
-      JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
-      JsonPatch.add('/jobs/build/steps/6', { name: 'lint', run: 'npx projen eslint' }),
+      ...(enableDatadogTestOptimization
+        ? [
+          // Datadog Test Optimization configuration before test/build step
+          JsonPatch.add('/jobs/build/steps/4', {
+            name: 'Configure Datadog Test Optimization',
+            uses: 'datadog/test-visibility-github-action@v2',
+            with: { languages: 'js', api_key: '${{secrets.DD_API_KEY}}', site: 'datadoghq.eu' },
+          }),
+          // Ensure NODE_OPTIONS are set for the build step which triggers tests
+          JsonPatch.add('/jobs/build/steps/5/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
+        ]
+        : []),
+      JsonPatch.add(`/jobs/build/steps/${5 + stepOffset}`, { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add(`/jobs/build/steps/${6 + stepOffset}`, { name: 'lint', run: 'npx projen eslint' }),
+    ];
+
+    this.tryFindObjectFile('.github/workflows/build.yml')?.patch(
+      ...buildPatches,
     );
 
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+    const releasePatches = [
       JsonPatch.add('/jobs/release/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/release/steps/3', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/release/steps/4/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      ...(enableDatadogTestOptimization
+        ? [
+          // Datadog Test Optimization configuration before release (which triggers tests/build)
+          JsonPatch.add('/jobs/release/steps/5', {
+            name: 'Configure Datadog Test Optimization',
+            uses: 'datadog/test-visibility-github-action@v2',
+            with: { languages: 'js', api_key: '${{secrets.DD_API_KEY}}', site: 'datadoghq.eu' },
+          }),
+          // Ensure NODE_OPTIONS are set for the release step
+          JsonPatch.add('/jobs/release/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
+        ]
+        : []),
       JsonPatch.add('/jobs/release_github/steps/0/with/node-version', nodeVersion(options)),
+    ];
+
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      ...releasePatches,
     );
 
     this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(
