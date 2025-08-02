@@ -302,8 +302,8 @@ jobs:
         run: npx projen eslint
       - name: build-tests
         run: pnpm run test:compile
-      - name: lint
-        run: npx run test:ci
+      - name: test
+        run: pnpm run test:ci
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
         uses: actions/upload-artifact@v4.4.0
@@ -499,6 +499,10 @@ jobs:
         run: npx projen release
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: build-tests
+        run: pnpm run test:compile
+      - name: test
+        run: pnpm run test:ci
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -1768,8 +1772,8 @@ jobs:
         run: npx projen eslint
       - name: build-tests
         run: pnpm run test:compile
-      - name: lint
-        run: npx run test:ci
+      - name: test
+        run: pnpm run test:ci
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -1972,6 +1976,10 @@ jobs:
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: build-tests
+        run: pnpm run test:compile
+      - name: test
+        run: pnpm run test:ci
       - name: release
         run: npx projen release
       - name: Check if version has already been tagged
