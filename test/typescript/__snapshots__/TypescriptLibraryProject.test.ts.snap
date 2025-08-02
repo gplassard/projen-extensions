@@ -291,8 +291,16 @@ jobs:
         run: pnpm i --no-frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v2
+        with:
+          languages: js
+          api_key: \${{secrets.DD_API_KEY}}
+          site: datadoghq.eu
       - name: build
         run: npx projen build
+        env:
+          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -499,8 +507,16 @@ jobs:
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v2
+        with:
+          languages: js
+          api_key: \${{secrets.DD_API_KEY}}
+          site: datadoghq.eu
       - name: release
         run: npx projen release
+        env:
+          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
