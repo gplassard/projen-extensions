@@ -125,6 +125,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     const enableDdTestInstrumentation = options.datadog?.testInstrumentation ?? true;
     if (enableDdTestInstrumentation) {
       this.addDevDeps('cross-env');
+      this.addDevDeps('dd-trace');
       this.addTask('test:ci', {
         exec: 'cross-env NODE_OPTIONS="--import dd-trace/register.js -r dd-trace/ci/init" vitest run -u',
       });
