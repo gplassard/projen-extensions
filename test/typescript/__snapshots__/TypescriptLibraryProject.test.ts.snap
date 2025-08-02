@@ -826,7 +826,7 @@ use-node-version=22.18.0
         "version": "^10.0.0",
       },
       {
-        "name": "cross-env",
+        "name": "dd-trace",
         "type": "build",
       },
       {
@@ -1125,7 +1125,7 @@ use-node-version=22.18.0
         "name": "test:ci",
         "steps": [
           {
-            "exec": "cross-env NODE_OPTIONS="--import dd-trace/register.js -r dd-trace/ci/init" vitest run -u",
+            "exec": "NODE_OPTIONS="--import dd-trace/register.js -r dd-trace/ci/init \${NODE_OPTIONS:-}" vitest run -u",
           },
         ],
       },
@@ -1171,13 +1171,13 @@ use-node-version=22.18.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,cross-env,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@types/node,dd-trace,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs cross-env eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
+            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs dd-trace eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
           },
           {
             "exec": "npx projen",
@@ -1412,7 +1412,7 @@ use-node-version=22.18.0
       "@typescript-eslint/parser": "^8",
       "commit-and-tag-version": "^12",
       "constructs": "^10.0.0",
-      "cross-env": "*",
+      "dd-trace": "*",
       "eslint": "^9",
       "eslint-import-resolver-typescript": "*",
       "eslint-plugin-import": "*",
