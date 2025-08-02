@@ -29,6 +29,7 @@ type CustomProps = {
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     staticAnalysis?: boolean;
     staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+    testInstrumentation?: boolean;
   };
 };
 
@@ -121,6 +122,18 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       testWatchTask.description = 'Run vitest in watch mode';
     }
 
+    const enableDdTestInstrumentation = options.datadog?.testInstrumentation ?? true;
+    if (enableDdTestInstrumentation) {
+      this.addDevDeps('dd-trace');
+      this.addTask('test:ci', {
+        exec: 'NODE_OPTIONS="--import dd-trace/register.js -r dd-trace/ci/init ${NODE_OPTIONS:-}" vitest run -u',
+      });
+    } else {
+      this.addTask('test:ci', {
+        exec: 'vitest run -u',
+      });
+    }
+
     // Create a simple vitest.config.ts file
     new SampleFile(this, 'vitest.config.ts', {
       contents: `
@@ -144,8 +157,9 @@ export default defineConfig({
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
-      JsonPatch.add('/jobs/build/steps/5', { name: 'build-tests', run: 'pnpm run test:compile' }),
-      JsonPatch.add('/jobs/build/steps/6', { name: 'lint', run: 'npx projen eslint' }),
+      JsonPatch.add('/jobs/build/steps/5', { name: 'lint', run: 'npx projen eslint' }),
+      JsonPatch.add('/jobs/build/steps/6', { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add('/jobs/build/steps/7', { name: 'lint', run: 'npx run test:ci' }),
     );
 
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(

@@ -35,10 +35,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: npx projen build
+      - name: lint
+        run: npx projen eslint
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
-        run: npx projen eslint
+        run: npx run test:ci
       - name: Find mutations
         id: self_mutation
         run: |-
