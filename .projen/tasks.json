@@ -227,14 +227,6 @@
         }
       ]
     },
-    "test:ci": {
-      "name": "test:ci",
-      "steps": [
-        {
-          "exec": "NODE_OPTIONS=\"--import dd-trace/register.js -r dd-trace/ci/init ${NODE_OPTIONS:-}\" vitest run -u"
-        }
-      ]
-    },
     "test:compile": {
       "name": "test:compile",
       "steps": [
@@ -277,13 +269,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/node,dd-trace,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest,constructs"
+          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest,constructs"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs dd-trace eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest"
+          "exec": "pnpm update @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest"
         },
         {
           "exec": "npx projen"
