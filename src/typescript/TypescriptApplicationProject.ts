@@ -140,8 +140,10 @@ export default defineConfig({
       exec: 'tsc --noEmit --project tsconfig.dev.json',
     });
 
-    // TODO refactor
     const enableDatadogTestOptimization = options.datadog?.testOptimization ?? true;
+    if (enableDatadogTestOptimization) {
+      this.addGitIgnore('install_test_visibility.sh');
+    }
     const stepOffset = enableDatadogTestOptimization ? 1 : 0;
 
     const buildPatches = [
