@@ -1,8 +1,8 @@
 import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
 import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
+import { RustBuildReleaseArtifacts, RustBuildReleaseArtifactsProps } from './RustBuildReleaseArtifacts';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
-import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import {
   DEFAULT_PULL_REQUEST_LINT_OPTIONS,
@@ -19,7 +19,7 @@ export interface RustProjectOptions extends ProjectOptions {
   projenSynthAction?: boolean;
   projenSynthActionOptions?: ProjenSynthActionProps;
   rustBuildAction?: RustBuildActionProps;
-  rustReleaseActions?: RustReleaseActionsProps;
+  rustBuildReleaseArtifactsAction?: RustBuildReleaseArtifactsProps;
   rustLintActions?: RustLintActionProps;
 }
 
@@ -42,7 +42,7 @@ export class RustProject extends Project {
     this.addGitIgnore('target');
 
     new RustBuildAction(this, options.rustBuildAction);
-    new RustReleaseActions(this, options.rustReleaseActions);
+    new RustBuildReleaseArtifacts(this, options.rustBuildReleaseArtifactsAction);
     new RustLintAction(this, options.rustLintActions);
     const github = new GitHub(this, {
       mergify: false,

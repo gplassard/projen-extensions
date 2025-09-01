@@ -2,12 +2,12 @@ import { Component, Project, YamlFile } from 'projen';
 import { CARGO_TEST, cargoBuild, cargoCaches } from './utils';
 import { WorkflowActionsX } from '../github';
 
-export interface RustReleaseActionsProps {
+export interface RustBuildReleaseArtifactsProps {
 
 }
-export class RustReleaseActions extends Component {
+export class RustBuildReleaseArtifacts extends Component {
 
-  constructor(project: Project, _props?: RustReleaseActionsProps) {
+  constructor(project: Project, _props?: RustBuildReleaseArtifactsProps) {
     super(project);
 
     const buildMatrix = [
@@ -31,12 +31,12 @@ export class RustReleaseActions extends Component {
       },
     ];
 
-    new YamlFile(project, '.github/workflows/rust-release.yml', {
+    new YamlFile(project, '.github/workflows/rust-build-release-artifacts.yml', {
       obj: {
-        name: 'release',
+        name: 'rust-build-release-artifacts',
         on: {
-          push: {
-            tags: ['v*'],
+          release: {
+            types: ['published'],
           },
         },
         env: {
@@ -85,19 +85,26 @@ export class RustReleaseActions extends Component {
                 uses: 'actions/download-artifact@v4',
               },
               {
-                name: 'Create release',
-                id: 'create_release',
-                uses: 'actions/create-release@v1',
+                name: 'Look up existing release upload URL',
+                id: 'get_release',
+                shell: 'bash',
                 env: {
                   GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
                 },
-                with: {
-                  tag_name: '${{ github.ref }}',
-                  release_name: 'Release ${{ github.ref }}',
-                  body: 'Release ${{ github.ref }}',
-                  draft: false,
-                  prerelease: false,
-                },
+                run: [
+                  'api_url="https://api.github.com/repos/${{ github.repository }}"',
+                  'tag="${{ github.event.release.tag_name }}"',
+                  '# Find release by tag',
+                  'resp=$(curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "$api_url/releases/tags/$tag")',
+                  'upload_url=$(echo "$resp" | jq -r \'\.upload_url\')',
+                  'if [ -z "$upload_url" ] || [ "$upload_url" = "null" ]; then',
+                  '  echo "Could not find existing release for tag $tag. Ensure release-please created it." >&2',
+                  '  exit 1',
+                  'fi',
+                  '# Trim the templated part {?name,label}',
+                  'upload_url=${upload_url%%\{*}',
+                  'echo "upload_url=$upload_url" >> $GITHUB_OUTPUT',
+                ].join('\n'),
               },
               ...buildMatrix.map(matrix => ({
                 name: `Upload release assets (${matrix.target})`,
@@ -107,7 +114,7 @@ export class RustReleaseActions extends Component {
                   GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
                 },
                 with: {
-                  upload_url: '${{ steps.create_release.outputs.upload_url }}',
+                  upload_url: '${{ steps.get_release.outputs.upload_url }}',
                   asset_path: `${matrix.target}-binaries/${project.name}${matrix.suffix}`,
                   asset_name: `${project.name}-${matrix.target}${matrix.suffix}`,
                   asset_content_type: 'application/octet-stream',
