@@ -80,6 +80,7 @@ export class RustBuildReleaseArtifacts extends Component {
               contents: 'write',
             },
             'steps': [
+              WorkflowActionsX.checkout({}),
               {
                 name: 'Download Artifacts',
                 uses: 'actions/download-artifact@v4',
