@@ -150,20 +150,21 @@ export default defineConfig({
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/build/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
+      JsonPatch.add('/jobs/build/steps/4', { name: 'run projen', run: 'pnpm run projen' }),
       ...(enableDatadogTestOptimization
         ? [
           // Datadog Test Optimization configuration before test/build step
-          JsonPatch.add('/jobs/build/steps/4', {
+          JsonPatch.add('/jobs/build/steps/5', {
             name: 'Configure Datadog Test Optimization',
             uses: 'datadog/test-visibility-github-action@v2',
             with: { languages: 'js', api_key: '${{secrets.DD_API_KEY}}', site: 'datadoghq.eu' },
           }),
           // Ensure NODE_OPTIONS are set for the build step which triggers tests
-          JsonPatch.add('/jobs/build/steps/5/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
+          JsonPatch.add('/jobs/build/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
         ]
         : []),
-      JsonPatch.add(`/jobs/build/steps/${5 + stepOffset}`, { name: 'build-tests', run: 'pnpm run test:compile' }),
-      JsonPatch.add(`/jobs/build/steps/${6 + stepOffset}`, { name: 'lint', run: 'npx projen eslint' }),
+      JsonPatch.add(`/jobs/build/steps/${6 + stepOffset}`, { name: 'build-tests', run: 'pnpm run test:compile' }),
+      JsonPatch.add(`/jobs/build/steps/${7 + stepOffset}`, { name: 'lint', run: 'npx projen eslint' }),
     ];
 
     this.tryFindObjectFile('.github/workflows/build.yml')?.patch(

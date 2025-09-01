@@ -291,6 +291,8 @@ jobs:
         run: npx projen build
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: run projen
+        run: pnpm run projen
       - name: Configure Datadog Test Optimization
         uses: datadog/test-visibility-github-action@v2
         with:
@@ -1763,6 +1765,8 @@ jobs:
         run: pnpm i --no-frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: run projen
+        run: pnpm run projen
       - name: Configure Datadog Test Optimization
         uses: datadog/test-visibility-github-action@v2
         with:
