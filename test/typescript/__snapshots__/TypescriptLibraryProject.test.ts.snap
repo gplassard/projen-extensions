@@ -287,6 +287,8 @@ jobs:
           node-version: 22.19.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
+      - name: run projen
+        script: pnpm run projen
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
         env:
