@@ -1,6 +1,5 @@
 import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
-import { Cargo, CargoProps } from './Cargo';
 import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
 import { RustReleaseActions, RustReleaseActionsProps } from './RustReleaseActions';
@@ -14,7 +13,6 @@ import {
 } from '../github';
 
 export interface RustProjectOptions extends ProjectOptions {
-  cargo: CargoProps;
   customGitignore?: CustomGitignoreProps;
   nodeJSDependenciesUpgradeAction?: boolean;
   nodeJSDependenciesUpgradeActionOptions?: NodeJSDependenciesUpgradeActionProps;
@@ -42,7 +40,6 @@ export class RustProject extends Project {
       ],
     });
 
-    new Cargo(this, options.cargo);
     new RustBuildAction(this, options.rustBuildAction);
     new RustReleaseActions(this, options.rustReleaseActions);
     new RustLintAction(this, options.rustLintActions);
