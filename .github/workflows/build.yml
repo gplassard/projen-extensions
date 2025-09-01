@@ -30,7 +30,7 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: run projen
-        script: pnpm run projen
+        run: pnpm run projen
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
         env:

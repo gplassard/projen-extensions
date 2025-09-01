@@ -149,7 +149,7 @@ export default defineConfig({
     const buildPatches = [
       JsonPatch.add('/jobs/build/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/build/steps/2', WorkflowActionsX.setupNode(options)),
-      JsonPatch.add('/jobs/build/steps/3', { name: 'run projen', script: 'pnpm run projen' }),
+      JsonPatch.add('/jobs/build/steps/3', { name: 'run projen', run: 'pnpm run projen' }),
       JsonPatch.add('/jobs/build/steps/4/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
       ...(enableDatadogTestOptimization
         ? [
