@@ -39,6 +39,7 @@ export class RustProject extends Project {
         },
       ],
     });
+    this.addGitIgnore('target');
 
     new RustBuildAction(this, options.rustBuildAction);
     new RustReleaseActions(this, options.rustReleaseActions);
