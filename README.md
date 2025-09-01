@@ -26,17 +26,6 @@ const { RustProject } = require('@gplassard/projen-extensions');
 
 const project = new RustProject({
    name: 'projectName',
-   cargo: {
-      package: {
-         authors: ["user <user@mail.com>"],
-         version: 'version',
-         edition: "2021",
-      },
-      dependencies: {
-          // your dependencies
-          'fs2': '0.4.3',
-      }
-   }
 });
 project.synth();
 ```
