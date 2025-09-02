@@ -54,4 +54,17 @@ export class WorkflowActionsX {
       },
     };
   }
+
+  static generateGithubToken(options: { permissions: { [k in string]: string } }): JobStep {
+    return {
+      name: 'Generate token',
+      id: 'generate_token',
+      uses: 'actions/create-github-app-token@v2',
+      with: {
+        'app-id': '${{ secrets.PROJEN_APP_ID }}',
+        'private-key': '${{ secrets.PROJEN_APP_PRIVATE_KEY }}',
+        ...options.permissions,
+      },
+    };
+  }
 }

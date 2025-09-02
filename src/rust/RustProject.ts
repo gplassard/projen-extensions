@@ -11,6 +11,7 @@ import {
   ProjenSynthAction,
   ProjenSynthActionProps,
 } from '../github';
+import { ReleasePlease, ReleasePleaseProps, ReleaseType } from '../github/ReleasePlease';
 
 export interface RustProjectOptions extends ProjectOptions {
   customGitignore?: CustomGitignoreProps;
@@ -21,6 +22,8 @@ export interface RustProjectOptions extends ProjectOptions {
   rustBuildAction?: RustBuildActionProps;
   rustBuildReleaseArtifactsAction?: RustBuildReleaseArtifactsProps;
   rustLintActions?: RustLintActionProps;
+  releasePlease?: boolean;
+  releasePleaseOptions?: ReleasePleaseProps;
 }
 
 export class RustProject extends Project {
@@ -53,6 +56,11 @@ export class RustProject extends Project {
     }
     if (options.projenSynthAction || options.projenSynthAction == undefined) {
       new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
+    }
+    if (options.releasePlease || options.releasePlease == undefined) {
+      new ReleasePlease(github, {
+        releaseType: options.releasePleaseOptions?.releaseType ?? ReleaseType.RUST,
+      });
     }
   }
 }
