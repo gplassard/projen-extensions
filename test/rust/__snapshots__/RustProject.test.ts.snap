@@ -167,8 +167,8 @@ jobs:
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
-          permissions-pull-request: write
-          permissions-contents: write
+          permission-pull-requests: write
+          permission-contents: write
       - name: Release Please
         uses: googleapis/release-please-action@v4
         with:
