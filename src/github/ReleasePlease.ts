@@ -42,8 +42,8 @@ export class ReleasePlease extends Component {
       steps: [
         WorkflowActionsX.generateGithubToken({
           permissions: {
-            'permissions-pull-request': 'write',
-            'permissions-contents': 'write',
+            'permission-pull-requests': 'write',
+            'permission-contents': 'write',
           },
         }),
         {
