@@ -1,4 +1,4 @@
-import { Component, JsonFile } from 'projen';
+import { Component, JsonFile, SampleFile } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
@@ -30,6 +30,13 @@ export class ReleasePlease extends Component {
         $schema: 'https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json',
       },
     });
+
+    new SampleFile(this.project, '.release-please-manifest.json', {
+      contents: JSON.stringify({
+        '.': '0.0.0',
+      }, undefined, 2),
+    });
+
     const workflow = new GithubWorkflow(scope, 'release-please', {});
     workflow.on({
       push: {
