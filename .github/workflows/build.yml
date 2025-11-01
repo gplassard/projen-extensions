@@ -41,6 +41,7 @@ jobs:
           languages: js
           api_key: ${{secrets.DD_API_KEY}}
           site: datadoghq.eu
+          js-tracer-version: 5.69.0
       - name: build
         run: npx projen build
         env:
