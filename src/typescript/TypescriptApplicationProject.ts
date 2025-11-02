@@ -4,7 +4,7 @@ import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, WorkflowActionsX } from '../github';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX } from '../github';
 import {
   DatadogSoftwareCompositionAnalysisAction,
   DatadogSoftwareCompositionAnalysisActionProps,
@@ -30,6 +30,9 @@ type CustomProps = {
     staticAnalysis?: boolean;
     staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
     testOptimization?: boolean;
+    testOptimizationOptions?: {
+      ddTraceVersion?: string;
+    };
   };
 };
 
@@ -157,7 +160,7 @@ export default defineConfig({
           JsonPatch.add('/jobs/build/steps/5', {
             name: 'Configure Datadog Test Optimization',
             uses: 'datadog/test-visibility-github-action@v2',
-            with: { 'languages': 'js', 'api_key': '${{secrets.DD_API_KEY}}', 'site': 'datadoghq.eu', 'js-tracer-version': '5.69.0' },
+            with: { 'languages': 'js', 'api_key': '${{secrets.DD_API_KEY}}', 'site': 'datadoghq.eu', 'js-tracer-version': ddTraceVersion(options.datadog?.testOptimizationOptions ?? {}) },
           }),
           // Ensure NODE_OPTIONS are set for the build step which triggers tests
           JsonPatch.add('/jobs/build/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
