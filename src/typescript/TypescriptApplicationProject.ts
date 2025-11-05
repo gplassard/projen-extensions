@@ -184,7 +184,7 @@ export default defineConfig({
           JsonPatch.add('/jobs/release/steps/5', {
             name: 'Configure Datadog Test Optimization',
             uses: 'datadog/test-visibility-github-action@v2',
-            with: { languages: 'js', api_key: '${{secrets.DD_API_KEY}}', site: 'datadoghq.eu', 'js-tracer-version': ddTraceVersion(options.datadog?.testOptimizationOptions ?? {}) },
+            with: { 'languages': 'js', 'api_key': '${{secrets.DD_API_KEY}}', 'site': 'datadoghq.eu', 'js-tracer-version': ddTraceVersion(options.datadog?.testOptimizationOptions ?? {}) },
           }),
           // Ensure NODE_OPTIONS are set for the release step
           JsonPatch.add('/jobs/release/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),

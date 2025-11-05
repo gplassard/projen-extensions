@@ -514,6 +514,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
+          js-tracer-version: 5.74.0
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -1992,6 +1993,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
+          js-tracer-version: 5.74.0
       - name: release
         run: npx projen release
         env:
