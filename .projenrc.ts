@@ -8,6 +8,9 @@ const project = new TypescriptLibraryProject({
   devDeps: ['projen', 'constructs'],
   peerDeps: ['projen', 'constructs'],
   releaseRank: 1,
+  npmIgnoreOptions: {
+    ignorePatterns: ['.datadog', '.junie', '*.sh', 'node_modules'],
+  },
 });
 project.deps.removeDependency('@gplassard/projen-extensions');
 const upgradeNodeAndPnpmWorkflow = new GithubWorkflow(project.github!, 'upgrade-node-and-pnpm', {});
