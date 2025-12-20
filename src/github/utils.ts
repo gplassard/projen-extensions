@@ -10,7 +10,7 @@ export const NODEJS_VERSIONS = {
   NODEJS_24_X: nodeJsVersions.node24.version.replace('v', ''),
 };
 
-const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_22_X; // LTS
+const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_24_X;
 
 const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersion.replace('v', '');
 
