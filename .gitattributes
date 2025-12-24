@@ -22,5 +22,6 @@
 /LICENSE linguist-generated
 /package.json linguist-generated
 /pnpm-lock.yaml linguist-generated
+/static-analysis.datadog.yaml linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
