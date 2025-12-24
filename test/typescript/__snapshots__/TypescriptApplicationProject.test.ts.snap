@@ -371,12 +371,7 @@ jobs:
 
 name: Datadog-Software-Composition-Analysis
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  push: {}
 jobs:
   software-composition-analysis:
     runs-on: ubuntu-latest
@@ -400,12 +395,7 @@ permissions: {}
 
 name: Datadog-Static-Analysis
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  push: {}
 jobs:
   static-analysis:
     runs-on: ubuntu-latest
@@ -417,7 +407,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
-        uses: DataDog/datadog-static-analyzer-github-action@v1
+        uses: DataDog/datadog-static-analyzer-github-action@v2
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
           dd_api_key: \${{ secrets.DD_API_KEY }}
@@ -1850,12 +1840,7 @@ jobs:
 
 name: Datadog-Software-Composition-Analysis
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  push: {}
 jobs:
   software-composition-analysis:
     runs-on: ubuntu-latest
@@ -1879,12 +1864,7 @@ permissions: {}
 
 name: Datadog-Static-Analysis
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  push: {}
 jobs:
   static-analysis:
     runs-on: ubuntu-latest
@@ -1896,7 +1876,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
-        uses: DataDog/datadog-static-analyzer-github-action@v1
+        uses: DataDog/datadog-static-analyzer-github-action@v2
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
           dd_api_key: \${{ secrets.DD_API_KEY }}
