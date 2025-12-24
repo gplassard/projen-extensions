@@ -14,12 +14,7 @@ export class DatadogSoftwareCompositionAnalysisAction extends Component {
 
     const workflow = new GithubWorkflow(scope, 'Datadog-Software-Composition-Analysis');
     workflow.on({
-      pullRequest: {
-        branches: ['main'],
-      },
-      push: {
-        branches: ['main'],
-      },
+      push: {},
     });
     workflow.addJob('software-composition-analysis', {
       runsOn: ['ubuntu-latest'],

@@ -13,12 +13,7 @@ export class DatadogStaticAnalysisAction extends Component {
 
     const workflow = new GithubWorkflow(scope, 'Datadog-Static-Analysis');
     workflow.on({
-      pullRequest: {
-        branches: ['main'],
-      },
-      push: {
-        branches: ['main'],
-      },
+      push: {},
     });
     workflow.addJob('static-analysis', {
       runsOn: ['ubuntu-latest'],
@@ -29,7 +24,7 @@ export class DatadogStaticAnalysisAction extends Component {
         WorkflowActionsX.checkout({}),
         {
           name: 'Check code meets quality and security standards',
-          uses: 'DataDog/datadog-static-analyzer-github-action@v1',
+          uses: 'DataDog/datadog-static-analyzer-github-action@v2',
           with: {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',
