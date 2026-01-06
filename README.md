@@ -35,6 +35,32 @@ project.synth();
 node .projenrc.js # will generate your project files
 ```
 
+## For a go project
+
+```shell
+pnpm init
+echo "@gplassard:registry=https://npm.pkg.github.com" > .npmrc
+pnpm install --save-dev projen @gplassard/projen-extensions
+```
+
+Create a `.projenrc.js` file (see below)
+
+
+```javascript
+// .projenrc.js
+const { GoProject } = require('@gplassard/projen-extensions');
+
+const project = new GoProject({
+   name: 'projectName',
+});
+project.synth();
+```
+
+
+```shell
+node .projenrc.js # will generate your project files
+```
+
 ## For a typescript project
 
 ```shell
