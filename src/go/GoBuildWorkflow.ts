@@ -1,17 +1,18 @@
 import { Component } from 'projen';
-import { WorkflowActions, GitHub, GithubCredentials, GithubWorkflow } from 'projen/lib/github';
+import { GitHub, GithubWorkflow, WorkflowActions, GithubCredentials } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
-import { WorkflowActionsX } from './WorkflowActionsX';
+import { WorkflowActionsX } from '../github';
+import { GO_TEST, goBuild, goCaches } from './utils';
 
-export interface ProjenSynthActionProps {
-
+export interface GoBuildWorkflowProps {
+  readonly goVersion?: string;
 }
+export class GoBuildWorkflow extends Component {
 
-export class ProjenSynthAction extends Component {
-  constructor(scope: GitHub, _props: ProjenSynthActionProps) {
+  constructor(scope: GitHub, props?: GoBuildWorkflowProps) {
     super(scope);
 
-    const workflow = new GithubWorkflow(scope, 'Projen-Synth', {});
+    const workflow = new GithubWorkflow(scope, 'build');
     workflow.on({
       push: {
         branches: ['main'],
@@ -25,33 +26,29 @@ export class ProjenSynthAction extends Component {
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.WRITE,
-        packages: JobPermission.READ,
       },
       outputs: {
-        self_mutation_happened: {
-          stepId: 'self_mutation',
-          outputName: 'self_mutation_happened',
+        patch_created: {
+          stepId: 'create_patch',
+          outputName: 'patch_created',
         },
-      },
-      env: {
-        CI: 'true',
       },
       steps: [
         WorkflowActionsX.checkout({}),
-        WorkflowActionsX.setupPnpm({}),
-        WorkflowActionsX.setupNode({ packageManager: 'pnpm' }),
-        WorkflowActionsX.installDependencies({}),
+        ...goCaches(props),
         {
-          name: 'Run projen',
-          run: 'pnpm run projen',
+          name: 'Format Code',
+          run: 'go fmt ./...',
         },
         ...WorkflowActions.uploadGitPatch({
-          stepId: 'self_mutation',
-          outputName: 'self_mutation_happened',
+          stepId: 'create_patch',
+          outputName: 'patch_created',
         }),
+        goBuild(),
+        GO_TEST,
         {
           name: 'Fail build on mutation',
-          if: 'steps.self_mutation.outputs.self_mutation_happened',
+          if: 'steps.create_patch.outputs.patch_created',
           run: [
             'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
             'cat repo.patch',
@@ -60,19 +57,19 @@ export class ProjenSynthAction extends Component {
         },
       ],
     });
+
     workflow.addJob('self-mutation', {
       needs: ['build'],
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.WRITE,
       },
-      if: 'always() && needs.build.outputs.self_mutation_happened && !(github.event.pull_request.head.repo.full_name != github.repository)',
+      if: 'always() && needs.build.outputs.patch_created && !(github.event.pull_request.head.repo.full_name != github.repository)',
       steps: [
         ...GithubCredentials.fromApp({
           permissions: {
             pullRequests: AppPermission.WRITE,
             contents: AppPermission.WRITE,
-            workflows: AppPermission.WRITE,
           },
         }).setupSteps,
         ...WorkflowActions.checkoutWithPatch({
