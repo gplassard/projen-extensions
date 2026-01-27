@@ -1,24 +1,11 @@
-import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
 import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
 import { RustBuildReleaseArtifacts, RustBuildReleaseArtifactsProps } from './RustBuildReleaseArtifacts';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
-import { CustomGitignore, CustomGitignoreProps } from '../git';
-import {
-  DEFAULT_PULL_REQUEST_LINT_OPTIONS,
-  NodeJSDependenciesUpgradeAction,
-  NodeJSDependenciesUpgradeActionProps,
-  ProjenSynthAction,
-  ProjenSynthActionProps,
-} from '../github';
 import { ReleasePlease, ReleasePleaseProps, ReleaseType } from '../github/ReleasePlease';
+import { BaseProject, BaseProjectProps } from '../project';
 
-export interface RustProjectOptions extends ProjectOptions {
-  customGitignore?: CustomGitignoreProps;
-  nodeJSDependenciesUpgradeAction?: boolean;
-  nodeJSDependenciesUpgradeActionOptions?: NodeJSDependenciesUpgradeActionProps;
-  projenSynthAction?: boolean;
-  projenSynthActionOptions?: ProjenSynthActionProps;
+export interface RustProjectOptions extends BaseProjectProps {
   rustBuildAction?: RustBuildActionProps;
   rustBuildReleaseArtifactsAction?: RustBuildReleaseArtifactsProps;
   rustLintActions?: RustLintActionProps;
@@ -26,37 +13,16 @@ export interface RustProjectOptions extends ProjectOptions {
   releasePleaseOptions?: ReleasePleaseProps;
 }
 
-export class RustProject extends Project {
+export class RustProject extends BaseProject {
   constructor(options: RustProjectOptions) {
     super(options);
-    new CustomGitignore(this, options.customGitignore);
-
-    this.removeTask('eject');
-    this.removeTask('build');
-    this.removeTask('default');
-    this.addTask('default', {
-      description: 'Synthesize project files',
-      steps: [
-        {
-          exec: 'node .projenrc.js',
-        },
-      ],
-    });
     this.addGitIgnore('target');
 
     new RustBuildAction(this, options.rustBuildAction);
     new RustBuildReleaseArtifacts(this, options.rustBuildReleaseArtifactsAction);
     new RustLintAction(this, options.rustLintActions);
-    const github = new GitHub(this, {
-      mergify: false,
-      pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
-    });
-    if (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined) {
-      new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
-    }
-    if (options.projenSynthAction || options.projenSynthAction == undefined) {
-      new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
-    }
+
+    const github = GitHub.of(this)!;
     if (options.releasePlease || options.releasePlease == undefined) {
       new ReleasePlease(github, {
         releaseType: options.releasePleaseOptions?.releaseType ?? ReleaseType.RUST,

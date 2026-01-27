@@ -1,3 +1,4 @@
+export * from './project';
 export * from './git';
 export * from './github';
 export * from './go';
