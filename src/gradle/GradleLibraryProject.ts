@@ -41,10 +41,17 @@ export class GradleLibraryProject extends Project {
       },
     });
 
-    options.gradleReleaseActionOptions && new GradleReleaseAction(this, options.gradleReleaseActionOptions);
-    (options.gradleBuildAction || options.gradleBuildAction == undefined) && new GradleBuildAction(this, options.gradleBuildActionOptions ?? {});
-    (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined)
-      && new NodeJSDependenciesUpgradeAction(this.github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
-    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(this.github, options.projenSynthActionOptions ?? {});
+    if (options.gradleReleaseActionOptions) {
+      new GradleReleaseAction(this.github, options.gradleReleaseActionOptions);
+    }
+    if (options.gradleBuildAction ?? true) {
+      new GradleBuildAction(this, options.gradleBuildActionOptions ?? {});
+    }
+    if (options.nodeJSDependenciesUpgradeAction ?? true) {
+      new NodeJSDependenciesUpgradeAction(this.github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
+    }
+    if (options.projenSynthAction ?? true) {
+      new ProjenSynthAction(this.github, options.projenSynthActionOptions ?? {});
+    }
   }
 }
