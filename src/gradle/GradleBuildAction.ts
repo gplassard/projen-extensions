@@ -1,6 +1,5 @@
 import { IConstruct } from 'constructs';
 import { Component, Project, YamlFile } from 'projen';
-import { configureAWSCredentialsStep, GENERATE_CODE_ARTIFACT_TOKEN_STEP, SETUP_JDK_STEP } from './utils';
 import { WorkflowActionsX } from '../github';
 
 export interface GradleBuildActionProps {
@@ -42,9 +41,9 @@ export class GradleBuildAction extends Component {
             'permissions': permissions,
             'steps': [
               WorkflowActionsX.checkout({}),
-              SETUP_JDK_STEP,
-              props.withCodeArtifactAccess && configureAWSCredentialsStep('CODE_ARTIFACT_READ_ROLE'),
-              props.withCodeArtifactAccess && GENERATE_CODE_ARTIFACT_TOKEN_STEP,
+              WorkflowActionsX.setupJdk({}),
+              props.withCodeArtifactAccess && WorkflowActionsX.configureAwsCredentials('CODE_ARTIFACT_READ_ROLE'),
+              props.withCodeArtifactAccess && WorkflowActionsX.generateCodeArtifactToken(),
               {
                 name: 'Build',
                 run: props.gradleCommand ?? './gradlew build',
