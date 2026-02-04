@@ -21,6 +21,7 @@ export interface GradleLibraryProjectOptions extends ProjectOptions {
 }
 
 export class GradleLibraryProject extends Project {
+  public readonly github: GitHub;
   constructor(options: GradleLibraryProjectOptions) {
     super(options);
 
@@ -31,7 +32,7 @@ export class GradleLibraryProject extends Project {
         ...(options.customGitignore?.additionalGitignore ?? []),
       ],
     });
-    const github = new GitHub(this, {
+    this.github = new GitHub(this, {
       mergify: false,
       pullRequestLint: options.githubLint || options.githubLint == undefined,
       pullRequestLintOptions: {
@@ -43,7 +44,7 @@ export class GradleLibraryProject extends Project {
     options.gradleReleaseActionOptions && new GradleReleaseAction(this, options.gradleReleaseActionOptions);
     (options.gradleBuildAction || options.gradleBuildAction == undefined) && new GradleBuildAction(this, options.gradleBuildActionOptions ?? {});
     (options.nodeJSDependenciesUpgradeAction || options.nodeJSDependenciesUpgradeAction == undefined)
-      && new NodeJSDependenciesUpgradeAction(github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
-    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(github, options.projenSynthActionOptions ?? {});
+      && new NodeJSDependenciesUpgradeAction(this.github, options.nodeJSDependenciesUpgradeActionOptions ?? {});
+    (options.projenSynthAction || options.projenSynthAction == undefined) && new ProjenSynthAction(this.github, options.projenSynthActionOptions ?? {});
   }
 }

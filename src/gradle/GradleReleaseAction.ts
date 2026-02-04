@@ -1,6 +1,5 @@
 import { IConstruct } from 'constructs';
 import { Component, Project, YamlFile } from 'projen';
-import { configureAWSCredentialsStep, GENERATE_CODE_ARTIFACT_TOKEN_STEP, SETUP_JDK_STEP } from './utils';
 import { WorkflowActionsX } from '../github';
 
 export interface GradleReleaseActionProps {
@@ -62,10 +61,10 @@ export class GradleReleaseAction extends Component {
       },
       'steps': [
         WorkflowActionsX.checkout({}),
-        SETUP_JDK_STEP,
-        configureAWSCredentialsStep(input.codeArtifactRole),
+        WorkflowActionsX.setupJdk({}),
+        WorkflowActionsX.configureAwsCredentials(input.codeArtifactRole),
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-masking-a-generated-output-within-a-single-job
-        GENERATE_CODE_ARTIFACT_TOKEN_STEP,
+        WorkflowActionsX.generateCodeArtifactToken(),
         {
           name: 'Build',
           run: './gradlew build -x integrationTest',

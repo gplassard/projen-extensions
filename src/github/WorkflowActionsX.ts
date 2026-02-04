@@ -67,4 +67,39 @@ export class WorkflowActionsX {
       },
     };
   }
+
+  static setupJdk(options: { javaVersion?: string }): JobStep {
+    return {
+      name: 'Set up JDK',
+      uses: 'actions/setup-java@v5',
+      with: {
+        'java-version': options.javaVersion ?? '21',
+        'distribution': 'temurin',
+        'cache': 'gradle',
+      },
+    };
+  }
+
+  static configureAwsCredentials(roleName: string): JobStep {
+    return {
+      name: 'Configure AWS credentials',
+      uses: 'aws-actions/configure-aws-credentials@v5',
+      with: {
+        'role-to-assume': `arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.${roleName} }}`,
+        'aws-region': 'us-east-1',
+      },
+    };
+  }
+
+  static generateCodeArtifactToken(): JobStep {
+    return {
+      name: 'Generate code artifact token',
+      id: 'code-artifact-token',
+      run: [
+        'the_secret=$(aws codeartifact get-authorization-token --domain \${{ secrets.CODE_ARTIFACT_DOMAIN }} --domain-owner \${{ secrets.AWS_ACCOUNT_ID }} --region eu-west-1 --query authorizationToken --output text --duration-seconds 900)',
+        'echo "::add-mask::$the_secret"',
+        'echo "token=$the_secret" >> "$GITHUB_OUTPUT"',
+      ].join('\n'),
+    };
+  }
 }
