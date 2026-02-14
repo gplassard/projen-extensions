@@ -606,6 +606,7 @@ target
         "bump-patch-for-minor-pre-major": false,
         "changelog-path": "CHANGELOG.md",
         "draft": false,
+        "include-component-in-tag": false,
         "prerelease": false,
         "pull-request-title-pattern": "chore(release): release \${version}",
         "release-type": "rust",

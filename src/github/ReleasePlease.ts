@@ -25,6 +25,7 @@ export class ReleasePlease extends Component {
             'draft': false,
             'prerelease': false,
             'pull-request-title-pattern': 'chore(release): release ${version}',
+            'include-component-in-tag': false,
           },
         },
         $schema: 'https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json',
