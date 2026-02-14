@@ -7,6 +7,7 @@ import { goCaches, golangciLintVersion } from './utils';
 export interface GoLintWorkflowProps {
   readonly goVersion?: string;
   readonly golangciLintVersion?: string;
+  readonly workingDirectory?: string;
 }
 
 export class GoLintWorkflow extends Component {
@@ -14,7 +15,7 @@ export class GoLintWorkflow extends Component {
   constructor(scope: GitHub, props?: GoLintWorkflowProps) {
     super(scope);
 
-    const workflow = new GithubWorkflow(scope, 'lint');
+    const workflow = new GithubWorkflow(scope, props?.workingDirectory ? `lint-${props.workingDirectory}` : 'lint');
     workflow.on({
       push: {
         branches: ['main'],
@@ -24,7 +25,9 @@ export class GoLintWorkflow extends Component {
         branches: ['main'],
       },
     });
-    workflow.addJob('lint', {
+    const jobId = props?.workingDirectory ? `lint-${props.workingDirectory}` : 'lint';
+    workflow.addJob(jobId, {
+      name: props?.workingDirectory ? `Lint ${props.workingDirectory}` : 'Lint',
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.READ,
@@ -37,6 +40,7 @@ export class GoLintWorkflow extends Component {
           uses: 'golangci/golangci-lint-action@v9',
           with: {
             version: golangciLintVersion(props),
+            'working-directory': props?.workingDirectory,
           },
         },
       ],
