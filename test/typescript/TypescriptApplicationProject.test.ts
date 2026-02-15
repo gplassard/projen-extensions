@@ -20,4 +20,16 @@ describe('TypescriptApplicationProject with default settings', () => {
     const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
   });
+
+  it('can work without release', () => {
+    const project = new TypescriptApplicationProject({
+      name: 'test-project',
+      release: false,
+    });
+    const output = Testing.synth(project);
+
+    const upgradeWorkflow = output['.github/workflows/upgrade.yml'];
+    expect(upgradeWorkflow).toContain('NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}');
+    expect(output).toMatchSnapshot();
+  });
 });
