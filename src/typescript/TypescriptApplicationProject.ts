@@ -197,7 +197,8 @@ export default defineConfig({
       ...releasePatches,
     );
 
-    this.tryFindObjectFile('.github/workflows/upgrade-main.yml')?.patch(
+    const upgradeFile = options.release ? '.github/workflows/upgrade-main.yml' : '.github/workflows/upgrade.yml';
+    this.tryFindObjectFile(upgradeFile)?.patch(
       JsonPatch.add('/jobs/upgrade/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/upgrade/steps/2', WorkflowActionsX.setupNode(options)),
       JsonPatch.add('/jobs/upgrade/steps/3/env', { NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }),
