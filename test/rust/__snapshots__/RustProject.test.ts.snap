@@ -17,7 +17,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
@@ -41,11 +41,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
-        uses: DataDog/datadog-static-analyzer-github-action@v2
+        uses: DataDog/datadog-static-analyzer-github-action@v3
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
           dd_api_key: \${{ secrets.DD_API_KEY }}
@@ -81,7 +81,7 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -253,7 +253,7 @@ jobs:
             suffix: .exe
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Install toolchain
@@ -291,7 +291,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Download Artifacts
@@ -336,7 +336,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Build
@@ -387,7 +387,7 @@ jobs:
           app_id: \${{ secrets.PROJEN_APP_ID }}
           private_key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
           permissions: '{"pull_requests":"write","contents":"write"}'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           token: \${{ steps.generate-token.outputs.token }}
@@ -419,7 +419,7 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm

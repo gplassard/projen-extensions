@@ -38,7 +38,7 @@ export class RustLintAction extends Component {
                 },
               },
               {
-                uses: 'actions/checkout@v4',
+                uses: 'actions/checkout@v6',
                 with: {
                   ref: '${{ github.event.pull_request.head.ref }}',
                   token: '${{ steps.generate-token.outputs.token }}',
