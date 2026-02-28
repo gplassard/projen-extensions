@@ -30,7 +30,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -83,7 +83,7 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -218,7 +218,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -257,7 +257,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -304,7 +304,7 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -529,7 +529,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -568,7 +568,7 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -703,7 +703,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -742,7 +742,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -790,7 +790,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -829,7 +829,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -876,7 +876,7 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
