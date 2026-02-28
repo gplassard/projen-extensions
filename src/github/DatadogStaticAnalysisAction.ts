@@ -24,7 +24,7 @@ export class DatadogStaticAnalysisAction extends Component {
         WorkflowActionsX.checkout({}),
         {
           name: 'Check code meets quality and security standards',
-          uses: 'DataDog/datadog-static-analyzer-github-action@v2',
+          uses: 'DataDog/datadog-static-analyzer-github-action@v3',
           with: {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',
