@@ -35,7 +35,7 @@ upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
     packages: JobPermission.READ,
   },
   steps: [
-    WorkflowActionsX.checkout({ ref: 'main' }),
+    WorkflowActionsX.checkout({}),
     WorkflowActionsX.setupPnpm({}),
     WorkflowActionsX.setupNode({}),
     WorkflowActionsX.installDependencies({}),
