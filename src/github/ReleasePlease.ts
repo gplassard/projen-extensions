@@ -1,7 +1,7 @@
 import { Component, JsonFile, SampleFile } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
-import { WorkflowActionsX } from './WorkflowActionsX';
 import { githubAction } from './utils';
+import { WorkflowActionsX } from './WorkflowActionsX';
 
 export enum ReleaseType {
   RUST = 'rust',

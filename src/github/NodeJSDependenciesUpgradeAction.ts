@@ -1,8 +1,8 @@
 import { Component } from 'projen';
 import { GithubCredentials, GithubWorkflow, GitHub, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
-import { WorkflowActionsX } from './WorkflowActionsX';
 import { ncuVersion } from './utils';
+import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface NodeJSDependenciesUpgradeActionProps {
 
