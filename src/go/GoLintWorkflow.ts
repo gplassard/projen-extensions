@@ -1,7 +1,7 @@
 import { Component } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
-import { WorkflowActionsX } from '../github';
+import { WorkflowActionsX, githubAction } from '../github';
 import { goCaches, golangciLintVersion } from './utils';
 
 export interface GoLintWorkflowProps {
@@ -34,7 +34,7 @@ export class GoLintWorkflow extends Component {
         ...goCaches(props),
         {
           name: 'Run golangci-lint',
-          uses: 'golangci/golangci-lint-action@v9',
+          uses: githubAction('golangci/golangci-lint-action'),
           with: {
             version: golangciLintVersion(props),
           },

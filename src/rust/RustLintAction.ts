@@ -1,4 +1,5 @@
 import { Component, Project, YamlFile } from 'projen';
+import { githubAction } from '../github';
 
 export interface RustLintActionProps {
 
@@ -30,7 +31,7 @@ export class RustLintAction extends Component {
               {
                 name: 'Generate token',
                 id: 'generate-token',
-                uses: 'tibdex/github-app-token@021a2405c7f990db57f5eae5397423dcc554159c',
+                uses: githubAction('tibdex/github-app-token'),
                 with: {
                   app_id: '${{ secrets.PROJEN_APP_ID }}',
                   private_key: '${{ secrets.PROJEN_APP_PRIVATE_KEY }}',
@@ -38,7 +39,7 @@ export class RustLintAction extends Component {
                 },
               },
               {
-                uses: 'actions/checkout@v6',
+                uses: githubAction('actions/checkout'),
                 with: {
                   ref: '${{ github.event.pull_request.head.ref }}',
                   token: '${{ steps.generate-token.outputs.token }}',
@@ -54,7 +55,7 @@ export class RustLintAction extends Component {
               },
               {
                 name: 'Commit changes',
-                uses: 'EndBug/add-and-commit@v9',
+                uses: githubAction('EndBug/add-and-commit'),
                 with: {
                   author_name: 'github-actions',
                   author_email: 'github-actions@github.com',

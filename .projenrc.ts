@@ -49,6 +49,20 @@ upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
     },
+    {
+      name: 'Upgrade GitHub Actions and NCU',
+      run: 'npx ts-node scripts/upgrade-github-versions.ts',
+      env: {
+        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    },
+    {
+      name: 'Upgrade Go and golangci-lint',
+      run: 'npx ts-node scripts/upgrade-go-versions.ts',
+      env: {
+        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    },
     ...WorkflowActions.uploadGitPatch({
       stepId: 'create_patch',
       outputName: 'patch_created',
@@ -63,10 +77,10 @@ upgradeNodeAndPnpmWorkflow.addJob('pr',
       outputName: 'patch_created',
     },
     workflowName: 'upgrade-node-and-pnpm',
-    pullRequestTitle: 'chore(deps): upgrade NodeJS and PNPM',
+    pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM and other versions',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS (latest versions for Node.js 20, 22, and 24) and PNPM to their latest versions.',
+      'Upgrades NodeJS (latest versions for Node.js 20, 22, and 24), PNPM, GitHub Actions hashes and other tool versions.',
     ].join('\n\n'),
   }),
 );

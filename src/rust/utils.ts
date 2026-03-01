@@ -1,3 +1,5 @@
+import { githubAction } from '../github';
+
 export function cargoBuild(config?: { release?: boolean; target?: string }) {
   const releaseFlag = config?.release ? '--release' : '';
   const targetFlag = config?.target ? `--target ${config.target}` : '';
@@ -17,7 +19,7 @@ export function cargoCaches(config?: { cachePrefix?: string }) {
   return [
     {
       name: 'Cache cargo registry',
-      uses: 'actions/cache@v4',
+      uses: githubAction('actions/cache'),
       with: {
         path: '~/.cargo/registry',
         key: cachePrefix + "cargo-registry-${{ hashFiles('**/Cargo.lock') }}",
@@ -25,7 +27,7 @@ export function cargoCaches(config?: { cachePrefix?: string }) {
     },
     {
       name: 'Cache cargo index',
-      uses: 'actions/cache@v4',
+      uses: githubAction('actions/cache'),
       with: {
         path: '~/.cargo/git',
         key: cachePrefix + "cargo-git-${{ hashFiles('**/Cargo.lock') }}",
@@ -33,7 +35,7 @@ export function cargoCaches(config?: { cachePrefix?: string }) {
     },
     {
       name: 'Cache cargo build',
-      uses: 'actions/cache@v4',
+      uses: githubAction('actions/cache'),
       with: {
         path: 'target',
         key: cachePrefix + "cargo-build-target-${{ hashFiles('**/Cargo.lock') }}",

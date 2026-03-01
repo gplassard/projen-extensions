@@ -4,3 +4,4 @@ export * from './utils';
 export * from './WorkflowActionsX';
 export * from './DatadogStaticAnalysisAction';
 export * from './DatadogSoftwareCompositionAnalysisAction';
+export * from './ReleasePlease';

@@ -1,5 +1,6 @@
 import goVersionJson from './go.json';
 import golangciLintVersionJson from './golangci-lint.json';
+import { githubAction } from '../github';
 
 export function goVersion(options?: { goVersion?: string }): string {
   return options?.goVersion ?? goVersionJson.version;
@@ -25,7 +26,7 @@ export function goCaches(options?: { goVersion?: string }) {
   return [
     {
       name: 'Set up Go',
-      uses: 'actions/setup-go@v6',
+      uses: githubAction('actions/setup-go'),
       with: {
         'go-version': goVersion(options),
       },

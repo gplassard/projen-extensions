@@ -1,0 +1,56 @@
+{
+  "actions/checkout": {
+    "version": "v6"
+  },
+  "actions/setup-node": {
+    "version": "v4"
+  },
+  "pnpm/action-setup": {
+    "version": "v4"
+  },
+  "actions/create-github-app-token": {
+    "version": "v2"
+  },
+  "actions/setup-java": {
+    "version": "v5"
+  },
+  "aws-actions/configure-aws-credentials": {
+    "version": "v5"
+  },
+  "dtolnay/rust-toolchain": {
+    "version": "stable"
+  },
+  "actions/upload-artifact": {
+    "version": "v4"
+  },
+  "actions/download-artifact": {
+    "version": "v4"
+  },
+  "EndBug/add-and-commit": {
+    "version": "v9"
+  },
+  "actions/cache": {
+    "version": "v4"
+  },
+  "datadog/test-visibility-github-action": {
+    "version": "v2"
+  },
+  "DataDog/datadog-sca-github-action": {
+    "version": "v2"
+  },
+  "DataDog/datadog-static-analyzer-github-action": {
+    "version": "v3"
+  },
+  "googleapis/release-please-action": {
+    "version": "v4"
+  },
+  "golangci/golangci-lint-action": {
+    "version": "v9"
+  },
+  "actions/setup-go": {
+    "version": "v6"
+  },
+  "tibdex/github-app-token": {
+    "version": "v1.7.0"
+  }
+}
