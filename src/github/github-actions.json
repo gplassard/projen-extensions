@@ -1,56 +1,74 @@
 {
   "actions/checkout": {
-    "version": "v6"
+    "version": "v6",
+    "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
   },
   "actions/setup-node": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "49933ea5288caeca8642d1e84afbd3f7d6820020"
   },
   "pnpm/action-setup": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "c5ba7f7862a0f64c1b1a05fbac13e0b8e86ba08c"
   },
   "actions/create-github-app-token": {
-    "version": "v2"
+    "version": "v2",
+    "hash": "29824e69f54612133e76f7eaac726eef6c875baf"
   },
   "actions/setup-java": {
-    "version": "v5"
+    "version": "v5",
+    "hash": "be666c2fcd27ec809703dec50e508c2fdc7f6654"
   },
   "aws-actions/configure-aws-credentials": {
-    "version": "v5"
+    "version": "v5",
+    "hash": "cabfdba3510de1431bac9dba27511d97497fc100"
   },
   "dtolnay/rust-toolchain": {
-    "version": "stable"
+    "version": "stable",
+    "hash": "631a55b12751854ce901bb631d5902ceb48146f7"
   },
   "actions/upload-artifact": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "ea165f8d65b6e75b540449e92b4886f43607fa02"
   },
   "actions/download-artifact": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "d3f86a106a0bac45b974a628896c90dbdf5c8093"
   },
   "EndBug/add-and-commit": {
-    "version": "v9"
+    "version": "v9",
+    "hash": "a94899bca583c204427a224a7af87c02f9b325d5"
   },
   "actions/cache": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "0057852bfaa89a56745cba8c7296529d2fc39830"
   },
   "datadog/test-visibility-github-action": {
-    "version": "v2"
+    "version": "v2",
+    "hash": "f4b026bb8b8b53f323960cf86a849a0231ff93b9"
   },
   "DataDog/datadog-sca-github-action": {
-    "version": "v2"
+    "version": "v2",
+    "hash": "d871ffeaa1a9693e935d5e66f7440782320e74ea"
   },
   "DataDog/datadog-static-analyzer-github-action": {
-    "version": "v3"
+    "version": "v3",
+    "hash": "506d966f01f45874d7a53d00a0c300f650e91e39"
   },
   "googleapis/release-please-action": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "c3fc4de07084f75a2b61a5b933069bda6edf3d5c"
   },
   "golangci/golangci-lint-action": {
-    "version": "v9"
+    "version": "v9",
+    "hash": "1e7e51e771db61008b38414a730f564565cf7c20"
   },
   "actions/setup-go": {
-    "version": "v6"
+    "version": "v6",
+    "hash": "4b73464bb391d4059bd26b0524d20df3927bd417"
   },
   "tibdex/github-app-token": {
-    "version": "v1.7.0"
+    "version": "v1.7.0",
+    "hash": "021a2405c7f990db57f5eae5397423dcc554159c"
   }
 }
