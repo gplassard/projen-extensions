@@ -5,6 +5,7 @@ import path from 'path';
 interface GithubActionData {
   version: string;
   hash?: string;
+  pinned?: boolean;
 }
 
 async function main() {
@@ -13,6 +14,10 @@ async function main() {
   const githubActions = JSON.parse(readFileSync(githubActionsPath, 'utf8')) as Record<string, GithubActionData>;
 
   for (const [action, data] of Object.entries(githubActions)) {
+    if (data.pinned) {
+      console.log(`Skipping pinned action ${action}`);
+      continue;
+    }
     const version = data.version;
     console.log(`Refreshing hash for ${action}@${version}`);
     try {
@@ -34,28 +39,36 @@ async function main() {
   // Update NCU
   const ncuPath = path.join(__dirname, '../src/github/ncu.json');
   const ncu = JSON.parse(readFileSync(ncuPath, 'utf8'));
-  console.log('Refreshing NCU version');
-  try {
-    const latestNcu = execSync('npm show npm-check-updates version').toString().trim();
-    ncu.version = latestNcu.split('.')[0];
-    console.log(`  New NCU version: ${ncu.version}`);
-  } catch (e) {
-    console.error('  Failed to fetch NCU version');
+  if (ncu.pinned) {
+    console.log('Skipping pinned NCU version');
+  } else {
+    console.log('Refreshing NCU version');
+    try {
+      const latestNcu = execSync('npm show npm-check-updates version').toString().trim();
+      ncu.version = latestNcu.split('.')[0];
+      console.log(`  New NCU version: ${ncu.version}`);
+    } catch (e) {
+      console.error('  Failed to fetch NCU version');
+    }
+    writeFileSync(ncuPath, JSON.stringify(ncu, null, 2) + '\n');
   }
-  writeFileSync(ncuPath, JSON.stringify(ncu, null, 2) + '\n');
 
   // Update dd-trace
   const ddTracePath = path.join(__dirname, '../src/github/dd-trace.json');
   const ddTrace = JSON.parse(readFileSync(ddTracePath, 'utf8'));
-  console.log('Refreshing dd-trace version');
-  try {
-    const latestDdTrace = execSync('npm show dd-trace version').toString().trim();
-    ddTrace.version = latestDdTrace;
-    console.log(`  New dd-trace version: ${ddTrace.version}`);
-  } catch (e) {
-    console.error('  Failed to fetch dd-trace version');
+  if (ddTrace.pinned) {
+    console.log('Skipping pinned dd-trace version');
+  } else {
+    console.log('Refreshing dd-trace version');
+    try {
+      const latestDdTrace = execSync('npm show dd-trace version').toString().trim();
+      ddTrace.version = latestDdTrace;
+      console.log(`  New dd-trace version: ${ddTrace.version}`);
+    } catch (e) {
+      console.error('  Failed to fetch dd-trace version');
+    }
+    writeFileSync(ddTracePath, JSON.stringify(ddTrace, null, 2) + '\n');
   }
-  writeFileSync(ddTracePath, JSON.stringify(ddTrace, null, 2) + '\n');
 }
 
 main().catch(console.error);
