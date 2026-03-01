@@ -55,5 +55,5 @@ junit.xml
 !/.github/workflows/datadog-static-analysis.yml
 !/static-analysis.datadog.yaml
 install_test_visibility.sh
-!/.github/workflows/upgrade-node-and-pnpm.yml
+!/.github/workflows/upgrade-external-versions.yml
 !/.projenrc.ts

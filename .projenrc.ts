@@ -14,14 +14,14 @@ const project = new TypescriptLibraryProject({
 });
 project.tsconfigDev.addInclude('scripts/**/*.ts');
 project.deps.removeDependency('@gplassard/projen-extensions');
-const upgradeNodeAndPnpmWorkflow = new GithubWorkflow(project.github!, 'upgrade-node-and-pnpm', {});
-upgradeNodeAndPnpmWorkflow.on({
+const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
+upgradeExternalVersionsWorkflow.on({
   workflowDispatch: {},
   schedule: [{
     cron: '0 0 1 * *',
   }],
 });
-upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
+upgradeExternalVersionsWorkflow.addJob('upgrade', {
   name: 'Upgrade',
   runsOn: ['ubuntu-latest'],
   outputs: {
@@ -73,14 +73,14 @@ upgradeNodeAndPnpmWorkflow.addJob('upgrade', {
     }),
   ],
 });
-upgradeNodeAndPnpmWorkflow.addJob('pr', {
+upgradeExternalVersionsWorkflow.addJob('pr', {
   ...WorkflowJobs.pullRequestFromPatch( {
     credentials: GithubCredentials.fromApp(),
     patch: {
       jobId: 'upgrade',
       outputName: 'patch_created',
     },
-    workflowName: 'upgrade-node-and-pnpm',
+    workflowName: 'upgrade-external-versions',
     pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM and other versions',
     labels: ['dependencies'],
     pullRequestDescription: [
