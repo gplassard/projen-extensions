@@ -1,6 +1,6 @@
 import { Component, Project, YamlFile } from 'projen';
 import { CARGO_TEST, cargoBuild, cargoCaches } from './utils';
-import { WorkflowActionsX } from '../github';
+import { WorkflowActionsX, githubAction } from '../github';
 
 export interface RustBuildReleaseArtifactsProps {
 
@@ -55,7 +55,7 @@ export class RustBuildReleaseArtifacts extends Component {
               WorkflowActionsX.checkout({}),
               {
                 name: 'Install toolchain',
-                uses: 'dtolnay/rust-toolchain@stable',
+                uses: githubAction('dtolnay/rust-toolchain'),
                 with: {
                   targets: '${{ matrix.target }}',
                 },
@@ -65,7 +65,7 @@ export class RustBuildReleaseArtifacts extends Component {
               ...cargoCaches({ cachePrefix: '${{ matrix.target }}-' }),
               {
                 name: 'Upload Artifacts',
-                uses: 'actions/upload-artifact@v4',
+                uses: githubAction('actions/upload-artifact'),
                 with: {
                   name: '${{ matrix.target }}-binaries',
                   path: `target/$\{{ matrix.target }}/release/${project.name}\${{ matrix.suffix }}`,
@@ -83,7 +83,7 @@ export class RustBuildReleaseArtifacts extends Component {
               WorkflowActionsX.checkout({}),
               {
                 name: 'Download Artifacts',
-                uses: 'actions/download-artifact@v4',
+                uses: githubAction('actions/download-artifact'),
               },
               {
                 name: 'Upload assets to existing release',

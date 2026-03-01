@@ -1,12 +1,12 @@
 import { JobStep } from 'projen/lib/github/workflows-model';
-import { nodeVersion, pnpmVersion } from './utils';
+import { githubAction, nodeVersion, pnpmVersion } from './utils';
 
 export class WorkflowActionsX {
 
   static checkout(withOptions: Record<string, unknown>): JobStep {
     return {
       name: 'Checkout',
-      uses: 'actions/checkout@v6',
+      uses: githubAction('actions/checkout'),
       with: {
         'fetch-depth': 0,
         ...withOptions,
@@ -16,7 +16,7 @@ export class WorkflowActionsX {
 
   static setupNode(options: { nodeVersion?: string; packageManager?: string }): JobStep {
     return {
-      uses: 'actions/setup-node@v4',
+      uses: githubAction('actions/setup-node'),
       with: {
         'node-version': nodeVersion(options),
         'registry-url': 'https://npm.pkg.github.com',
@@ -28,7 +28,7 @@ export class WorkflowActionsX {
   static setupPnpm(_options: {}): JobStep {
     return {
       name: 'Setup pnpm',
-      uses: 'pnpm/action-setup@v4',
+      uses: githubAction('pnpm/action-setup'),
       with: {
         version: pnpmVersion(),
       },
@@ -59,7 +59,7 @@ export class WorkflowActionsX {
     return {
       name: 'Generate token',
       id: 'generate_token',
-      uses: 'actions/create-github-app-token@v2',
+      uses: githubAction('actions/create-github-app-token'),
       with: {
         'app-id': '${{ secrets.PROJEN_APP_ID }}',
         'private-key': '${{ secrets.PROJEN_APP_PRIVATE_KEY }}',
@@ -71,7 +71,7 @@ export class WorkflowActionsX {
   static setupJdk(options: { javaVersion?: string }): JobStep {
     return {
       name: 'Set up JDK',
-      uses: 'actions/setup-java@v5',
+      uses: githubAction('actions/setup-java'),
       with: {
         'java-version': options.javaVersion ?? '21',
         'distribution': 'temurin',
@@ -83,7 +83,7 @@ export class WorkflowActionsX {
   static configureAwsCredentials(roleName: string): JobStep {
     return {
       name: 'Configure AWS credentials',
-      uses: 'aws-actions/configure-aws-credentials@v5',
+      uses: githubAction('aws-actions/configure-aws-credentials'),
       with: {
         'role-to-assume': `arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.${roleName} }}`,
         'aws-region': 'us-east-1',

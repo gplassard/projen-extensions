@@ -1,7 +1,9 @@
 import { PullRequestLintOptions } from 'projen/lib/github';
-import { version as ddTraceDefaultVersion } from './dd-trace.json';
-import * as nodeJsVersions from './nodejs.json';
-import { version as pnpmDefaultVersion } from './pnpm.json';
+import ddTraceDefaultVersionJson from './dd-trace.json';
+import githubActionsVersions from './github-actions.json';
+import ncuDefaultVersionJson from './ncu.json';
+import nodeJsVersions from './nodejs.json';
+import pnpmDefaultVersionJson from './pnpm.json';
 
 
 export const NODEJS_VERSIONS = {
@@ -12,9 +14,11 @@ export const NODEJS_VERSIONS = {
 
 const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_24_X;
 
-const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersion.replace('v', '');
+const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersionJson.version.replace('v', '');
 
-const DEFAULT_DD_TRACE_VERSION: string = ddTraceDefaultVersion;
+const DEFAULT_DD_TRACE_VERSION: string = ddTraceDefaultVersionJson.version;
+
+const DEFAULT_NCU_VERSION: string = ncuDefaultVersionJson.version;
 
 export const DEFAULT_PULL_REQUEST_LINT_OPTIONS: PullRequestLintOptions = {
   semanticTitleOptions: {
@@ -31,6 +35,20 @@ export function pnpmVersion(): string {
   return DEFAULT_PNPM_VERSION;
 }
 
+export type GithubActionName = keyof typeof githubActionsVersions;
+
+export function githubAction(name: GithubActionName): string {
+  const action = githubActionsVersions[name];
+  if ('hash' in action && action.hash) {
+    return `${name}@${action.hash} # ${action.version}`;
+  }
+  return `${name}@${action.version}`;
+}
+
 export function ddTraceVersion(options: { ddTraceVersion?: string }): string {
   return options?.ddTraceVersion ?? DEFAULT_DD_TRACE_VERSION;
+}
+
+export function ncuVersion(): string {
+  return DEFAULT_NCU_VERSION;
 }

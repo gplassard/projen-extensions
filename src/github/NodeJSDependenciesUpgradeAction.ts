@@ -1,6 +1,7 @@
 import { Component } from 'projen';
 import { GithubCredentials, GithubWorkflow, GitHub, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { ncuVersion } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface NodeJSDependenciesUpgradeActionProps {
@@ -37,7 +38,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
         WorkflowActionsX.installDependencies({}),
         {
           name: 'Upgrade dependencies',
-          run: 'pnpm dlx npm-check-updates@16 --upgrade --target=latest',
+          run: `pnpm dlx npm-check-updates@${ncuVersion()} --upgrade --target=latest`,
           env: {
             NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
           },

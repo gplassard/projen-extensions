@@ -1,6 +1,7 @@
 import { Component, JsonPatch, YamlFile } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { githubAction } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface DatadogStaticAnalysisActionProps {
@@ -24,7 +25,7 @@ export class DatadogStaticAnalysisAction extends Component {
         WorkflowActionsX.checkout({}),
         {
           name: 'Check code meets quality and security standards',
-          uses: 'DataDog/datadog-static-analyzer-github-action@v3',
+          uses: githubAction('DataDog/datadog-static-analyzer-github-action'),
           with: {
             dd_app_key: '${{ secrets.DD_APP_KEY }}',
             dd_api_key: '${{ secrets.DD_API_KEY }}',

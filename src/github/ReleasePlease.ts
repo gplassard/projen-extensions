@@ -1,5 +1,6 @@
 import { Component, JsonFile, SampleFile } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
+import { githubAction } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export enum ReleaseType {
@@ -56,7 +57,7 @@ export class ReleasePlease extends Component {
         }),
         {
           name: 'Release Please',
-          uses: 'googleapis/release-please-action@v4',
+          uses: githubAction('googleapis/release-please-action'),
           with: {
             token: '${{ steps.generate_token.outputs.token }}',
           },
