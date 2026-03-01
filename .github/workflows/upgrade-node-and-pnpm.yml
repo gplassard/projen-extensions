@@ -20,6 +20,19 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.30.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.9.0
+          registry-url: https://npm.pkg.github.com
+          cache: pnpm
+      - name: Install dependencies
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm i --frozen-lockfile
       - name: Get latest NodeJS versions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -31,11 +44,11 @@ jobs:
       - name: Upgrade GitHub Actions and NCU
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx ts-node scripts/upgrade-github-versions.ts
+        run: npx ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts
       - name: Upgrade Go and golangci-lint
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx ts-node scripts/upgrade-go-versions.ts
+        run: npx ts-node -P tsconfig.dev.json scripts/upgrade-go-versions.ts
       - name: Find mutations
         id: create_patch
         run: |-
@@ -55,7 +68,8 @@ jobs:
     needs: upgrade
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
     if: ${{ needs.upgrade.outputs.patch_created }}
     steps:
       - name: Generate token
