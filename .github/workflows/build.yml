@@ -23,8 +23,8 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.30.3
-      - uses: actions/setup-node@v4
+          version: 11.0.0-alpha.12
+      - uses: "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4"
         with:
           node-version: 24.9.0
           registry-url: https://npm.pkg.github.com
@@ -36,12 +36,12 @@ jobs:
       - name: run projen
         run: pnpm run projen
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@v2
+        uses: "datadog/test-visibility-github-action@f4b026bb8b8b53f323960cf86a849a0231ff93b9 # v2"
         with:
           languages: js
           api_key: ${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.87.0
       - name: build
         run: npx projen build
         env:
