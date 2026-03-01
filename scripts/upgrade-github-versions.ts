@@ -21,6 +21,9 @@ async function main() {
       if (hash) {
         data.hash = hash;
         console.log(`  New hash: ${hash}`);
+      } else {
+        delete data.hash;
+        console.log('  No hash found, removing hash');
       }
     } catch (e) {
       console.error(`  Failed to fetch hash for ${action}@${version}`);
