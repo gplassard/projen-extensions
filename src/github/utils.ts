@@ -40,7 +40,7 @@ export type GithubActionName = keyof typeof githubActionsVersions;
 export function githubAction(name: GithubActionName): string {
   const action = githubActionsVersions[name];
   if ('hash' in action && action.hash) {
-    return `${name}@${action.hash} # ${action.version}`;
+    return `${name}@${action.hash}`;
   }
   return `${name}@${action.version}`;
 }
