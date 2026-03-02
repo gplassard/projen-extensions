@@ -12,14 +12,35 @@ export interface GoProjectOptions extends BaseProjectProps {
 
 export class GoProject extends BaseProject {
   constructor(options: GoProjectOptions) {
-    super(options);
+    super({
+      ...options,
+      pullRequestLintOptions: options.pullRequestLintOptions ?? (options.parent ? { enabled: false } : undefined),
+      nodeJSDependenciesUpgrade: options.nodeJSDependenciesUpgrade ?? (options.parent ? false : true),
+      projenSynth: options.projenSynth ?? (options.parent ? false : true),
+      datadog: options.datadog ?? {
+        staticAnalysis: options.parent ? false : true,
+        softwareCompositionAnalysis: options.parent ? false : true,
+      },
+    });
 
-    const github = GitHub.of(this)!;
+    const isRoot = this === this.root;
+    const workingDirectory = isRoot ? undefined : this.name;
+
+    const github = GitHub.of(this.root);
+    if (!github) {
+      return;
+    }
     if (options.goBuildWorkflow || options.goBuildWorkflow == undefined) {
-      new GoBuildWorkflow(github, options.goBuildWorkflowOptions ?? {});
+      new GoBuildWorkflow(github, {
+        workingDirectory,
+        ...options.goBuildWorkflowOptions,
+      });
     }
     if (options.goLintWorkflow || options.goLintWorkflow == undefined) {
-      new GoLintWorkflow(github, options.goLintWorkflowOptions ?? {});
+      new GoLintWorkflow(github, {
+        workingDirectory,
+        ...options.goLintWorkflowOptions,
+      });
     }
   }
 }

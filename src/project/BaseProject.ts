@@ -39,11 +39,11 @@ export class BaseProject extends Project {
       pullRequestLintOptions: props.pullRequestLintOptions ?? DEFAULT_PULL_REQUEST_LINT_OPTIONS,
     });
 
-    if (props.nodeJSDependenciesUpgrade ?? true) {
+    if ((props.pullRequestLintOptions?.enabled ?? true) && (props.nodeJSDependenciesUpgrade ?? true)) {
       new NodeJSDependenciesUpgradeAction(github, props.nodeJSDependenciesUpgradeOptions ?? {});
     }
 
-    if (props.projenSynth ?? true) {
+    if ((props.pullRequestLintOptions?.enabled ?? true) && (props.projenSynth ?? true)) {
       new ProjenSynthAction(github, props.projenSynthOptions ?? {});
     }
 

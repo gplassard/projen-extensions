@@ -22,11 +22,14 @@ on:
       - main
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     permissions:
       contents: write
     outputs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
+    defaults:
+      run: {}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -62,7 +65,9 @@ jobs:
           echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."
           cat repo.patch
           exit 1
+        working-directory: .
   self-mutation:
+    name: Self mutation
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -168,6 +173,7 @@ on:
       - main
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -594,11 +600,14 @@ on:
       - main
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     permissions:
       contents: write
     outputs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
+    defaults:
+      run: {}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -634,7 +643,9 @@ jobs:
           echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."
           cat repo.patch
           exit 1
+        working-directory: .
   self-mutation:
+    name: Self mutation
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -740,6 +751,7 @@ on:
       - main
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -6,13 +6,14 @@ import { GO_TEST, goBuild, goCaches } from './utils';
 
 export interface GoBuildWorkflowProps {
   readonly goVersion?: string;
+  readonly workingDirectory?: string;
 }
 export class GoBuildWorkflow extends Component {
 
   constructor(scope: GitHub, props?: GoBuildWorkflowProps) {
     super(scope);
 
-    const workflow = new GithubWorkflow(scope, 'build');
+    const workflow = new GithubWorkflow(scope, props?.workingDirectory ? `build-${props.workingDirectory}` : 'build');
     workflow.on({
       push: {
         branches: ['main'],
@@ -22,10 +23,17 @@ export class GoBuildWorkflow extends Component {
         branches: ['main'],
       },
     });
-    workflow.addJob('build', {
+    const jobId = props?.workingDirectory ? `build-${props.workingDirectory}` : 'build';
+    workflow.addJob(jobId, {
+      name: props?.workingDirectory ? `Build ${props.workingDirectory}` : 'Build',
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.WRITE,
+      },
+      defaults: {
+        run: {
+          workingDirectory: props?.workingDirectory,
+        },
       },
       outputs: {
         patch_created: {
@@ -43,28 +51,32 @@ export class GoBuildWorkflow extends Component {
         ...WorkflowActions.uploadGitPatch({
           stepId: 'create_patch',
           outputName: 'patch_created',
+          patchFile: props?.workingDirectory ? `${props.workingDirectory}/repo.patch` : 'repo.patch',
         }),
         goBuild(),
         GO_TEST,
         {
           name: 'Fail build on mutation',
           if: 'steps.create_patch.outputs.patch_created',
+          workingDirectory: '.',
           run: [
             'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
-            'cat repo.patch',
+            `cat ${props?.workingDirectory ? `${props.workingDirectory}/repo.patch` : 'repo.patch'}`,
             'exit 1',
           ].join('\n'),
         },
       ],
     });
 
-    workflow.addJob('self-mutation', {
-      needs: ['build'],
+    const mutationJobId = props?.workingDirectory ? `self-mutation-${props.workingDirectory}` : 'self-mutation';
+    workflow.addJob(mutationJobId, {
+      name: props?.workingDirectory ? `Self mutation ${props.workingDirectory}` : 'Self mutation',
+      needs: [jobId],
       runsOn: ['ubuntu-latest'],
       permissions: {
         contents: JobPermission.WRITE,
       },
-      if: 'always() && needs.build.outputs.patch_created && !(github.event.pull_request.head.repo.full_name != github.repository)',
+      if: `always() && needs.${jobId}.outputs.patch_created && !(github.event.pull_request.head.repo.full_name != github.repository)`,
       steps: [
         ...GithubCredentials.fromApp({
           permissions: {
@@ -76,6 +88,7 @@ export class GoBuildWorkflow extends Component {
           token: '${{ steps.generate_token.outputs.token }}',
           ref: '${{ github.event.pull_request.head.ref }}',
           repository: '${{ github.event.pull_request.head.repo.full_name }}',
+          patchFile: props?.workingDirectory ? `${props.workingDirectory}/repo.patch` : 'repo.patch',
         }),
         {
           name: 'Set git identity',
