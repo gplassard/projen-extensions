@@ -47,19 +47,11 @@ export class ProjenSynthAction extends Component {
           name: 'Run projen',
           run: 'pnpm run projen',
         },
-        ...WorkflowActionsX.uploadGitPatch({
+        ...WorkflowActions.uploadGitPatch({
           stepId: 'self_mutation',
           outputName: 'self_mutation_happened',
+          mutationError: 'Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch.',
         }),
-        {
-          name: 'Fail build on mutation',
-          if: 'steps.self_mutation.outputs.self_mutation_happened',
-          run: [
-            'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
-            'cat repo.patch',
-            'exit 1',
-          ].join('\n'),
-        },
       ],
     });
     workflow.addJob('self-mutation', {
@@ -77,7 +69,7 @@ export class ProjenSynthAction extends Component {
             workflows: AppPermission.WRITE,
           },
         }).setupSteps,
-        ...WorkflowActionsX.checkoutWithPatch({
+        ...WorkflowActions.checkoutWithPatch({
           token: '${{ steps.generate_token.outputs.token }}',
           ref: '${{ github.event.pull_request.head.ref }}',
           repository: '${{ github.event.pull_request.head.repo.full_name }}',

@@ -1,4 +1,4 @@
-import { GithubWorkflow, WorkflowJobs, GithubCredentials } from 'projen/lib/github';
+import { GithubWorkflow, WorkflowJobs, GithubCredentials, WorkflowActions } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { TypescriptLibraryProject, WorkflowActionsX } from './src';
 
@@ -67,7 +67,7 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
     },
-    ...WorkflowActionsX.uploadGitPatch({
+    ...WorkflowActions.uploadGitPatch({
       stepId: 'create_patch',
       outputName: 'patch_created',
     }),

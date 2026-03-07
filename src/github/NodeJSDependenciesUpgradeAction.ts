@@ -1,5 +1,5 @@
 import { Component } from 'projen';
-import { GithubWorkflow, GitHub, WorkflowJobs, GithubCredentials } from 'projen/lib/github';
+import { GithubWorkflow, GitHub, WorkflowJobs, GithubCredentials, WorkflowActions } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { applyGithubActionsOverrides, ncuVersion } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
@@ -49,7 +49,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
           name: 'Run projen',
           run: 'pnpm run projen',
         },
-        ...WorkflowActionsX.uploadGitPatch({
+        ...WorkflowActions.uploadGitPatch({
           stepId: 'create_patch',
           outputName: 'patch_created',
         }),
