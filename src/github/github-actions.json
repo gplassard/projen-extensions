@@ -45,7 +45,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v2",
-    "hash": "f4b026bb8b8b53f323960cf86a849a0231ff93b9"
+    "hash": "f76512a963e7375dab9ad7f1abc0cacd41806c5c"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v2",
@@ -72,15 +72,19 @@
     "hash": "021a2405c7f990db57f5eae5397423dcc554159c"
   },
   "amannn/action-semantic-pull-request": {
-    "version": "v6"
+    "version": "v6",
+    "hash": "48f256284bd46cdaab1048c3721360e808335d50"
   },
   "peter-evans/create-pull-request": {
-    "version": "v7"
+    "version": "v7",
+    "hash": "22a9089034f40e5a961c8808d113e2c98fb63676"
   },
   "actions/create-release": {
-    "version": "v1"
+    "version": "v1",
+    "hash": "0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e"
   },
   "actions/upload-release-asset": {
-    "version": "v1"
+    "version": "v1",
+    "hash": "e8f9f06c4b078e705bd2ea027f0926603fc9b4d5"
   }
 }
