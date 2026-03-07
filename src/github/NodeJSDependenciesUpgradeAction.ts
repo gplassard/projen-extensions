@@ -1,7 +1,7 @@
 import { Component } from 'projen';
-import { GithubCredentials, GithubWorkflow, GitHub, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
+import { GithubWorkflow, GitHub, WorkflowJobs, GithubCredentials } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
-import { ncuVersion } from './utils';
+import { applyGithubActionsOverrides, ncuVersion } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface NodeJSDependenciesUpgradeActionProps {
@@ -11,6 +11,7 @@ export interface NodeJSDependenciesUpgradeActionProps {
 export class NodeJSDependenciesUpgradeAction extends Component {
   constructor(scope: GitHub, _props: NodeJSDependenciesUpgradeActionProps) {
     super(scope);
+    applyGithubActionsOverrides(scope);
 
     const workflow = new GithubWorkflow(scope, 'Upgrade-NodeJS-dependencies');
     workflow.on({
@@ -48,7 +49,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
           name: 'Run projen',
           run: 'pnpm run projen',
         },
-        ...WorkflowActions.uploadGitPatch({
+        ...WorkflowActionsX.uploadGitPatch({
           stepId: 'create_patch',
           outputName: 'patch_created',
         }),

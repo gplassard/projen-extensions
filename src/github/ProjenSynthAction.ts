@@ -1,6 +1,7 @@
 import { Component } from 'projen';
 import { WorkflowActions, GitHub, GithubCredentials, GithubWorkflow } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
+import { applyGithubActionsOverrides } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface ProjenSynthActionProps {
@@ -10,6 +11,7 @@ export interface ProjenSynthActionProps {
 export class ProjenSynthAction extends Component {
   constructor(scope: GitHub, _props: ProjenSynthActionProps) {
     super(scope);
+    applyGithubActionsOverrides(scope);
 
     const workflow = new GithubWorkflow(scope, 'Projen-Synth', {});
     workflow.on({
@@ -45,7 +47,7 @@ export class ProjenSynthAction extends Component {
           name: 'Run projen',
           run: 'pnpm run projen',
         },
-        ...WorkflowActions.uploadGitPatch({
+        ...WorkflowActionsX.uploadGitPatch({
           stepId: 'self_mutation',
           outputName: 'self_mutation_happened',
         }),
@@ -75,7 +77,7 @@ export class ProjenSynthAction extends Component {
             workflows: AppPermission.WRITE,
           },
         }).setupSteps,
-        ...WorkflowActions.checkoutWithPatch({
+        ...WorkflowActionsX.checkoutWithPatch({
           token: '${{ steps.generate_token.outputs.token }}',
           ref: '${{ github.event.pull_request.head.ref }}',
           repository: '${{ github.event.pull_request.head.repo.full_name }}',

@@ -1,7 +1,7 @@
 import { Component } from 'projen';
-import { GitHub, GithubWorkflow, WorkflowActions, GithubCredentials } from 'projen/lib/github';
+import { GitHub, GithubWorkflow, GithubCredentials } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
-import { WorkflowActionsX } from '../github';
+import { WorkflowActionsX, applyGithubActionsOverrides } from '../github';
 import { GO_TEST, goBuild, goCaches } from './utils';
 
 export interface GoBuildWorkflowProps {
@@ -11,6 +11,7 @@ export class GoBuildWorkflow extends Component {
 
   constructor(scope: GitHub, props?: GoBuildWorkflowProps) {
     super(scope);
+    applyGithubActionsOverrides(scope);
 
     const workflow = new GithubWorkflow(scope, 'build');
     workflow.on({
@@ -40,7 +41,7 @@ export class GoBuildWorkflow extends Component {
           name: 'Format Code',
           run: 'go fmt ./...',
         },
-        ...WorkflowActions.uploadGitPatch({
+        ...WorkflowActionsX.uploadGitPatch({
           stepId: 'create_patch',
           outputName: 'patch_created',
         }),
@@ -72,7 +73,7 @@ export class GoBuildWorkflow extends Component {
             contents: AppPermission.WRITE,
           },
         }).setupSteps,
-        ...WorkflowActions.checkoutWithPatch({
+        ...WorkflowActionsX.checkoutWithPatch({
           token: '${{ steps.generate_token.outputs.token }}',
           ref: '${{ github.event.pull_request.head.ref }}',
           repository: '${{ github.event.pull_request.head.repo.full_name }}',

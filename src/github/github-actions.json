@@ -70,5 +70,17 @@
   "tibdex/github-app-token": {
     "version": "v1.7.0",
     "hash": "021a2405c7f990db57f5eae5397423dcc554159c"
+  },
+  "amannn/action-semantic-pull-request": {
+    "version": "v6"
+  },
+  "peter-evans/create-pull-request": {
+    "version": "v7"
+  },
+  "actions/create-release": {
+    "version": "v1"
+  },
+  "actions/upload-release-asset": {
+    "version": "v1"
   }
 }

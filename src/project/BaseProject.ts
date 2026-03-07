@@ -11,6 +11,7 @@ import {
   NodeJSDependenciesUpgradeActionProps,
   ProjenSynthAction,
   ProjenSynthActionProps,
+  applyGithubActionsOverrides,
 } from '../github';
 
 export interface BaseProjectProps extends ProjectOptions {
@@ -38,6 +39,7 @@ export class BaseProject extends Project {
       mergify: false,
       pullRequestLintOptions: props.pullRequestLintOptions ?? DEFAULT_PULL_REQUEST_LINT_OPTIONS,
     });
+    applyGithubActionsOverrides(github);
 
     if (props.nodeJSDependenciesUpgrade ?? true) {
       new NodeJSDependenciesUpgradeAction(github, props.nodeJSDependenciesUpgradeOptions ?? {});

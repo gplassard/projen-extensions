@@ -4,7 +4,7 @@ import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction } from '../github';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides } from '../github';
 import {
   DatadogSoftwareCompositionAnalysisAction,
   DatadogSoftwareCompositionAnalysisActionProps,
@@ -49,6 +49,11 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       packageManager: NodePackageManager.PNPM,
       pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
+      buildWorkflow: true,
+      buildWorkflowOptions: {
+        ...(options.buildWorkflowOptions ?? {}),
+      },
+      release: true,
       ...options,
       githubOptions: {
         pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
@@ -84,6 +89,10 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       },
     };
     super(typescriptProjectOptions);
+    if (this.github) {
+      applyGithubActionsOverrides(this.github);
+    }
+
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
     this.npmrc.addConfig('use-node-version', nodeVersion(options));
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead

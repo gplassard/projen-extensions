@@ -55,19 +55,6 @@ export class WorkflowActionsX {
     };
   }
 
-  static generateGithubToken(options: { permissions: { [k in string]: string } }): JobStep {
-    return {
-      name: 'Generate token',
-      id: 'generate_token',
-      uses: githubAction('actions/create-github-app-token'),
-      with: {
-        'app-id': '${{ secrets.PROJEN_APP_ID }}',
-        'private-key': '${{ secrets.PROJEN_APP_PRIVATE_KEY }}',
-        ...options.permissions,
-      },
-    };
-  }
-
   static setupJdk(options: { javaVersion?: string }): JobStep {
     return {
       name: 'Set up JDK',
@@ -89,6 +76,57 @@ export class WorkflowActionsX {
         'aws-region': 'us-east-1',
       },
     };
+  }
+
+  static uploadGitPatch(options: { stepId: string; outputName: string }): JobStep[] {
+    return [
+      {
+        name: 'Find mutations',
+        id: options.stepId,
+        run: [
+          'git add .',
+          `git diff --staged --patch --exit-code > repo.patch || echo "${options.outputName}=true" >> $GITHUB_OUTPUT`,
+        ].join('\n'),
+        shell: 'bash',
+        workingDirectory: './',
+      },
+      {
+        name: 'Upload patch',
+        if: `steps.${options.stepId}.outputs.${options.outputName}`,
+        uses: githubAction('actions/upload-artifact'),
+        with: {
+          name: 'repo.patch',
+          path: 'repo.patch',
+          overwrite: true,
+        },
+      },
+    ];
+  }
+
+  static checkoutWithPatch(options: { token: string; ref: string; repository: string }): JobStep[] {
+    return [
+      {
+        name: 'Checkout',
+        uses: githubAction('actions/checkout'),
+        with: {
+          token: options.token,
+          ref: options.ref,
+          repository: options.repository,
+        },
+      },
+      {
+        name: 'Download patch',
+        uses: githubAction('actions/download-artifact'),
+        with: {
+          name: 'repo.patch',
+          path: '${{ runner.temp }}',
+        },
+      },
+      {
+        name: 'Apply patch',
+        run: '[ -s ${{ runner.temp }}/repo.patch ] && git apply ${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."',
+      },
+    ];
   }
 
   static generateCodeArtifactToken(): JobStep {
