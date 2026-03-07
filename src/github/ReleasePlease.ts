@@ -1,7 +1,7 @@
 import { Component, JsonFile, SampleFile } from 'projen';
-import { GitHub, GithubWorkflow } from 'projen/lib/github';
+import { GitHub, GithubWorkflow, GithubCredentials } from 'projen/lib/github';
+import { AppPermission } from 'projen/lib/github/workflows-model';
 import { githubAction } from './utils';
-import { WorkflowActionsX } from './WorkflowActionsX';
 
 export enum ReleaseType {
   RUST = 'rust',
@@ -49,12 +49,12 @@ export class ReleasePlease extends Component {
       runsOn: ['ubuntu-latest'],
       permissions: {},
       steps: [
-        WorkflowActionsX.generateGithubToken({
+        ...GithubCredentials.fromApp({
           permissions: {
-            'permission-pull-requests': 'write',
-            'permission-contents': 'write',
+            pullRequests: AppPermission.WRITE,
+            contents: AppPermission.WRITE,
           },
-        }),
+        }).setupSteps,
         {
           name: 'Release Please',
           uses: githubAction('googleapis/release-please-action'),

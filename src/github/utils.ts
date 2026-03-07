@@ -1,4 +1,4 @@
-import { PullRequestLintOptions } from 'projen/lib/github';
+import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
 import ddTraceDefaultVersionJson from './dd-trace.json';
 import githubActionsVersions from './github-actions.json';
 import ncuDefaultVersionJson from './ncu.json';
@@ -43,6 +43,12 @@ export function githubAction(name: GithubActionName): string {
     return `${name}@${action.hash}`;
   }
   return `${name}@${action.version}`;
+}
+
+export function applyGithubActionsOverrides(github: GitHub) {
+  for (const name of Object.keys(githubActionsVersions)) {
+    github.actions.set(name, githubAction(name as GithubActionName));
+  }
 }
 
 export function ddTraceVersion(options: { ddTraceVersion?: string }): string {

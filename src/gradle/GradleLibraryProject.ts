@@ -3,7 +3,7 @@ import { GitHub } from 'projen/lib/github';
 import { GradleBuildAction, GradleBuildActionProps } from './GradleBuildAction';
 import { GradleReleaseAction, GradleReleaseActionProps } from './GradleReleaseAction';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps } from '../github';
+import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps, applyGithubActionsOverrides } from '../github';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
 
 export interface GradleLibraryProjectOptions extends ProjectOptions {
@@ -40,6 +40,7 @@ export class GradleLibraryProject extends Project {
         ...(options.githubLintOptions ?? {}),
       },
     });
+    applyGithubActionsOverrides(this.github);
 
     if (options.gradleReleaseActionOptions) {
       new GradleReleaseAction(this.github, options.gradleReleaseActionOptions);

@@ -1,7 +1,7 @@
 import { Component } from 'projen';
-import { GitHub, GithubWorkflow, WorkflowActions, GithubCredentials } from 'projen/lib/github';
+import { GitHub, GithubWorkflow, GithubCredentials, WorkflowActions } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
-import { WorkflowActionsX } from '../github';
+import { WorkflowActionsX, applyGithubActionsOverrides } from '../github';
 import { GO_TEST, goBuild, goCaches } from './utils';
 
 export interface GoBuildWorkflowProps {
@@ -11,6 +11,7 @@ export class GoBuildWorkflow extends Component {
 
   constructor(scope: GitHub, props?: GoBuildWorkflowProps) {
     super(scope);
+    applyGithubActionsOverrides(scope);
 
     const workflow = new GithubWorkflow(scope, 'build');
     workflow.on({
@@ -43,18 +44,10 @@ export class GoBuildWorkflow extends Component {
         ...WorkflowActions.uploadGitPatch({
           stepId: 'create_patch',
           outputName: 'patch_created',
+          mutationError: 'Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch.',
         }),
         goBuild(),
         GO_TEST,
-        {
-          name: 'Fail build on mutation',
-          if: 'steps.create_patch.outputs.patch_created',
-          run: [
-            'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
-            'cat repo.patch',
-            'exit 1',
-          ].join('\n'),
-        },
       ],
     });
 

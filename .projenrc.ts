@@ -1,4 +1,4 @@
-import { GithubCredentials, GithubWorkflow, WorkflowActions, WorkflowJobs } from 'projen/lib/github';
+import { GithubWorkflow, WorkflowJobs, GithubCredentials, WorkflowActions } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { TypescriptLibraryProject, WorkflowActionsX } from './src';
 

@@ -1,6 +1,7 @@
 import { Component } from 'projen';
 import { WorkflowActions, GitHub, GithubCredentials, GithubWorkflow } from 'projen/lib/github';
 import { AppPermission, JobPermission } from 'projen/lib/github/workflows-model';
+import { applyGithubActionsOverrides } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface ProjenSynthActionProps {
@@ -10,6 +11,7 @@ export interface ProjenSynthActionProps {
 export class ProjenSynthAction extends Component {
   constructor(scope: GitHub, _props: ProjenSynthActionProps) {
     super(scope);
+    applyGithubActionsOverrides(scope);
 
     const workflow = new GithubWorkflow(scope, 'Projen-Synth', {});
     workflow.on({
@@ -48,16 +50,8 @@ export class ProjenSynthAction extends Component {
         ...WorkflowActions.uploadGitPatch({
           stepId: 'self_mutation',
           outputName: 'self_mutation_happened',
+          mutationError: 'Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch.',
         }),
-        {
-          name: 'Fail build on mutation',
-          if: 'steps.self_mutation.outputs.self_mutation_happened',
-          run: [
-            'echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."',
-            'cat repo.patch',
-            'exit 1',
-          ].join('\n'),
-        },
       ],
     });
     workflow.addJob('self-mutation', {
