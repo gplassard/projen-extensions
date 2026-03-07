@@ -49,11 +49,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       packageManager: NodePackageManager.PNPM,
       pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
-      buildWorkflow: true,
-      buildWorkflowOptions: {
-        ...(options.buildWorkflowOptions ?? {}),
-      },
-      release: true,
       ...options,
       githubOptions: {
         pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
