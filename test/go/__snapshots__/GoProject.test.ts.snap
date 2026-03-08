@@ -52,6 +52,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
       - name: Fail build on mutation
         if: steps.create_patch.outputs.patch_created
         run: |-
@@ -244,6 +245,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
       - name: Fail build on mutation
         if: steps.self_mutation.outputs.self_mutation_happened
         run: |-
@@ -386,6 +388,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
   pr:
     name: Create Pull Request
     needs: upgrade
@@ -624,6 +627,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
       - name: Fail build on mutation
         if: steps.create_patch.outputs.patch_created
         run: |-
@@ -816,6 +820,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
       - name: Fail build on mutation
         if: steps.self_mutation.outputs.self_mutation_happened
         run: |-
@@ -958,6 +963,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
   pr:
     name: Create Pull Request
     needs: upgrade

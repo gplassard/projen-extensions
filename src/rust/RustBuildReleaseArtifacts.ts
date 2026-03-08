@@ -69,6 +69,7 @@ export class RustBuildReleaseArtifacts extends Component {
                 with: {
                   name: '${{ matrix.target }}-binaries',
                   path: `target/$\{{ matrix.target }}/release/${project.name}\${{ matrix.suffix }}`,
+                  'retention-days': 1,
                 },
               },
             ],

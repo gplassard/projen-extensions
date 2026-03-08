@@ -323,6 +323,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
       - name: Fail build on mutation
         if: steps.self_mutation.outputs.self_mutation_happened
         run: |-
@@ -535,6 +536,7 @@ jobs:
           name: build-artifact
           path: dist
           overwrite: true
+          retention-days: 1
   release_github:
     name: Publish to GitHub Releases
     needs:
@@ -635,6 +637,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 1
   pr:
     name: Create Pull Request
     needs: upgrade
