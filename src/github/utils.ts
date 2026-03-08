@@ -1,3 +1,4 @@
+import { Component, YamlFile } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
 import ddTraceDefaultVersionJson from './dd-trace.json';
 import githubActionsVersions from './github-actions.json';
@@ -48,6 +49,45 @@ export function githubAction(name: GithubActionName): string {
 export function applyGithubActionsOverrides(github: GitHub) {
   for (const name of Object.keys(githubActionsVersions)) {
     github.actions.set(name, githubAction(name as GithubActionName));
+  }
+  new RetentionDaysComponent(github);
+}
+
+class RetentionDaysComponent extends Component {
+  constructor(private readonly github: GitHub) {
+    super(github.project);
+  }
+
+  override preSynthesize() {
+    const yamlFiles = this.project.node.findAll().filter(c => c instanceof YamlFile && c.path.startsWith('.github/workflows/')) as YamlFile[];
+    for (const file of yamlFiles) {
+      const anyFile = file as any;
+      const originalObj = anyFile.obj;
+      anyFile.obj = () => {
+        const rendered = typeof originalObj === 'function' ? originalObj() : originalObj;
+        return this.patchRetentionDays(rendered);
+      };
+    }
+  }
+
+  private patchRetentionDays(obj: any): any {
+    if (!obj || typeof obj !== 'object' || !obj.jobs || typeof obj.jobs !== 'object') {
+      return obj;
+    }
+    for (const jobId of Object.keys(obj.jobs)) {
+      const job = obj.jobs[jobId];
+      if (job && job.steps && Array.isArray(job.steps)) {
+        for (const step of job.steps) {
+          if (step && typeof step.uses === 'string' && step.uses.includes('actions/upload-artifact')) {
+            step.with = {
+              ...step.with,
+              'retention-days': 1,
+            };
+          }
+        }
+      }
+    }
+    return obj;
   }
 }
 

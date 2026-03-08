@@ -67,8 +67,9 @@ export class RustBuildReleaseArtifacts extends Component {
                 name: 'Upload Artifacts',
                 uses: githubAction('actions/upload-artifact'),
                 with: {
-                  name: '${{ matrix.target }}-binaries',
-                  path: `target/$\{{ matrix.target }}/release/${project.name}\${{ matrix.suffix }}`,
+                  'name': '${{ matrix.target }}-binaries',
+                  'path': `target/$\{{ matrix.target }}/release/${project.name}\${{ matrix.suffix }}`,
+                  'retention-days': 1,
                 },
               },
             ],
