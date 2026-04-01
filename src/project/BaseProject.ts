@@ -14,6 +14,7 @@ import {
   applyGithubActionsOverrides,
 } from '../github';
 import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
+import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
 
 export interface BaseProjectProps extends ProjectOptions {
   readonly customGitignore?: CustomGitignoreProps;
@@ -66,7 +67,7 @@ export class BaseProject extends Project {
       new DatadogSecretScanningAction(github, props.datadog?.secretScanningOptions ?? {});
     }
     if (props.datadog?.infrastructureAsCodeSecurity ?? true) {
-      new DatadogSecretScanningAction(github, props.datadog?.infrastructureAsCodeSecurityOptions ?? {});
+      new DatadogInfraAsCodeSecurityAction(github, props.datadog?.infrastructureAsCodeSecurityOptions ?? {});
     }
 
     this.removeTask('eject');
