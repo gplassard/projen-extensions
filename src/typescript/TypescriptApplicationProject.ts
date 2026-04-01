@@ -5,6 +5,8 @@ import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSched
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides } from '../github';
+import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
+import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 import {
   DatadogSoftwareCompositionAnalysisAction,
   DatadogSoftwareCompositionAnalysisActionProps,
@@ -29,6 +31,10 @@ type CustomProps = {
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     staticAnalysis?: boolean;
     staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+    secretScanning?: boolean;
+    secretScanningOptions?: DatadogSecretScanningActionProps;
+    infrastructureAsCodeSecurity?: boolean;
+    infrastructureAsCodeSecurityOptions?: DatadogSecretScanningActionProps;
     testOptimization?: boolean;
     testOptimizationOptions?: {
       ddTraceVersion?: string;
@@ -100,6 +106,12 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
     if (options.datadog?.staticAnalysis ?? true) {
       new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});
+    }
+    if (options.datadog?.secretScanning ?? true) {
+      new DatadogSecretScanningAction(this.github!, options.datadog?.secretScanningOptions ?? {});
+    }
+    if (options.datadog?.infrastructureAsCodeSecurity ?? true) {
+      new DatadogInfraAsCodeSecurityAction(this.github!, options.datadog?.infrastructureAsCodeSecurityOptions ?? {});
     }
 
     this.addDevDeps('eslint-plugin-unused-imports');
