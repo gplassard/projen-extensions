@@ -9,11 +9,11 @@
   },
   "pnpm/action-setup": {
     "version": "v4",
-    "hash": "c5ba7f7862a0f64c1b1a05fbac13e0b8e86ba08c"
+    "hash": "f40ffcd9367d9f12939873eb1018b921a783ffaa"
   },
   "actions/create-github-app-token": {
     "version": "v2",
-    "hash": "29824e69f54612133e76f7eaac726eef6c875baf"
+    "hash": "fee1f7d63c2ff003460e3d139729b119787bc349"
   },
   "actions/setup-java": {
     "version": "v5",
@@ -25,7 +25,7 @@
   },
   "dtolnay/rust-toolchain": {
     "version": "stable",
-    "hash": "631a55b12751854ce901bb631d5902ceb48146f7"
+    "hash": "29eef336d9b2848a0b548edc03f92a220660cdb8"
   },
   "actions/upload-artifact": {
     "version": "v4",
@@ -45,7 +45,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v2",
-    "hash": "f76512a963e7375dab9ad7f1abc0cacd41806c5c"
+    "hash": "57297892db18ca5d6d839a0db59eb4ec98c2845b"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v2",
@@ -65,7 +65,7 @@
   },
   "actions/setup-go": {
     "version": "v6",
-    "hash": "4b73464bb391d4059bd26b0524d20df3927bd417"
+    "hash": "4a3601121dd01d1626a1e23e37211e3254c1c06c"
   },
   "tibdex/github-app-token": {
     "version": "v1.7.0",
