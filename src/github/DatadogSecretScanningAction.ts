@@ -1,4 +1,4 @@
-import { Component, JsonPatch, YamlFile } from 'projen';
+import { Component, JsonPatch } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 import { githubAction } from './utils';

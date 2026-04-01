@@ -13,8 +13,8 @@ import {
   ProjenSynthActionProps,
   applyGithubActionsOverrides,
 } from '../github';
-import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
+import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 
 export interface BaseProjectProps extends ProjectOptions {
   readonly customGitignore?: CustomGitignoreProps;
