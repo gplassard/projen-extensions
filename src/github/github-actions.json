@@ -55,6 +55,9 @@
     "version": "v3",
     "hash": "506d966f01f45874d7a53d00a0c300f650e91e39"
   },
+  "DataDog/datadog-iac-scanner-github-action": {
+    "version": "v1"
+  },
   "googleapis/release-please-action": {
     "version": "v4",
     "hash": "c3fc4de07084f75a2b61a5b933069bda6edf3d5c"

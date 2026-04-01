@@ -13,6 +13,7 @@ import {
   ProjenSynthActionProps,
   applyGithubActionsOverrides,
 } from '../github';
+import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 
 export interface BaseProjectProps extends ProjectOptions {
   readonly customGitignore?: CustomGitignoreProps;
@@ -26,6 +27,10 @@ export interface BaseProjectProps extends ProjectOptions {
     readonly softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     readonly staticAnalysis?: boolean;
     readonly staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+    readonly secretScanning?: boolean;
+    readonly secretScanningOptions?: DatadogSecretScanningActionProps;
+    readonly infrastructureAsCodeSecurity?: boolean;
+    readonly infrastructureAsCodeSecurityOptions?: DatadogSecretScanningActionProps;
   };
 }
 
@@ -54,10 +59,16 @@ export class BaseProject extends Project {
         ddService: this.name,
       });
     }
-
     if (props.datadog?.staticAnalysis ?? true) {
       new DatadogStaticAnalysisAction(github, props.datadog?.staticAnalysisOptions ?? {});
     }
+    if (props.datadog?.secretScanning ?? true) {
+      new DatadogSecretScanningAction(github, props.datadog?.secretScanningOptions ?? {});
+    }
+    if (props.datadog?.infrastructureAsCodeSecurity ?? true) {
+      new DatadogSecretScanningAction(github, props.datadog?.infrastructureAsCodeSecurityOptions ?? {});
+    }
+
     this.removeTask('eject');
     this.removeTask('build');
     this.removeTask('default');
