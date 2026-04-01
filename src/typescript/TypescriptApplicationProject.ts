@@ -10,6 +10,8 @@ import {
   DatadogSoftwareCompositionAnalysisActionProps,
 } from '../github/DatadogSoftwareCompositionAnalysisAction';
 import { DatadogStaticAnalysisAction, DatadogStaticAnalysisActionProps } from '../github/DatadogStaticAnalysisAction';
+import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
+import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
@@ -29,6 +31,10 @@ type CustomProps = {
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
     staticAnalysis?: boolean;
     staticAnalysisOptions?: DatadogStaticAnalysisActionProps;
+    secretScanning?: boolean;
+    secretScanningOptions?: DatadogSecretScanningActionProps;
+    infrastructureAsCodeSecurity?: boolean;
+    infrastructureAsCodeSecurityOptions?: DatadogSecretScanningActionProps;
     testOptimization?: boolean;
     testOptimizationOptions?: {
       ddTraceVersion?: string;
@@ -100,6 +106,12 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
     if (options.datadog?.staticAnalysis ?? true) {
       new DatadogStaticAnalysisAction(this.github!, options.datadog?.staticAnalysisOptions ?? {});
+    }
+    if (options.datadog?.secretScanning ?? true) {
+      new DatadogSecretScanningAction(this.github!, options.datadog?.secretScanningOptions ?? {});
+    }
+    if (options.datadog?.infrastructureAsCodeSecurity ?? true) {
+      new DatadogInfraAsCodeSecurityAction(this.github!, options.datadog?.infrastructureAsCodeSecurityOptions ?? {});
     }
 
     this.addDevDeps('eslint-plugin-unused-imports');
