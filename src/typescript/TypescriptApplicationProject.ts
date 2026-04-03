@@ -213,7 +213,7 @@ export default defineConfig({
       ...releasePatches,
     );
 
-    const upgradeFile = options.release ? '.github/workflows/upgrade-main.yml' : '.github/workflows/upgrade.yml';
+    const upgradeFile = options.release !== false ? '.github/workflows/upgrade-main.yml' : '.github/workflows/upgrade.yml';
     this.tryFindObjectFile(upgradeFile)?.patch(
       JsonPatch.add('/jobs/upgrade/permissions/packages', 'read'),
       JsonPatch.replace('/jobs/upgrade/steps/2', WorkflowActionsX.setupNode(options)),

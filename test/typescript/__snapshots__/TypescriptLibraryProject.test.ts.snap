@@ -655,6 +655,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     outputs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
@@ -666,14 +667,23 @@ jobs:
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 10.33.0
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
+          registry-url: https://npm.pkg.github.com
+          cache: pnpm
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
         run: npx projen upgrade
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: Update dependencies
+        run: pnpm update --no-save
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Find mutations
         id: create_patch
         run: |-
@@ -694,7 +704,8 @@ jobs:
     needs: upgrade
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
     if: \${{ needs.upgrade.outputs.patch_created }}
     steps:
       - name: Generate token
@@ -706,6 +717,7 @@ jobs:
           permission-pull-requests: write
           permission-contents: write
           permission-workflows: write
+          token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
