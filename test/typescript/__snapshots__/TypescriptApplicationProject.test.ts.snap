@@ -286,6 +286,7 @@ jobs:
         with:
           node-version: 24.14.1
           cache: yarn
+          package-manager-cache: true
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
@@ -544,6 +545,7 @@ jobs:
         with:
           node-version: 24.14.1
           cache: yarn
+          package-manager-cache: true
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
@@ -597,6 +599,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
+          package-manager-cache: "false"
       - name: Download build artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -636,6 +639,7 @@ jobs:
         with:
           node-version: 24.14.1
           cache: yarn
+          package-manager-cache: true
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
@@ -1411,6 +1415,13 @@ use-node-version=24.14.1
       "typescript": "*",
       "vitest": "*",
     },
+    "devEngines": {
+      "packageManager": {
+        "name": "yarn",
+        "onFail": "ignore",
+        "version": "<2.0.0",
+      },
+    },
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
@@ -1526,6 +1537,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [
       "node_modules",
@@ -1566,6 +1580,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [],
     "include": [
@@ -2822,6 +2839,12 @@ use-node-version=24.14.1
       "typescript": "*",
       "vitest": "*",
     },
+    "devEngines": {
+      "packageManager": {
+        "name": "pnpm",
+        "onFail": "ignore",
+      },
+    },
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
@@ -2935,6 +2958,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [
       "node_modules",
@@ -2975,6 +3001,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [],
     "include": [
@@ -3594,6 +3623,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.14.1
+          package-manager-cache: "false"
       - name: Download build artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -4410,6 +4440,12 @@ use-node-version=24.14.1
       "typescript": "*",
       "vitest": "*",
     },
+    "devEngines": {
+      "packageManager": {
+        "name": "pnpm",
+        "onFail": "ignore",
+      },
+    },
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
@@ -4526,6 +4562,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [
       "node_modules",
@@ -4566,6 +4605,9 @@ rulesets:
       "strictPropertyInitialization": true,
       "stripInternal": true,
       "target": "ES2020",
+      "types": [
+        "node",
+      ],
     },
     "exclude": [],
     "include": [
