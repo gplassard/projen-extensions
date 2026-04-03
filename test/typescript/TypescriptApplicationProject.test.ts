@@ -10,6 +10,9 @@ describe('TypescriptApplicationProject with default settings', () => {
     });
     const output = Testing.synth(project);
     expect(output).toMatchSnapshot();
+
+    const upgradeMainWorkflow = output['.github/workflows/upgrade-main.yml'];
+    expect(upgradeMainWorkflow).toContain('NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}');
   });
 
   it('can still use yarn', () => {
