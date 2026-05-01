@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
-        uses: DataDog/datadog-iac-scanner-github-action@699a25857b2eb01d2883f15cf1698ce6d392dd4f
+        uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
           dd_api_key: \${{ secrets.DD_API_KEY }}
@@ -136,10 +136,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 10.33.0
+          version: 11.0.3
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -269,7 +269,7 @@ jobs:
           permission-pull-requests: write
           permission-contents: write
       - name: Release Please
-        uses: googleapis/release-please-action@c3fc4de07084f75a2b61a5b933069bda6edf3d5c
+        uses: googleapis/release-please-action@8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5
         with:
           token: \${{ steps.generate_token.outputs.token }}
 ",
@@ -476,10 +476,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 10.33.0
+          version: 11.0.3
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -489,7 +489,7 @@ jobs:
       - name: Upgrade dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm dlx npm-check-updates@20 --upgrade --target=latest
+        run: pnpm dlx npm-check-updates@22 --upgrade --target=latest
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
