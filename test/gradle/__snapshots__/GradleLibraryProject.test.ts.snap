@@ -92,7 +92,7 @@ jobs:
           version: 10.33.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -314,7 +314,7 @@ jobs:
           version: 10.33.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -324,7 +324,7 @@ jobs:
       - name: Upgrade dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm dlx npm-check-updates@20 --upgrade --target=latest
+        run: pnpm dlx npm-check-updates@22 --upgrade --target=latest
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -579,7 +579,7 @@ jobs:
           version: 10.33.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -888,7 +888,7 @@ jobs:
           version: 10.33.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.14.1
+          node-version: 24.15.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -898,7 +898,7 @@ jobs:
       - name: Upgrade dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm dlx npm-check-updates@20 --upgrade --target=latest
+        run: pnpm dlx npm-check-updates@22 --upgrade --target=latest
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
