@@ -45,7 +45,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v2",
-    "hash": "57297892db18ca5d6d839a0db59eb4ec98c2845b"
+    "hash": "ef8406bf5f987037fcbe3bf8ecf023f5dd1f9e36"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v2",
@@ -57,11 +57,11 @@
   },
   "DataDog/datadog-iac-scanner-github-action": {
     "version": "v1",
-    "hash": "699a25857b2eb01d2883f15cf1698ce6d392dd4f"
+    "hash": "b5dc19b85ac4af53e56e02d430831fb6a87b6406"
   },
   "googleapis/release-please-action": {
     "version": "v4",
-    "hash": "c3fc4de07084f75a2b61a5b933069bda6edf3d5c"
+    "hash": "8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5"
   },
   "golangci/golangci-lint-action": {
     "version": "v9",
