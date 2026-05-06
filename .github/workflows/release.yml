@@ -51,8 +51,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: release
         run: pnpm exec projen release
-        env:
-          NODE_OPTIONS: -r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-

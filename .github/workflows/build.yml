@@ -44,8 +44,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint

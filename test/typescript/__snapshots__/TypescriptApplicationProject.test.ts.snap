@@ -312,8 +312,6 @@ jobs:
           git diff --staged --patch --exit-code > repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT
         shell: bash
         working-directory: ./
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -568,8 +566,6 @@ jobs:
           TAG=$(cat dist/releasetag.txt)
           ([ ! -z "$TAG" ] && git ls-remote -q --exit-code --tags origin $TAG && (echo "exists=true" >> $GITHUB_OUTPUT)) || (echo "exists=false" >> $GITHUB_OUTPUT)
           cat $GITHUB_OUTPUT
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check for new commits
         id: git_remote
         run: |-
@@ -1118,6 +1114,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "$(node -e "if(process.env.CI==='true')process.stdout.write('--import dd-trace/register.js -r dd-trace/ci/init')")",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -1907,8 +1906,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -2559,6 +2556,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "$(node -e "if(process.env.CI==='true')process.stdout.write('--import dd-trace/register.js -r dd-trace/ci/init')")",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -3330,8 +3330,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -3587,8 +3585,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: release
         run: pnpm exec projen release
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -4143,6 +4139,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "$(node -e "if(process.env.CI==='true')process.stdout.write('--import dd-trace/register.js -r dd-trace/ci/init')")",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },

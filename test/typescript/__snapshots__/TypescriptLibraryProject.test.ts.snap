@@ -305,8 +305,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -562,8 +560,6 @@ jobs:
           js-tracer-version: 5.101.0
       - name: release
         run: pnpm exec projen release
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -1184,6 +1180,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "$(node -e "if(process.env.CI==='true')process.stdout.write('--import dd-trace/register.js -r dd-trace/ci/init')")",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
