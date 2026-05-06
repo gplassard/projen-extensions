@@ -304,7 +304,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.101.0
       - name: Find mutations
         id: self_mutation
         run: |-
@@ -561,7 +561,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.101.0
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -1904,7 +1904,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
         env:
@@ -3327,7 +3327,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.101.0
       - name: build
         run: pnpm exec projen build
         env:
@@ -3584,7 +3584,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.101.0
       - name: release
         run: pnpm exec projen release
         env:
