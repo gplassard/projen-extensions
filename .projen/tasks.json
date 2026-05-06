@@ -224,7 +224,10 @@
       "steps": [
         {
           "exec": "vitest run -u",
-          "receiveArgs": true
+          "receiveArgs": true,
+          "env": {
+            "NODE_OPTIONS": "--import dd-trace/register.js -r dd-trace/ci/init"
+          }
         }
       ]
     },
