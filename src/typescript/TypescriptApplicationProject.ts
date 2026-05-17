@@ -140,7 +140,28 @@ export class TypescriptApplicationProject extends TypeScriptProject {
 
     // Modify the test task to use Vitest instead of Jest
     this.tasks.tryFind('test')?.reset();
-    this.tasks.tryFind('test')?.exec('vitest run -u', { receiveArgs: true });
+    this.tasks.tryFind('test')?.exec('vitest run -u', {
+      receiveArgs: true,
+    });
+    const baseLocation = `/home/runner/work/${this.name}/${this.name}/.datadog/lib/node_modules`;
+    this.tasks.addTask('test:ci', {
+      exec: 'vitest run -u',
+      receiveArgs: true,
+      env: {
+        NODE_OPTIONS: `--import ${baseLocation}/dd-trace/register.js -r ${baseLocation}/dd-trace/ci/init`,
+      },
+    });
+    this.tasks.addTask('build:ci', {
+      steps: [
+        { spawn: 'default' },
+        { spawn: 'pre-compile' },
+        { spawn: 'compile' },
+        { spawn: 'post-compile' },
+        { spawn: 'test:ci' },
+        { spawn: 'package' },
+      ],
+    },
+    );
 
     // Also update test:watch task
     const testWatchTask = this.tasks.tryFind('test:watch');
@@ -188,10 +209,9 @@ export default defineConfig({
             uses: githubAction('datadog/test-visibility-github-action'),
             with: { 'languages': 'js', 'api_key': '${{secrets.DD_API_KEY}}', 'site': 'datadoghq.eu', 'js-tracer-version': ddTraceVersion(options.datadog?.testOptimizationOptions ?? {}) },
           }),
-          // Ensure NODE_OPTIONS are set for the build step which triggers tests
-          JsonPatch.add('/jobs/build/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
         ]
         : []),
+      JsonPatch.replace(`/jobs/build/steps/${5 + stepOffset}`, { name: 'build', run: 'pnpm exec projen build:ci' }),
       JsonPatch.add(`/jobs/build/steps/${6 + stepOffset}`, { name: 'build-tests', run: 'pnpm run test:compile' }),
       JsonPatch.add(`/jobs/build/steps/${7 + stepOffset}`, { name: 'lint', run: 'npx projen eslint' }),
     ];
@@ -212,10 +232,9 @@ export default defineConfig({
             uses: githubAction('datadog/test-visibility-github-action'),
             with: { 'languages': 'js', 'api_key': '${{secrets.DD_API_KEY}}', 'site': 'datadoghq.eu', 'js-tracer-version': ddTraceVersion(options.datadog?.testOptimizationOptions ?? {}) },
           }),
-          // Ensure NODE_OPTIONS are set for the release step
-          JsonPatch.add('/jobs/release/steps/6/env', { NODE_OPTIONS: '-r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}' }),
         ]
         : []),
+      JsonPatch.add(`/jobs/release/steps/${5 + stepOffset}`, { name: 'build', run: 'pnpm exec projen build:ci' }),
       JsonPatch.add('/jobs/release_github/steps/0/with/node-version', nodeVersion(options)),
     ];
 

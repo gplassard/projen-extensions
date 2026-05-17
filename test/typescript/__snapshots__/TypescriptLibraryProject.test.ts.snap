@@ -305,11 +305,9 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.103.0
       - name: build
-        run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
+        run: pnpm exec projen build:ci
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -562,11 +560,11 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.74.0
+          js-tracer-version: 5.103.0
+      - name: build
+        run: pnpm exec projen build:ci
       - name: release
         run: pnpm exec projen release
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -987,6 +985,29 @@ use-node-version=24.15.0
           },
         ],
       },
+      "build:ci": {
+        "name": "build:ci",
+        "steps": [
+          {
+            "spawn": "default",
+          },
+          {
+            "spawn": "pre-compile",
+          },
+          {
+            "spawn": "compile",
+          },
+          {
+            "spawn": "post-compile",
+          },
+          {
+            "spawn": "test:ci",
+          },
+          {
+            "spawn": "package",
+          },
+        ],
+      },
       "bump": {
         "condition": "git log --oneline -1 | grep -qv "chore(release):"",
         "description": "Bumps version based on latest git tag and generates a changelog entry",
@@ -1185,6 +1206,18 @@ use-node-version=24.15.0
       "test": {
         "description": "Run tests",
         "name": "test",
+        "steps": [
+          {
+            "exec": "vitest run -u",
+            "receiveArgs": true,
+          },
+        ],
+      },
+      "test:ci": {
+        "env": {
+          "NODE_OPTIONS": "--import /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/register.js -r /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/ci/init",
+        },
+        "name": "test:ci",
         "steps": [
           {
             "exec": "vitest run -u",
@@ -1502,6 +1535,7 @@ use-node-version=24.15.0
     },
     "scripts": {
       "build": "projen build",
+      "build:ci": "projen build:ci",
       "bump": "projen bump",
       "clobber": "projen clobber",
       "compile": "projen compile",
@@ -1517,6 +1551,7 @@ use-node-version=24.15.0
       "publish:npm": "projen publish:npm",
       "release": "projen release",
       "test": "projen test",
+      "test:ci": "projen test:ci",
       "test:compile": "projen test:compile",
       "test:watch": "projen test:watch",
       "unbump": "projen unbump",

@@ -2,6 +2,7 @@
   "name": "@gplassard/projen-extensions",
   "scripts": {
     "build": "projen build",
+    "build:ci": "projen build:ci",
     "bump": "projen bump",
     "clobber": "projen clobber",
     "compile": "projen compile",
@@ -16,6 +17,7 @@
     "publish:npm": "projen publish:npm",
     "release": "projen release",
     "test": "projen test",
+    "test:ci": "projen test:ci",
     "test:compile": "projen test:compile",
     "test:watch": "projen test:watch",
     "unbump": "projen unbump",
