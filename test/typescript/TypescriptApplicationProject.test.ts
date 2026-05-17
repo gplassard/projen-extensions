@@ -24,14 +24,14 @@ describe('TypescriptApplicationProject with default settings', () => {
     expect(output).toMatchSnapshot();
   });
 
-  it('can work without release', () => {
+  it('can work with release', () => {
     const project = new TypescriptApplicationProject({
       name: 'test-project',
-      release: false,
+      release: true,
     });
     const output = Testing.synth(project);
 
-    const upgradeWorkflow = output['.github/workflows/upgrade.yml'];
+    const upgradeWorkflow = output['.github/workflows/upgrade-main.yml'];
     expect(upgradeWorkflow).toContain('NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}');
     expect(output).toMatchSnapshot();
   });
