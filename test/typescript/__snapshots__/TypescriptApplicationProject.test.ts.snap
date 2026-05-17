@@ -306,7 +306,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.75.0
+          js-tracer-version: 5.103.0
       - name: build
         run: pnpm exec projen build:ci
       - name: build-tests
@@ -1758,7 +1758,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.75.0
+          js-tracer-version: 5.103.0
       - name: build
         run: pnpm exec projen build:ci
       - name: build-tests
@@ -2013,7 +2013,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.75.0
+          js-tracer-version: 5.103.0
       - name: build
         run: pnpm exec projen build:ci
       - name: release
@@ -3400,7 +3400,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.75.0
+          js-tracer-version: 5.103.0
       - name: build
         run: pnpm exec projen build:ci
       - name: build-tests
