@@ -314,8 +314,6 @@ jobs:
           git diff --staged --patch --exit-code > repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT
         shell: bash
         working-directory: ./
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -959,6 +957,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -969,6 +970,15 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
+          },
+        ],
+      },
+      "test:local": {
+        "name": "test:local",
+        "steps": [
+          {
+            "exec": "vitest run -u",
+            "receiveArgs": true,
           },
         ],
       },
@@ -1265,6 +1275,7 @@ use-node-version=24.15.0
       "projen": "projen",
       "test": "projen test",
       "test:compile": "projen test:compile",
+      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "upgrade": "projen upgrade",
       "watch": "projen watch",
@@ -1731,8 +1742,6 @@ jobs:
           js-tracer-version: 5.75.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -1988,8 +1997,6 @@ jobs:
           js-tracer-version: 5.75.0
       - name: release
         run: pnpm exec projen release
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: Check if version has already been tagged
         id: check_tag_exists
         run: |-
@@ -2544,6 +2551,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -2554,6 +2564,15 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
+          },
+        ],
+      },
+      "test:local": {
+        "name": "test:local",
+        "steps": [
+          {
+            "exec": "vitest run -u",
+            "receiveArgs": true,
           },
         ],
       },
@@ -2872,6 +2891,7 @@ use-node-version=24.15.0
       "release": "projen release",
       "test": "projen test",
       "test:compile": "projen test:compile",
+      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "unbump": "projen unbump",
       "upgrade": "projen upgrade",
@@ -3338,8 +3358,6 @@ jobs:
           js-tracer-version: 5.75.0
       - name: build
         run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -3990,6 +4008,9 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
+            "env": {
+              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
+            },
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -4000,6 +4021,15 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
+          },
+        ],
+      },
+      "test:local": {
+        "name": "test:local",
+        "steps": [
+          {
+            "exec": "vitest run -u",
+            "receiveArgs": true,
           },
         ],
       },
@@ -4298,6 +4328,7 @@ use-node-version=24.15.0
       "projen": "projen",
       "test": "projen test",
       "test:compile": "projen test:compile",
+      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "upgrade": "projen upgrade",
       "watch": "projen watch",

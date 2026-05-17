@@ -46,9 +46,7 @@ jobs:
           site: datadoghq.eu
           js-tracer-version: 5.75.0
       - name: build
-        run: pnpm exec projen build
-        env:
-          NODE_OPTIONS: -r ${{ env.DD_TRACE_PACKAGE }} --import ${{ env.DD_TRACE_ESM_IMPORT }}
+        run: pnpm exec projen build:ci
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
