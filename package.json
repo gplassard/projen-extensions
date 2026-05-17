@@ -46,10 +46,10 @@
     "projen": "^0.99.52"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
-      "esbuild",
-      "unrs-resolver"
-    ]
+    "allowBuilds": {
+      "esbuild": false,
+      "unrs-resolver": false
+    }
   },
   "devEngines": {
     "packageManager": {

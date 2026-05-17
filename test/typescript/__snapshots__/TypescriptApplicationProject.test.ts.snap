@@ -1277,10 +1277,10 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project",
     "pnpm": {
-      "ignoredBuiltDependencies": [
-        "esbuild",
-        "unrs-resolver",
-      ],
+      "allowBuilds": {
+        "esbuild": false,
+        "unrs-resolver": false,
+      },
     },
     "publishConfig": {
       "access": "public",
@@ -2922,10 +2922,10 @@ use-node-version=24.15.0
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
     "pnpm": {
-      "ignoredBuiltDependencies": [
-        "esbuild",
-        "unrs-resolver",
-      ],
+      "allowBuilds": {
+        "esbuild": false,
+        "unrs-resolver": false,
+      },
     },
     "publishConfig": {
       "access": "public",
@@ -4390,10 +4390,10 @@ use-node-version=24.15.0
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
     "pnpm": {
-      "ignoredBuiltDependencies": [
-        "esbuild",
-        "unrs-resolver",
-      ],
+      "allowBuilds": {
+        "esbuild": false,
+        "unrs-resolver": false,
+      },
     },
     "publishConfig": {
       "access": "public",
