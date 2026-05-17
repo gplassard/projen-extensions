@@ -45,7 +45,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v2",
-    "hash": "ef8406bf5f987037fcbe3bf8ecf023f5dd1f9e36"
+    "hash": "a06d552ea316e44c261701eb4fd2078b2b1ab702"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v2",
