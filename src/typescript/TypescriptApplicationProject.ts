@@ -1,4 +1,4 @@
-import { JsonPatch, SampleFile } from 'projen';
+import { JsonPatch, Project, SampleFile, YamlFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -25,6 +25,7 @@ type CustomProps = {
    **/
   releaseRank?: number;
   nodeVersion?: string;
+  pnpmAllowBuilds?: Record<string, boolean>;
 
   datadog?: {
     softwareCompositionAnalysis?: boolean;
@@ -106,6 +107,15 @@ export class TypescriptApplicationProject extends TypeScriptProject {
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
     this.npmrc.addConfig('use-node-version', nodeVersion(options));
+    new YamlFile(Project.of(this).root, 'pnpm-workspace.yaml', {
+      obj: {
+        allowBuilds: {
+          'esbuild': false,
+          'unrs-resolver': false,
+          ...options.pnpmAllowBuilds,
+        },
+      },
+    });
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
 
