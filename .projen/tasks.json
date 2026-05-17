@@ -254,7 +254,7 @@
     "test:ci": {
       "name": "test:ci",
       "env": {
-        "NODE_OPTIONS": "--import dd-trace/register.js -r dd-trace/ci/init"
+        "NODE_OPTIONS": "--import /home/runner/work/projen-extensions/projen-extensions/.datadog/lib/node_modules/dd-trace/register.js -r /home/runner/work/projen-extensions/projen-extensions/.datadog/lib/node_modules/dd-trace/ci/init"
       },
       "steps": [
         {

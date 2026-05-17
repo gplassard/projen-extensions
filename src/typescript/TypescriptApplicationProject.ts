@@ -143,11 +143,12 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     this.tasks.tryFind('test')?.exec('vitest run -u', {
       receiveArgs: true,
     });
+    const baseLocation = `/home/runner/work/${this.name}/${this.name}/.datadog/lib/node_modules`;
     this.tasks.addTask('test:ci', {
       exec: 'vitest run -u',
       receiveArgs: true,
       env: {
-        NODE_OPTIONS: '--import dd-trace/register.js -r dd-trace/ci/init',
+        NODE_OPTIONS: `--import ${baseLocation}/dd-trace/register.js -r ${baseLocation}/dd-trace/ci/init`,
       },
     });
     this.tasks.addTask('build:ci', {
