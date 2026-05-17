@@ -26,7 +26,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 10.33.0
+          version: 11.1.2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.15.0
@@ -39,7 +39,7 @@ jobs:
       - name: run projen
         run: pnpm run projen
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@ef8406bf5f987037fcbe3bf8ecf023f5dd1f9e36
+        uses: datadog/test-visibility-github-action@a06d552ea316e44c261701eb4fd2078b2b1ab702
         with:
           languages: js
           api_key: ${{secrets.DD_API_KEY}}
