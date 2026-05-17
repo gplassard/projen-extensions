@@ -1276,6 +1276,12 @@ use-node-version=24.15.0
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
+    "pnpm": {
+      "ignoredBuiltDependencies": [
+        "esbuild",
+        "unrs-resolver",
+      ],
+    },
     "publishConfig": {
       "access": "public",
     },
@@ -2915,7 +2921,12 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
-    "pnpm": {},
+    "pnpm": {
+      "ignoredBuiltDependencies": [
+        "esbuild",
+        "unrs-resolver",
+      ],
+    },
     "publishConfig": {
       "access": "public",
     },
@@ -4378,7 +4389,12 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
-    "pnpm": {},
+    "pnpm": {
+      "ignoredBuiltDependencies": [
+        "esbuild",
+        "unrs-resolver",
+      ],
+    },
     "publishConfig": {
       "access": "public",
     },

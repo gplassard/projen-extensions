@@ -45,7 +45,12 @@
     "constructs": "^10.6.0",
     "projen": "^0.99.52"
   },
-  "pnpm": {},
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",

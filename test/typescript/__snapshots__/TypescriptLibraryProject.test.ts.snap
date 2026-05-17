@@ -1528,7 +1528,12 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project-package-name",
     "packageManager": "pnpm@11.1.2",
-    "pnpm": {},
+    "pnpm": {
+      "ignoredBuiltDependencies": [
+        "esbuild",
+        "unrs-resolver",
+      ],
+    },
     "publishConfig": {
       "access": "public",
       "registry": "https://npm.pkg.github.com/",
