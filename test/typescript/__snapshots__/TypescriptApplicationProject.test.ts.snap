@@ -307,13 +307,8 @@ jobs:
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
           js-tracer-version: 5.75.0
-      - name: Find mutations
-        id: self_mutation
-        run: |-
-          git add .
-          git diff --staged --patch --exit-code > repo.patch || echo "self_mutation_happened=true" >> $GITHUB_OUTPUT
-        shell: bash
-        working-directory: ./
+      - name: build
+        run: pnpm exec projen build:ci
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -834,6 +829,29 @@ use-node-version=24.15.0
           },
         ],
       },
+      "build:ci": {
+        "name": "build:ci",
+        "steps": [
+          {
+            "spawn": "default",
+          },
+          {
+            "spawn": "pre-compile",
+          },
+          {
+            "spawn": "compile",
+          },
+          {
+            "spawn": "post-compile",
+          },
+          {
+            "spawn": "test:ci",
+          },
+          {
+            "spawn": "package",
+          },
+        ],
+      },
       "clobber": {
         "condition": "git diff --exit-code > /dev/null",
         "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -957,9 +975,18 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
-            "env": {
-              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
-            },
+            "exec": "vitest run -u",
+            "receiveArgs": true,
+          },
+        ],
+      },
+      "test:ci": {
+        "env": {
+          "NODE_OPTIONS": "--import /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/register.js -r /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/ci/init",
+        },
+        "name": "test:ci",
+        "steps": [
+          {
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -970,15 +997,6 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
-          },
-        ],
-      },
-      "test:local": {
-        "name": "test:local",
-        "steps": [
-          {
-            "exec": "vitest run -u",
-            "receiveArgs": true,
           },
         ],
       },
@@ -1263,6 +1281,7 @@ use-node-version=24.15.0
     },
     "scripts": {
       "build": "projen build",
+      "build:ci": "projen build:ci",
       "clobber": "projen clobber",
       "compile": "projen compile",
       "default": "projen default",
@@ -1274,8 +1293,8 @@ use-node-version=24.15.0
       "pre-compile": "projen pre-compile",
       "projen": "projen",
       "test": "projen test",
+      "test:ci": "projen test:ci",
       "test:compile": "projen test:compile",
-      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "upgrade": "projen upgrade",
       "watch": "projen watch",
@@ -1741,7 +1760,7 @@ jobs:
           site: datadoghq.eu
           js-tracer-version: 5.75.0
       - name: build
-        run: pnpm exec projen build
+        run: pnpm exec projen build:ci
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -1995,6 +2014,8 @@ jobs:
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
           js-tracer-version: 5.75.0
+      - name: build
+        run: pnpm exec projen build:ci
       - name: release
         run: pnpm exec projen release
       - name: Check if version has already been tagged
@@ -2386,6 +2407,29 @@ use-node-version=24.15.0
           },
         ],
       },
+      "build:ci": {
+        "name": "build:ci",
+        "steps": [
+          {
+            "spawn": "default",
+          },
+          {
+            "spawn": "pre-compile",
+          },
+          {
+            "spawn": "compile",
+          },
+          {
+            "spawn": "post-compile",
+          },
+          {
+            "spawn": "test:ci",
+          },
+          {
+            "spawn": "package",
+          },
+        ],
+      },
       "bump": {
         "condition": "git log --oneline -1 | grep -qv "chore(release):"",
         "description": "Bumps version based on latest git tag and generates a changelog entry",
@@ -2551,9 +2595,18 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
-            "env": {
-              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
-            },
+            "exec": "vitest run -u",
+            "receiveArgs": true,
+          },
+        ],
+      },
+      "test:ci": {
+        "env": {
+          "NODE_OPTIONS": "--import /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/register.js -r /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/ci/init",
+        },
+        "name": "test:ci",
+        "steps": [
+          {
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -2564,15 +2617,6 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
-          },
-        ],
-      },
-      "test:local": {
-        "name": "test:local",
-        "steps": [
-          {
-            "exec": "vitest run -u",
-            "receiveArgs": true,
           },
         ],
       },
@@ -2877,6 +2921,7 @@ use-node-version=24.15.0
     },
     "scripts": {
       "build": "projen build",
+      "build:ci": "projen build:ci",
       "bump": "projen bump",
       "clobber": "projen clobber",
       "compile": "projen compile",
@@ -2890,8 +2935,8 @@ use-node-version=24.15.0
       "projen": "projen",
       "release": "projen release",
       "test": "projen test",
+      "test:ci": "projen test:ci",
       "test:compile": "projen test:compile",
-      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "unbump": "projen unbump",
       "upgrade": "projen upgrade",
@@ -3357,7 +3402,7 @@ jobs:
           site: datadoghq.eu
           js-tracer-version: 5.75.0
       - name: build
-        run: pnpm exec projen build
+        run: pnpm exec projen build:ci
       - name: build-tests
         run: pnpm run test:compile
       - name: lint
@@ -3885,6 +3930,29 @@ use-node-version=24.15.0
           },
         ],
       },
+      "build:ci": {
+        "name": "build:ci",
+        "steps": [
+          {
+            "spawn": "default",
+          },
+          {
+            "spawn": "pre-compile",
+          },
+          {
+            "spawn": "compile",
+          },
+          {
+            "spawn": "post-compile",
+          },
+          {
+            "spawn": "test:ci",
+          },
+          {
+            "spawn": "package",
+          },
+        ],
+      },
       "clobber": {
         "condition": "git diff --exit-code > /dev/null",
         "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -4008,9 +4076,18 @@ use-node-version=24.15.0
         "name": "test",
         "steps": [
           {
-            "env": {
-              "NODE_OPTIONS": "-r \${{ env.DD_TRACE_PACKAGE }} --import \${{ env.DD_TRACE_ESM_IMPORT }}",
-            },
+            "exec": "vitest run -u",
+            "receiveArgs": true,
+          },
+        ],
+      },
+      "test:ci": {
+        "env": {
+          "NODE_OPTIONS": "--import /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/register.js -r /home/runner/work/test-project/test-project/.datadog/lib/node_modules/dd-trace/ci/init",
+        },
+        "name": "test:ci",
+        "steps": [
+          {
             "exec": "vitest run -u",
             "receiveArgs": true,
           },
@@ -4021,15 +4098,6 @@ use-node-version=24.15.0
         "steps": [
           {
             "exec": "tsc --noEmit --project tsconfig.dev.json",
-          },
-        ],
-      },
-      "test:local": {
-        "name": "test:local",
-        "steps": [
-          {
-            "exec": "vitest run -u",
-            "receiveArgs": true,
           },
         ],
       },
@@ -4316,6 +4384,7 @@ use-node-version=24.15.0
     },
     "scripts": {
       "build": "projen build",
+      "build:ci": "projen build:ci",
       "clobber": "projen clobber",
       "compile": "projen compile",
       "default": "projen default",
@@ -4327,8 +4396,8 @@ use-node-version=24.15.0
       "pre-compile": "projen pre-compile",
       "projen": "projen",
       "test": "projen test",
+      "test:ci": "projen test:ci",
       "test:compile": "projen test:compile",
-      "test:local": "projen test:local",
       "test:watch": "projen test:watch",
       "upgrade": "projen upgrade",
       "watch": "projen watch",
