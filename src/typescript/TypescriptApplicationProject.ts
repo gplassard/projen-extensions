@@ -106,12 +106,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
     this.npmrc.addConfig('use-node-version', nodeVersion(options));
-    this.package.addField('pnpm', {
-      allowBuilds: {
-        'esbuild': false,
-        'unrs-resolver': false,
-      },
-    });
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
 

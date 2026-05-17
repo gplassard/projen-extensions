@@ -45,12 +45,7 @@
     "constructs": "^10.6.0",
     "projen": "^0.99.52"
   },
-  "pnpm": {
-    "allowBuilds": {
-      "esbuild": false,
-      "unrs-resolver": false
-    }
-  },
+  "pnpm": {},
   "devEngines": {
     "packageManager": {
       "name": "pnpm",

@@ -1276,12 +1276,6 @@ use-node-version=24.15.0
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project",
-    "pnpm": {
-      "allowBuilds": {
-        "esbuild": false,
-        "unrs-resolver": false,
-      },
-    },
     "publishConfig": {
       "access": "public",
     },
@@ -2921,12 +2915,7 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
-    "pnpm": {
-      "allowBuilds": {
-        "esbuild": false,
-        "unrs-resolver": false,
-      },
-    },
+    "pnpm": {},
     "publishConfig": {
       "access": "public",
     },
@@ -4389,12 +4378,7 @@ use-node-version=24.15.0
     "main": "lib/index.js",
     "name": "test-project",
     "packageManager": "pnpm@11.1.2",
-    "pnpm": {
-      "allowBuilds": {
-        "esbuild": false,
-        "unrs-resolver": false,
-      },
-    },
+    "pnpm": {},
     "publishConfig": {
       "access": "public",
     },
