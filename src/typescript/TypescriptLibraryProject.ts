@@ -9,6 +9,7 @@ export class TypescriptLibraryProject extends TypescriptApplicationProject {
   constructor(options: TypescriptLibraryProjectOptions) {
     const typescriptProjectOptions: TypescriptApplicationProjectOptions = {
       publishTasks: true,
+      release: true,
       releaseToNpm: true,
       npmRegistryUrl: 'https://npm.pkg.github.com',
       ...options,
