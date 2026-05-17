@@ -262,6 +262,9 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
 
 name: build
 on:
+  push:
+    branches:
+      - main
   pull_request: {}
   workflow_dispatch: {}
 jobs:
@@ -1683,6 +1686,9 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
 
 name: build
 on:
+  push:
+    branches:
+      - main
   pull_request: {}
   workflow_dispatch: {}
 jobs:
@@ -3287,6 +3293,9 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
 
 name: build
 on:
+  push:
+    branches:
+      - main
   pull_request: {}
   workflow_dispatch: {}
 jobs:
