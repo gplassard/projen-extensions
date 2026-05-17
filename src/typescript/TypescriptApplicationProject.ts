@@ -57,6 +57,14 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
       workflowPackageCache: true,
+      buildWorkflowOptions: {
+        workflowTriggers: {
+          push: { branches: [options.defaultReleaseBranch ?? 'main'] },
+          pullRequest: {},
+          workflowDispatch: {},
+        },
+        ...(options.buildWorkflowOptions ?? {}),
+      },
       ...options,
       githubOptions: {
         pullRequestLintOptions: DEFAULT_PULL_REQUEST_LINT_OPTIONS,
