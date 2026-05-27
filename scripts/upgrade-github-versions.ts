@@ -69,6 +69,39 @@ async function main() {
     }
     writeFileSync(ddTracePath, JSON.stringify(ddTrace, null, 2) + '\n');
   }
+
+  // Update datadog-operator
+  const ddOperatorPath = path.join(__dirname, '../src/github/datadog-operator.json');
+  const ddOperator = JSON.parse(readFileSync(ddOperatorPath, 'utf8'));
+  if (ddOperator.pinned) {
+    console.log('Skipping pinned datadog-operator version');
+  } else {
+    console.log('Refreshing datadog-operator version');
+    try {
+      const lsRemoteOutput = execSync('git ls-remote --tags https://github.com/DataDog/helm-charts').toString();
+      const tags = lsRemoteOutput.split('\n')
+        .map(line => line.split('refs/tags/')[1])
+        .filter(tag => tag && tag.startsWith('datadog-operator-') && !tag.includes('-dev') && !tag.includes('^'))
+        .map(tag => tag.replace('datadog-operator-', '').trim());
+      tags.sort((a, b) => {
+        const pa = a.split('.').map(Number);
+        const pb = b.split('.').map(Number);
+        for (let i = 0; i < 3; i++) {
+          if (pa[i] > pb[i]) return 1;
+          if (pa[i] < pb[i]) return -1;
+        }
+        return 0;
+      });
+      const latest = tags[tags.length - 1];
+      if (latest) {
+        ddOperator.version = latest;
+        console.log(`  New datadog-operator version: ${ddOperator.version}`);
+      }
+    } catch (e) {
+      console.error('  Failed to fetch datadog-operator version');
+    }
+    writeFileSync(ddOperatorPath, JSON.stringify(ddOperator, null, 2) + '\n');
+  }
 }
 
 main().catch(console.error);

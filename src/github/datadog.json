@@ -1,0 +1,4 @@
+{
+  "helm-operator": "2.22.2",
+  "dd-trace-js": "5.103.0"
+}
