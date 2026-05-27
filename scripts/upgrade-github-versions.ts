@@ -53,29 +53,24 @@ async function main() {
     writeFileSync(ncuPath, JSON.stringify(ncu, null, 2) + '\n');
   }
 
-  // Update dd-trace
-  const ddTracePath = path.join(__dirname, '../src/github/dd-trace.json');
-  const ddTrace = JSON.parse(readFileSync(ddTracePath, 'utf8'));
-  if (ddTrace.pinned) {
-    console.log('Skipping pinned dd-trace version');
+  // Update datadog (dd-trace and helm-operator)
+  const datadogPath = path.join(__dirname, '../src/github/datadog.json');
+  const datadog = JSON.parse(readFileSync(datadogPath, 'utf8'));
+
+  if (datadog.pinned) {
+    console.log('Skipping pinned datadog versions');
   } else {
+    // Update dd-trace-js
     console.log('Refreshing dd-trace version');
     try {
       const latestDdTrace = execSync('npm show dd-trace version').toString().trim();
-      ddTrace.version = latestDdTrace;
-      console.log(`  New dd-trace version: ${ddTrace.version}`);
+      datadog['dd-trace-js'] = latestDdTrace;
+      console.log(`  New dd-trace version: ${datadog['dd-trace-js']}`);
     } catch (e) {
       console.error('  Failed to fetch dd-trace version');
     }
-    writeFileSync(ddTracePath, JSON.stringify(ddTrace, null, 2) + '\n');
-  }
 
-  // Update datadog-operator
-  const ddOperatorPath = path.join(__dirname, '../src/github/datadog-operator.json');
-  const ddOperator = JSON.parse(readFileSync(ddOperatorPath, 'utf8'));
-  if (ddOperator.pinned) {
-    console.log('Skipping pinned datadog-operator version');
-  } else {
+    // Update helm-operator
     console.log('Refreshing datadog-operator version');
     try {
       const lsRemoteOutput = execSync('git ls-remote --tags https://github.com/DataDog/helm-charts').toString();
@@ -94,13 +89,13 @@ async function main() {
       });
       const latest = tags[tags.length - 1];
       if (latest) {
-        ddOperator.version = latest;
-        console.log(`  New datadog-operator version: ${ddOperator.version}`);
+        datadog['helm-operator'] = latest;
+        console.log(`  New datadog-operator version: ${datadog['helm-operator']}`);
       }
     } catch (e) {
       console.error('  Failed to fetch datadog-operator version');
     }
-    writeFileSync(ddOperatorPath, JSON.stringify(ddOperator, null, 2) + '\n');
+    writeFileSync(datadogPath, JSON.stringify(datadog, null, 2) + '\n');
   }
 }
 
