@@ -14,6 +14,15 @@ const project = new TypescriptLibraryProject({
 });
 project.tsconfigDev.addInclude('scripts/**/*.ts');
 project.deps.removeDependency('@gplassard/projen-extensions');
+project.addTask('upgrade-github-versions', {
+  description: 'Upgrade GitHub dependencies to latest versions',
+  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts',
+});
+project.addTask('upgrade-external-versions', {
+  description: 'Upgrade external dependencies to latest versions',
+  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-external-versions.ts',
+});
+
 const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
 upgradeExternalVersionsWorkflow.on({
   workflowDispatch: {},
@@ -55,14 +64,14 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
     },
     {
       name: 'Upgrade GitHub Actions and NCU',
-      run: 'npx ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts',
+      run: 'pnpm run upgrade-github-versions',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
     },
     {
       name: 'Upgrade Go and golangci-lint',
-      run: 'npx ts-node -P tsconfig.dev.json scripts/upgrade-go-versions.ts',
+      run: 'pnpm run upgrade-external-versions',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },

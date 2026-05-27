@@ -321,6 +321,24 @@
         }
       ]
     },
+    "upgrade-external-versions": {
+      "name": "upgrade-external-versions",
+      "description": "Upgrade external dependencies to latest versions",
+      "steps": [
+        {
+          "exec": "ts-node -P tsconfig.dev.json scripts/upgrade-external-versions.ts"
+        }
+      ]
+    },
+    "upgrade-github-versions": {
+      "name": "upgrade-github-versions",
+      "description": "Upgrade GitHub dependencies to latest versions",
+      "steps": [
+        {
+          "exec": "ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts"
+        }
+      ]
+    },
     "watch": {
       "name": "watch",
       "description": "Watch & compile in the background",

@@ -1,6 +1,6 @@
 import { Component, YamlFile } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
-import ddTraceDefaultVersionJson from './dd-trace.json';
+import ddVersionsJson from './datadog.json';
 import githubActionsVersions from './github-actions.json';
 import ncuDefaultVersionJson from './ncu.json';
 import nodeJsVersions from './nodejs.json';
@@ -17,7 +17,8 @@ const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_24_X;
 
 const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersionJson.version.replace('v', '');
 
-const DEFAULT_DD_TRACE_VERSION: string = ddTraceDefaultVersionJson.version;
+const DEFAULT_DD_TRACE_VERSION: string = ddVersionsJson['dd-trace-js'];
+const DEFAULT_DD_HELM_OPERATOR_VERSION: string = ddVersionsJson['helm-operator'];
 
 const DEFAULT_NCU_VERSION: string = ncuDefaultVersionJson.version;
 
@@ -93,6 +94,10 @@ class RetentionDaysComponent extends Component {
 
 export function ddTraceVersion(options: { ddTraceVersion?: string }): string {
   return options?.ddTraceVersion ?? DEFAULT_DD_TRACE_VERSION;
+}
+
+export function ddHelmOperatorVersion(options?: { ddHelmOperatorVersion?: string }): string {
+  return options?.ddHelmOperatorVersion ?? DEFAULT_DD_HELM_OPERATOR_VERSION;
 }
 
 export function ncuVersion(): string {
