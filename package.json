@@ -22,8 +22,8 @@
     "test:watch": "projen test:watch",
     "unbump": "projen unbump",
     "upgrade": "projen upgrade",
-    "upgrade-external-versions": "projen upgrade-external-versions",
     "upgrade-github-versions": "projen upgrade-github-versions",
+    "upgrade-go-versions": "projen upgrade-go-versions",
     "watch": "projen watch",
     "projen": "projen"
   },
