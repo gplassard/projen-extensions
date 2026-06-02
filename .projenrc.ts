@@ -18,9 +18,9 @@ project.addTask('upgrade-github-versions', {
   description: 'Upgrade GitHub dependencies to latest versions',
   exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts',
 });
-project.addTask('upgrade-external-versions', {
-  description: 'Upgrade external dependencies to latest versions',
-  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-external-versions.ts',
+project.addTask('upgrade-go-versions', {
+  description: 'Upgrade go dependencies to latest versions',
+  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-go-versions.ts',
 });
 
 const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
@@ -71,7 +71,7 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
     },
     {
       name: 'Upgrade Go and golangci-lint',
-      run: 'pnpm run upgrade-external-versions',
+      run: 'pnpm run upgrade-go-versions',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
