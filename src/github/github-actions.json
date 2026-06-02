@@ -45,7 +45,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v2",
-    "hash": "ef8406bf5f987037fcbe3bf8ecf023f5dd1f9e36"
+    "hash": "4e7afb05b464fd349275e41e65a7f4de83e7f46b"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v2",
@@ -65,7 +65,7 @@
   },
   "golangci/golangci-lint-action": {
     "version": "v9",
-    "hash": "1e7e51e771db61008b38414a730f564565cf7c20"
+    "hash": "63c23d5020da8f97005b6de340504130bdbe42c7"
   },
   "actions/setup-go": {
     "version": "v6",
