@@ -1,4 +1,4 @@
-import { JsonPatch, Project, SampleFile, YamlFile } from 'projen';
+import { JsonPatch, Project, SampleFile, TextFile, YamlFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -121,6 +121,11 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         minimumReleaseAge: options.pnpmWorkspace?.minimumReleaseAge ?? 4320, // 3 days in minutes
         minimumReleaseAgeExclude: options.pnpmWorkspace?.minimumReleaseAgeExclude ?? ['@gplassard/projen-extensions'],
       },
+    });
+    new TextFile(this, '.ncurc.js', {
+      lines: [
+        'cooldown: packageName => (packageName == \'@gplassard/projen-extensions\' ? 0 : 3)',
+      ],
     });
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
