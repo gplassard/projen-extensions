@@ -3,3 +3,6 @@
 allowBuilds:
   esbuild: false
   unrs-resolver: false
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@gplassard/projen-extensions"
