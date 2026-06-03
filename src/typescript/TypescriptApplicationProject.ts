@@ -25,7 +25,11 @@ type CustomProps = {
    **/
   releaseRank?: number;
   nodeVersion?: string;
-  pnpmAllowBuilds?: Record<string, boolean>;
+  pnpmWorkspace?: {
+    allowBuilds?: Record<string, boolean>;
+    minimumReleaseAge?: number;
+    minimumReleaseAgeExclude?: string[];
+  };
 
   datadog?: {
     softwareCompositionAnalysis?: boolean;
@@ -112,8 +116,10 @@ export class TypescriptApplicationProject extends TypeScriptProject {
         allowBuilds: {
           'esbuild': false,
           'unrs-resolver': false,
-          ...options.pnpmAllowBuilds,
+          ...options.pnpmWorkspace?.allowBuilds,
         },
+        minimumReleaseAge: options.pnpmWorkspace?.minimumReleaseAge ?? 4320, // 3 days in minutes
+        minimumReleaseAgeExclude: options.pnpmWorkspace?.minimumReleaseAgeExclude ?? ['@gplassard/projen-extensions'],
       },
     });
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
