@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "@stylistic/eslint-plugin",
-      "version": "^2",
+      "version": "*",
       "type": "build"
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "name": "eslint",
-      "version": "^9",
+      "version": "*",
       "type": "build"
     },
     {
