@@ -2,7 +2,6 @@
   "dependencies": [
     {
       "name": "@stylistic/eslint-plugin",
-      "version": "^2",
       "type": "build"
     },
     {
@@ -30,6 +29,10 @@
       "type": "build"
     },
     {
+      "name": "eslint",
+      "type": "build"
+    },
+    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
@@ -39,11 +42,6 @@
     },
     {
       "name": "eslint-plugin-unused-imports",
-      "type": "build"
-    },
-    {
-      "name": "eslint",
-      "version": "^9",
       "type": "build"
     },
     {
