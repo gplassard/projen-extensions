@@ -880,7 +880,6 @@ use-node-version=24.16.0
       {
         "name": "@stylistic/eslint-plugin",
         "type": "build",
-        "version": "*",
       },
       {
         "name": "@types/node",
@@ -907,6 +906,10 @@ use-node-version=24.16.0
         "version": "^10.0.0",
       },
       {
+        "name": "eslint",
+        "type": "build",
+      },
+      {
         "name": "eslint-import-resolver-typescript",
         "type": "build",
       },
@@ -917,11 +920,6 @@ use-node-version=24.16.0
       {
         "name": "eslint-plugin-unused-imports",
         "type": "build",
-      },
-      {
-        "name": "eslint",
-        "type": "build",
-        "version": "*",
       },
       {
         "name": "projen",
@@ -1281,13 +1279,13 @@ use-node-version=24.16.0
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,eslint,projen,ts-node,typescript,vitest",
+            "exec": "pnpm dlx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports eslint projen ts-node typescript vitest",
+            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports projen ts-node typescript vitest",
           },
           {
             "exec": "pnpm exec projen",

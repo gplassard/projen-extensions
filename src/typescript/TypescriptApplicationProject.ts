@@ -145,8 +145,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       new DatadogInfraAsCodeSecurityAction(this.github!, options.datadog?.infrastructureAsCodeSecurityOptions ?? {});
     }
 
-    this.addDevDeps('eslint@*');
-    this.addDevDeps('@stylistic/eslint-plugin@*');
+    this.addDevDeps('eslint');
+    this.addDevDeps('@stylistic/eslint-plugin');
     this.addDevDeps('eslint-plugin-unused-imports');
     this.eslint?.addRules({ 'unused-imports/no-unused-imports': 'error' });
     this.eslint?.addPlugins('eslint-plugin-unused-imports');
