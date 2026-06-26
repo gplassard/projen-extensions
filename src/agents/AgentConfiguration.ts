@@ -154,6 +154,7 @@ export class AgentConfiguration extends Component {
         '*This template will be replaced with actual content. Delete this instruction block once filled out.*',
         '',
       ],
+      readonly: false,
     });
   }
 }
