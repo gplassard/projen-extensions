@@ -60,4 +60,9 @@ junit.xml
 !/.github/workflows/datadog-infra-as-code-security.yml
 install_test_visibility.sh
 !/.github/workflows/upgrade-external-versions.yml
+!/AGENTS.md
+!/docs/agents/issue-tracker.md
+!/docs/agents/triage-labels.md
+!/docs/agents/domain.md
+!/CONTEXT.md
 !/.projenrc.ts

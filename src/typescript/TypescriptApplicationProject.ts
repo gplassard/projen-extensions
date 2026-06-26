@@ -12,6 +12,7 @@ import {
   DatadogSoftwareCompositionAnalysisActionProps,
 } from '../github/DatadogSoftwareCompositionAnalysisAction';
 import { DatadogStaticAnalysisAction, DatadogStaticAnalysisActionProps } from '../github/DatadogStaticAnalysisAction';
+import {AgentConfiguration, AgentConfigurationOptions} from "../agents";
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;
@@ -30,7 +31,8 @@ type CustomProps = {
     minimumReleaseAge?: number;
     minimumReleaseAgeExclude?: string[];
   };
-
+  agentConfigurationEnabled?: boolean;
+  agentConfiguration?: AgentConfigurationOptions;
   datadog?: {
     softwareCompositionAnalysis?: boolean;
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
@@ -107,6 +109,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     super(typescriptProjectOptions);
     if (this.github) {
       applyGithubActionsOverrides(this.github);
+    }
+    if (options.agentConfigurationEnabled) {
+      new AgentConfiguration(this, options.agentConfiguration ?? {});
     }
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
