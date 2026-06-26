@@ -51,7 +51,6 @@ junit.xml
 !/docs/agents/issue-tracker.md
 !/docs/agents/triage-labels.md
 !/docs/agents/domain.md
-!/CONTEXT.md
 !/.npmrc
 !/pnpm-workspace.yaml
 !/.ncurc.js

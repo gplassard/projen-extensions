@@ -3,6 +3,7 @@ import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides } from '../github';
 import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
@@ -12,7 +13,6 @@ import {
   DatadogSoftwareCompositionAnalysisActionProps,
 } from '../github/DatadogSoftwareCompositionAnalysisAction';
 import { DatadogStaticAnalysisAction, DatadogStaticAnalysisActionProps } from '../github/DatadogStaticAnalysisAction';
-import {AgentConfiguration, AgentConfigurationOptions} from "../agents";
 
 export type TypescriptApplicationProjectOptions = Omit<TypeScriptProjectOptions, 'defaultReleaseBranch'>
 & Partial<Pick<TypeScriptProjectOptions, 'defaultReleaseBranch'>> & CustomProps;

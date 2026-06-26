@@ -23,7 +23,6 @@
 /.projen/files.json linguist-generated
 /.projen/tasks.json linguist-generated
 /AGENTS.md linguist-generated
-/CONTEXT.md linguist-generated
 /docs/agents/domain.md linguist-generated
 /docs/agents/issue-tracker.md linguist-generated
 /docs/agents/triage-labels.md linguist-generated
