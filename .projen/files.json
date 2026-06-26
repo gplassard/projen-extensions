@@ -20,7 +20,6 @@
     ".projen/files.json",
     ".projen/tasks.json",
     "AGENTS.md",
-    "CONTEXT.md",
     "docs/agents/domain.md",
     "docs/agents/issue-tracker.md",
     "docs/agents/triage-labels.md",
