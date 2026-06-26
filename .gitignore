@@ -46,6 +46,11 @@ junit.xml
 /lib
 /dist/
 !/.eslintrc.json
+.scratch
+!/AGENTS.md
+!/docs/agents/issue-tracker.md
+!/docs/agents/triage-labels.md
+!/docs/agents/domain.md
 !/.npmrc
 !/pnpm-workspace.yaml
 !/.ncurc.js

@@ -8,6 +8,7 @@ const project = new TypescriptLibraryProject({
   devDeps: ['projen', 'constructs'],
   peerDeps: ['projen', 'constructs'],
   releaseRank: 1,
+  agentConfigurationEnabled: true,
   npmIgnoreOptions: {
     ignorePatterns: ['.datadog', '.junie', '*.sh', 'node_modules'],
   },

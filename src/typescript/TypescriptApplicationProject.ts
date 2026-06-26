@@ -3,6 +3,7 @@ import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides } from '../github';
 import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
@@ -30,7 +31,8 @@ type CustomProps = {
     minimumReleaseAge?: number;
     minimumReleaseAgeExclude?: string[];
   };
-
+  agentConfigurationEnabled?: boolean;
+  agentConfiguration?: AgentConfigurationOptions;
   datadog?: {
     softwareCompositionAnalysis?: boolean;
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
@@ -107,6 +109,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     super(typescriptProjectOptions);
     if (this.github) {
       applyGithubActionsOverrides(this.github);
+    }
+    if (options.agentConfigurationEnabled) {
+      new AgentConfiguration(this, options.agentConfiguration ?? {});
     }
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');

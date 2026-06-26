@@ -1,5 +1,6 @@
 import { Project, ProjectOptions } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
+import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import {
   DatadogSoftwareCompositionAnalysisAction,
@@ -17,6 +18,8 @@ import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSe
 import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 
 export interface BaseProjectProps extends ProjectOptions {
+  readonly agentConfigurationEnabled?: boolean;
+  readonly agentConfiguration?: AgentConfigurationOptions;
   readonly customGitignore?: CustomGitignoreProps;
   readonly pullRequestLintOptions?: PullRequestLintOptions;
   readonly nodeJSDependenciesUpgrade?: boolean;
@@ -38,6 +41,10 @@ export interface BaseProjectProps extends ProjectOptions {
 export class BaseProject extends Project {
   constructor(props: BaseProjectProps) {
     super(props);
+
+    if (props.agentConfigurationEnabled) {
+      new AgentConfiguration(this, props.agentConfiguration ?? {});
+    }
 
     new CustomGitignore(this, props.customGitignore);
 
