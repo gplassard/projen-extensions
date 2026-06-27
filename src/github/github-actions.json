@@ -3,6 +3,12 @@
     "version": "v6",
     "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
   },
+  "actions/configure-pages": {
+    "version": "v5"
+  },
+  "actions/deploy-pages": {
+    "version": "v4"
+  },
   "actions/setup-node": {
     "version": "v4",
     "hash": "49933ea5288caeca8642d1e84afbd3f7d6820020"
@@ -30,6 +36,9 @@
   "actions/upload-artifact": {
     "version": "v4",
     "hash": "ea165f8d65b6e75b540449e92b4886f43607fa02"
+  },
+  "actions/upload-pages-artifact": {
+    "version": "v3"
   },
   "actions/download-artifact": {
     "version": "v4",

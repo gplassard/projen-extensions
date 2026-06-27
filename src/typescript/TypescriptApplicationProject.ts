@@ -5,7 +5,7 @@ import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSched
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
-import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides } from '../github';
+import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides, DeployGithubPagesWorkflowOptions, DeployGithubPagesWorkflow } from '../github';
 import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
 import { DatadogSecretScanningAction, DatadogSecretScanningActionProps } from '../github/DatadogSecretScanningAction';
 import {
@@ -33,6 +33,8 @@ type CustomProps = {
   };
   agentConfigurationEnabled?: boolean;
   agentConfiguration?: AgentConfigurationOptions;
+  deployGithubPagesWorkflowEnabled?: boolean;
+  deployGithubPagesWorkflowOptions?: DeployGithubPagesWorkflowOptions;
   datadog?: {
     softwareCompositionAnalysis?: boolean;
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
@@ -112,6 +114,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     }
     if (options.agentConfigurationEnabled) {
       new AgentConfiguration(this, options.agentConfiguration ?? {});
+    }
+    if (options.deployGithubPagesWorkflowEnabled) {
+      new DeployGithubPagesWorkflow(this.github!, options.deployGithubPagesWorkflowOptions ?? {});
     }
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
