@@ -15,6 +15,16 @@ describe('TypescriptApplicationProject with default settings', () => {
     expect(upgradeWorkflow).toContain('NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}');
   });
 
+  it('supports options', () => {
+    const project = new TypescriptApplicationProject({
+      name: 'test-project',
+      agentConfigurationEnabled: true,
+      deployGithubPagesWorkflowEnabled: true,
+    });
+    const output = Testing.synth(project);
+    expect(output).toMatchSnapshot();
+  });
+
   it('can still use yarn', () => {
     const project = new TypescriptApplicationProject({
       name: 'test-project',
