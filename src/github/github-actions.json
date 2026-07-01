@@ -1,13 +1,15 @@
 {
   "actions/checkout": {
     "version": "v6",
-    "hash": "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+    "hash": "df4cb1c069e1874edd31b4311f1884172cec0e10"
   },
   "actions/configure-pages": {
-    "version": "v5"
+    "version": "v5",
+    "hash": "983d7736d9b0ae728b81ab479565c72886d7745b"
   },
   "actions/deploy-pages": {
-    "version": "v4"
+    "version": "v4",
+    "hash": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e"
   },
   "actions/setup-node": {
     "version": "v4",
@@ -23,7 +25,7 @@
   },
   "actions/setup-java": {
     "version": "v5",
-    "hash": "be666c2fcd27ec809703dec50e508c2fdc7f6654"
+    "hash": "1bcf9fb12cf4aa7d266a90ae39939e61372fe520"
   },
   "aws-actions/configure-aws-credentials": {
     "version": "v5",
@@ -31,14 +33,15 @@
   },
   "dtolnay/rust-toolchain": {
     "version": "stable",
-    "hash": "29eef336d9b2848a0b548edc03f92a220660cdb8"
+    "hash": "4be7066ada62dd38de10e7b70166bc74ed198c30"
   },
   "actions/upload-artifact": {
     "version": "v4",
     "hash": "ea165f8d65b6e75b540449e92b4886f43607fa02"
   },
   "actions/upload-pages-artifact": {
-    "version": "v3"
+    "version": "v3",
+    "hash": "56afc609e74202658d3ffba0e8f6dda462b719fa"
   },
   "actions/download-artifact": {
     "version": "v4",
@@ -74,11 +77,11 @@
   },
   "golangci/golangci-lint-action": {
     "version": "v9",
-    "hash": "63c23d5020da8f97005b6de340504130bdbe42c7"
+    "hash": "db9de0fc1a667e1a49d2291a1a042dff081d78f6"
   },
   "actions/setup-go": {
     "version": "v6",
-    "hash": "4a3601121dd01d1626a1e23e37211e3254c1c06c"
+    "hash": "924ae3a1cded613372ab5595356fb5720e22ba16"
   },
   "tibdex/github-app-token": {
     "version": "v1.7.0",

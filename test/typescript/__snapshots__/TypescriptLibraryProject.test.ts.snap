@@ -282,17 +282,17 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 11.5.1
+          version: 11.9.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.16.0
+          node-version: 24.18.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -307,7 +307,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.106.0
+          js-tracer-version: 5.110.0
       - name: build
         run: pnpm exec projen build:ci
       - name: build-tests
@@ -352,7 +352,7 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
@@ -388,7 +388,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
@@ -411,7 +411,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
@@ -437,7 +437,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
@@ -461,7 +461,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
@@ -543,7 +543,7 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
       - name: Set git identity
@@ -553,10 +553,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 11.5.1
+          version: 11.9.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.16.0
+          node-version: 24.18.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -569,7 +569,7 @@ jobs:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 5.106.0
+          js-tracer-version: 5.110.0
       - name: build
         run: pnpm exec projen build:ci
       - name: release
@@ -611,7 +611,7 @@ jobs:
     steps:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.16.0
+          node-version: 24.18.0
           package-manager-cache: false
       - name: Download build artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -638,7 +638,7 @@ jobs:
     steps:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.16.0
+          node-version: 24.18.0
           package-manager-cache: false
       - name: Download build artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -675,16 +675,16 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           ref: main
       - name: Setup pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
-          version: 11.5.1
+          version: 11.9.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.16.0
+          node-version: 24.18.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -734,7 +734,7 @@ jobs:
           permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           ref: main
       - name: Download patch
@@ -871,7 +871,7 @@ tsconfig.tsbuildinfo
   ".npmrc": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
 @gplassard:registry=https://npm.pkg.github.com
-use-node-version=24.16.0
+use-node-version=24.18.0
 ",
   ".projen/deps.json": {
     "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".",
@@ -1536,13 +1536,13 @@ use-node-version=24.16.0
       "packageManager": {
         "name": "pnpm",
         "onFail": "ignore",
-        "version": "11.5.1",
+        "version": "11.9.0",
       },
     },
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project-package-name",
-    "packageManager": "pnpm@11.5.1",
+    "packageManager": "pnpm@11.9.0",
     "pnpm": {},
     "publishConfig": {
       "access": "public",
@@ -1576,8 +1576,8 @@ use-node-version=24.16.0
     "types": "lib/index.d.ts",
     "version": "0.0.0",
     "volta": {
-      "node": "24.16.0",
-      "pnpm": "11.5.1",
+      "node": "24.18.0",
+      "pnpm": "11.9.0",
     },
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
