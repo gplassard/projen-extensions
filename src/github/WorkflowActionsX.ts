@@ -60,7 +60,7 @@ export class WorkflowActionsX {
       name: 'Set up JDK',
       uses: githubAction('actions/setup-java'),
       with: {
-        'java-version': options.javaVersion ?? '21',
+        'java-version': options.javaVersion ?? '25',
         'distribution': 'temurin',
         'cache': 'gradle',
       },
