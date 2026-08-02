@@ -405,7 +405,7 @@
       "description": "Upgrade GitHub dependencies to latest versions",
       "steps": [
         {
-          "exec": "tsx -P tsconfig.dev.json scripts/upgrade-github-versions.ts"
+          "exec": "tsx scripts/upgrade-github-versions.ts"
         }
       ]
     },
@@ -414,7 +414,7 @@
       "description": "Upgrade go dependencies to latest versions",
       "steps": [
         {
-          "exec": "tsx -P tsconfig.dev.json scripts/upgrade-go-versions.ts"
+          "exec": "tsx scripts/upgrade-go-versions.ts"
         }
       ]
     },
