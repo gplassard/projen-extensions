@@ -220,7 +220,7 @@ export default defineConfig({
 `,
     });
     this.addTask('test:compile', {
-      exec: 'tsc --noEmit --project tsconfig.dev.json',
+      exec: 'tsc --noEmit --project projenrc/tsconfig.json',
     });
 
     const enableDatadogTestOptimization = options.datadog?.testOptimization ?? true;

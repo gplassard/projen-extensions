@@ -310,7 +310,7 @@
       "name": "test:compile",
       "steps": [
         {
-          "exec": "tsc --noEmit --project tsconfig.dev.json"
+          "exec": "tsc --noEmit --project projenrc/tsconfig.json"
         }
       ]
     },
