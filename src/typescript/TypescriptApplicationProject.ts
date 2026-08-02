@@ -1,4 +1,4 @@
-import { JsonPatch, Project, SampleFile, TextFile, YamlFile } from 'projen';
+import { JsonPatch, SampleFile, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';

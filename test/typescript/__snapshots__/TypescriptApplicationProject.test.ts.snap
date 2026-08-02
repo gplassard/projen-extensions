@@ -33,7 +33,12 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
-      "project": "./tsconfig.dev.json",
+      "projectService": {
+        "allowDefaultProject": [
+          ".projenrc.ts",
+        ],
+        "defaultProject": "./tsconfig.json",
+      },
       "sourceType": "module",
     },
     "plugins": [
@@ -225,7 +230,7 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
         "node": {},
         "typescript": {
           "alwaysTryTypes": true,
-          "project": "./tsconfig.dev.json",
+          "project": "./tsconfig.json",
         },
       },
     },
@@ -254,9 +259,9 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
 /.projen/tasks.json linguist-generated
 /LICENSE linguist-generated
 /package.json linguist-generated
-/pnpm-workspace.yaml linguist-generated
+/projenrc/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /static-analysis.datadog.yaml linguist-generated
-/tsconfig.dev.json linguist-generated linguist-language=JSON-with-Comments
+/test/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /yarn.lock linguist-generated",
   ".github/pull_request_template.md": "Fixes #",
@@ -346,23 +351,28 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Push changes
+        id: push_changes
         env:
           PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
         run: |-
@@ -382,10 +392,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -405,10 +417,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -431,10 +445,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -455,10 +471,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -489,7 +507,8 @@ jobs:
       pull-requests: write
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
+      - id: auto_5940c89f
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -524,8 +543,10 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Setup Node.js
+        id: setup_node_js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.18.1
@@ -537,6 +558,7 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: yarn_classic
       - name: Upgrade dependencies
+        id: upgrade_dependencies
         run: npx projen upgrade
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -554,6 +576,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -581,15 +604,19 @@ jobs:
           permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -663,13 +690,13 @@ junit.xml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
-!/tsconfig.dev.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/tsconfig.json
 !/.npmrc
-!/pnpm-workspace.yaml
 !/.ncurc.js
 .idea
 *.iml
@@ -691,7 +718,7 @@ junit.xml
 /coverage/
 permissions-backup.acl
 /test/
-/tsconfig.dev.json
+/test/tsconfig.json
 /src/
 !/lib/
 !/lib/**/*.js
@@ -704,6 +731,7 @@ dist
 /.projenrc.js
 tsconfig.tsbuildinfo
 /.eslintrc.json
+/projenrc/tsconfig.json
 /.gitattributes
 /.projenrc.ts
 /projenrc
@@ -798,9 +826,9 @@ use-node-version=24.18.1
       ".projen/files.json",
       ".projen/tasks.json",
       "LICENSE",
-      "pnpm-workspace.yaml",
+      "projenrc/tsconfig.json",
       "static-analysis.datadog.yaml",
-      "tsconfig.dev.json",
+      "test/tsconfig.json",
       "tsconfig.json",
     ],
   },
@@ -809,6 +837,7 @@ use-node-version=24.18.1
     "env": {
       "PATH": "$(npx -c "node --print process.env.PATH")",
     },
+    "manifestVersion": 3,
     "tasks": {
       "build": {
         "description": "Full release build",
@@ -894,7 +923,10 @@ use-node-version=24.18.1
         "name": "compile",
         "steps": [
           {
-            "exec": "tsc --build",
+            "execArgs": [
+              "tsc",
+              "--build",
+            ],
           },
         ],
       },
@@ -903,7 +935,12 @@ use-node-version=24.18.1
         "name": "default",
         "steps": [
           {
-            "exec": "ts-node --project tsconfig.dev.json .projenrc.ts",
+            "execArgs": [
+              "ts-node",
+              "--project",
+              "projenrc/tsconfig.json",
+              ".projenrc.ts",
+            ],
           },
         ],
       },
@@ -956,10 +993,19 @@ use-node-version=24.18.1
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist/js",
+            "execArgs": [
+              "mkdir",
+              "-p",
+              "dist/js",
+            ],
           },
           {
-            "exec": "npm pack --pack-destination dist/js",
+            "execArgs": [
+              "npm",
+              "pack",
+              "--pack-destination",
+              "dist/js",
+            ],
           },
         ],
       },
@@ -1001,7 +1047,7 @@ use-node-version=24.18.1
         "name": "test:compile",
         "steps": [
           {
-            "exec": "tsc --noEmit --project tsconfig.dev.json",
+            "exec": "tsc --noEmit --project projenrc/tsconfig.json",
           },
         ],
       },
@@ -1022,13 +1068,39 @@ use-node-version=24.18.1
         "name": "upgrade",
         "steps": [
           {
-            "exec": "npx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "execArgs": [
+              "npx",
+              "npm-check-updates@20",
+              "--upgrade",
+              "--target=latest",
+              "--peer",
+              "--no-deprecated",
+              "--dep=dev,prod,peer,optional",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            ],
           },
           {
             "exec": "yarn install --check-files",
           },
           {
-            "exec": "yarn upgrade @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports projen ts-node typescript vitest",
+            "execArgs": [
+              "yarn",
+              "upgrade",
+              "@gplassard/projen-extensions",
+              "@stylistic/eslint-plugin",
+              "@types/node",
+              "@typescript-eslint/eslint-plugin",
+              "@typescript-eslint/parser",
+              "constructs",
+              "eslint",
+              "eslint-import-resolver-typescript",
+              "eslint-plugin-import",
+              "eslint-plugin-unused-imports",
+              "projen",
+              "ts-node",
+              "typescript",
+              "vitest",
+            ],
           },
           {
             "exec": "npx projen",
@@ -1043,7 +1115,11 @@ use-node-version=24.18.1
         "name": "watch",
         "steps": [
           {
-            "exec": "tsc --build -w",
+            "execArgs": [
+              "tsc",
+              "--build",
+              "-w",
+            ],
           },
         ],
       },
@@ -1311,15 +1387,20 @@ use-node-version=24.18.1
       "pnpm": "11.19.0",
     },
   },
-  "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "npx projen".
-
-allowBuilds:
-  esbuild: false
-  unrs-resolver: false
-minimumReleaseAge: 4320
-minimumReleaseAgeExclude:
-  - "@gplassard/projen-extensions"
-",
+  "projenrc/tsconfig.json": {
+    "compilerOptions": {
+      "noEmit": true,
+      "rootDir": "..",
+    },
+    "exclude": [
+      "node_modules",
+    ],
+    "extends": "../tsconfig.json",
+    "include": [
+      "**/*.ts",
+      "../.projenrc.ts",
+    ],
+  },
   "static-analysis.datadog.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "npx projen".
 
 schema-version: v1
@@ -1375,45 +1456,18 @@ rulesets:
   - typescript-inclusive
   - typescript-node-security
 ",
-  "tsconfig.dev.json": {
+  "test/tsconfig.json": {
     "compilerOptions": {
-      "alwaysStrict": true,
-      "declaration": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "inlineSourceMap": true,
-      "inlineSources": true,
-      "lib": [
-        "es2020",
-      ],
-      "module": "CommonJS",
-      "noEmitOnError": false,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitAny": true,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": false,
-      "noUnusedParameters": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "stripInternal": true,
-      "target": "ES2020",
-      "types": [
-        "node",
-      ],
+      "noEmit": true,
+      "rootDir": "..",
     },
     "exclude": [
       "node_modules",
     ],
+    "extends": "../tsconfig.json",
     "include": [
-      "src/**/*.ts",
-      "test/**/*.ts",
+      "**/*.ts",
       "vitest.config.ts",
-      ".projenrc.ts",
-      "projenrc/**/*.ts",
     ],
   },
   "tsconfig.json": {
@@ -1448,7 +1502,9 @@ rulesets:
         "node",
       ],
     },
-    "exclude": [],
+    "exclude": [
+      "node_modules",
+    ],
     "include": [
       "src/**/*.ts",
     ],
@@ -1500,7 +1556,12 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
-      "project": "./tsconfig.dev.json",
+      "projectService": {
+        "allowDefaultProject": [
+          ".projenrc.ts",
+        ],
+        "defaultProject": "./tsconfig.json",
+      },
       "sourceType": "module",
     },
     "plugins": [
@@ -1692,7 +1753,7 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
         "node": {},
         "typescript": {
           "alwaysTryTypes": true,
-          "project": "./tsconfig.dev.json",
+          "project": "./tsconfig.json",
         },
       },
     },
@@ -1724,8 +1785,9 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
 /package.json linguist-generated
 /pnpm-lock.yaml linguist-generated
 /pnpm-workspace.yaml linguist-generated
+/projenrc/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /static-analysis.datadog.yaml linguist-generated
-/tsconfig.dev.json linguist-generated linguist-language=JSON-with-Comments
+/test/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /tsconfig.json linguist-generated linguist-language=JSON-with-Comments",
   ".github/pull_request_template.md": "Fixes #",
   ".github/workflows/build.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
@@ -1819,23 +1881,28 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Push changes
+        id: push_changes
         env:
           PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
         run: |-
@@ -1855,10 +1922,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -1878,10 +1947,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -1904,10 +1975,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -1928,10 +2001,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -1962,7 +2037,8 @@ jobs:
       pull-requests: write
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
+      - id: auto_5940c89f
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -2010,14 +2086,17 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
@@ -2027,6 +2106,7 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -2040,6 +2120,7 @@ jobs:
       - name: build
         run: pnpm exec projen build:ci
       - name: release
+        id: release
         run: pnpm exec projen release
       - name: Check if version has already been tagged
         id: check_tag_exists
@@ -2049,11 +2130,14 @@ jobs:
           cat $GITHUB_OUTPUT
       - name: Check for new commits
         id: git_remote
+        env:
+          GITHUB_REF: \${{ github.ref }}
         run: |-
-          echo "latest_commit=$(git ls-remote origin -h \${{ github.ref }} | cut -f1)" >> $GITHUB_OUTPUT
+          echo "latest_commit=$(git ls-remote origin -h "$GITHUB_REF" | cut -f1)" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
         shell: bash
       - name: Backup artifact permissions
+        id: backup_artifact_permissions
         if: \${{ steps.git_remote.outputs.latest_commit == github.sha }}
         run: cd dist && getfacl -R . > permissions-backup.acl
         continue-on-error: true
@@ -2079,14 +2163,17 @@ jobs:
           node-version: 24.18.1
           package-manager-cache: false
       - name: Download build artifacts
+        id: download_build_artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
       - name: Restore build artifact permissions
+        id: restore_build_artifact_permissions
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Release
+        id: release
         if: \${{ !inputs.dry_run }}
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -2110,10 +2197,12 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           ref: main
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
@@ -2123,10 +2212,12 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
+        id: upgrade_dependencies
         run: pnpm exec projen upgrade
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -2142,6 +2233,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -2169,17 +2261,21 @@ jobs:
           permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           ref: main
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -2219,6 +2315,7 @@ jobs:
 !/.projen/deps.json
 !/.projen/files.json
 !/.github/workflows/pull-request-lint.yml
+!/pnpm-workspace.yaml
 !/package.json
 !/LICENSE
 !/.npmignore
@@ -2256,13 +2353,13 @@ junit.xml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
-!/tsconfig.dev.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/tsconfig.json
 !/.npmrc
-!/pnpm-workspace.yaml
 !/.ncurc.js
 .idea
 *.iml
@@ -2286,7 +2383,7 @@ permissions-backup.acl
 /dist/changelog.md
 /dist/version.txt
 /test/
-/tsconfig.dev.json
+/test/tsconfig.json
 /src/
 !/lib/
 !/lib/**/*.js
@@ -2299,6 +2396,7 @@ dist
 /.projenrc.js
 tsconfig.tsbuildinfo
 /.eslintrc.json
+/projenrc/tsconfig.json
 /.gitattributes
 /.projenrc.ts
 /projenrc
@@ -2399,9 +2497,9 @@ use-node-version=24.18.1
       ".projen/files.json",
       ".projen/tasks.json",
       "LICENSE",
-      "pnpm-workspace.yaml",
+      "projenrc/tsconfig.json",
       "static-analysis.datadog.yaml",
-      "tsconfig.dev.json",
+      "test/tsconfig.json",
       "tsconfig.json",
     ],
   },
@@ -2410,6 +2508,7 @@ use-node-version=24.18.1
     "env": {
       "PATH": "$(pnpm -c exec "node --print process.env.PATH")",
     },
+    "manifestVersion": 3,
     "tasks": {
       "build": {
         "description": "Full release build",
@@ -2459,7 +2558,7 @@ use-node-version=24.18.1
         ],
       },
       "bump": {
-        "condition": "git log --oneline -1 | grep -qv "chore(release):"",
+        "condition": "git log --oneline -1 | grep -v "chore(release):" > /dev/null",
         "description": "Bumps version based on latest git tag and generates a changelog entry",
         "env": {
           "BUMPFILE": "dist/version.txt",
@@ -2472,7 +2571,29 @@ use-node-version=24.18.1
         "name": "bump",
         "steps": [
           {
-            "builtin": "release/bump-version",
+            "builtin": "release/resolve-latest-tag",
+            "outputEnv": "LATEST_TAG",
+          },
+          {
+            "condition": "git rev-parse --verify --quiet "refs/tags/$LATEST_TAG"",
+            "outputEnv": "RELEASABLE_COMMITS",
+            "spawn": "bump:releasable-commits",
+          },
+          {
+            "builtin": "release/suggest-version-bump",
+            "outputEnv": "SUGGESTED_BUMP",
+          },
+          {
+            "builtin": "release/apply-version-bump",
+          },
+        ],
+      },
+      "bump:releasable-commits": {
+        "description": "Print the releasable commits since the latest release",
+        "name": "bump:releasable-commits",
+        "steps": [
+          {
+            "exec": "git log --oneline $LATEST_TAG..HEAD",
           },
         ],
       },
@@ -2513,7 +2634,10 @@ use-node-version=24.18.1
         "name": "compile",
         "steps": [
           {
-            "exec": "tsc --build",
+            "execArgs": [
+              "tsc",
+              "--build",
+            ],
           },
         ],
       },
@@ -2522,7 +2646,12 @@ use-node-version=24.18.1
         "name": "default",
         "steps": [
           {
-            "exec": "ts-node --project tsconfig.dev.json .projenrc.ts",
+            "execArgs": [
+              "ts-node",
+              "--project",
+              "projenrc/tsconfig.json",
+              ".projenrc.ts",
+            ],
           },
         ],
       },
@@ -2575,10 +2704,19 @@ use-node-version=24.18.1
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist/js",
+            "execArgs": [
+              "mkdir",
+              "-p",
+              "dist/js",
+            ],
           },
           {
-            "exec": "pnpm pack --pack-destination dist/js",
+            "execArgs": [
+              "pnpm",
+              "pack",
+              "--pack-destination",
+              "dist/js",
+            ],
           },
         ],
       },
@@ -2644,7 +2782,7 @@ use-node-version=24.18.1
         "name": "test:compile",
         "steps": [
           {
-            "exec": "tsc --noEmit --project tsconfig.dev.json",
+            "exec": "tsc --noEmit --project projenrc/tsconfig.json",
           },
         ],
       },
@@ -2682,13 +2820,41 @@ use-node-version=24.18.1
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "execArgs": [
+              "pnpm",
+              "dlx",
+              "npm-check-updates@20",
+              "--upgrade",
+              "--target=latest",
+              "--peer",
+              "--no-deprecated",
+              "--dep=dev,prod,peer,optional",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            ],
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports projen ts-node typescript vitest",
+            "execArgs": [
+              "pnpm",
+              "update",
+              "@gplassard/projen-extensions",
+              "@stylistic/eslint-plugin",
+              "@types/node",
+              "@typescript-eslint/eslint-plugin",
+              "@typescript-eslint/parser",
+              "commit-and-tag-version",
+              "constructs",
+              "eslint",
+              "eslint-import-resolver-typescript",
+              "eslint-plugin-import",
+              "eslint-plugin-unused-imports",
+              "projen",
+              "ts-node",
+              "typescript",
+              "vitest",
+            ],
           },
           {
             "exec": "pnpm exec projen",
@@ -2703,7 +2869,11 @@ use-node-version=24.18.1
         "name": "watch",
         "steps": [
           {
-            "exec": "tsc --build -w",
+            "execArgs": [
+              "tsc",
+              "--build",
+              "-w",
+            ],
           },
         ],
       },
@@ -2951,6 +3121,7 @@ use-node-version=24.18.1
       "build": "projen build",
       "build:ci": "projen build:ci",
       "bump": "projen bump",
+      "bump:releasable-commits": "projen bump:releasable-commits",
       "clobber": "projen clobber",
       "compile": "projen compile",
       "default": "projen default",
@@ -2979,13 +3150,27 @@ use-node-version=24.18.1
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
-allowBuilds:
-  esbuild: false
-  unrs-resolver: false
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@gplassard/projen-extensions"
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
 ",
+  "projenrc/tsconfig.json": {
+    "compilerOptions": {
+      "noEmit": true,
+      "rootDir": "..",
+    },
+    "exclude": [
+      "node_modules",
+    ],
+    "extends": "../tsconfig.json",
+    "include": [
+      "**/*.ts",
+      "../.projenrc.ts",
+    ],
+  },
   "static-analysis.datadog.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
 schema-version: v1
@@ -3041,45 +3226,18 @@ rulesets:
   - typescript-inclusive
   - typescript-node-security
 ",
-  "tsconfig.dev.json": {
+  "test/tsconfig.json": {
     "compilerOptions": {
-      "alwaysStrict": true,
-      "declaration": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "inlineSourceMap": true,
-      "inlineSources": true,
-      "lib": [
-        "es2020",
-      ],
-      "module": "CommonJS",
-      "noEmitOnError": false,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitAny": true,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": false,
-      "noUnusedParameters": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "stripInternal": true,
-      "target": "ES2020",
-      "types": [
-        "node",
-      ],
+      "noEmit": true,
+      "rootDir": "..",
     },
     "exclude": [
       "node_modules",
     ],
+    "extends": "../tsconfig.json",
     "include": [
-      "src/**/*.ts",
-      "test/**/*.ts",
+      "**/*.ts",
       "vitest.config.ts",
-      ".projenrc.ts",
-      "projenrc/**/*.ts",
     ],
   },
   "tsconfig.json": {
@@ -3114,7 +3272,9 @@ rulesets:
         "node",
       ],
     },
-    "exclude": [],
+    "exclude": [
+      "node_modules",
+    ],
     "include": [
       "src/**/*.ts",
     ],
@@ -3166,7 +3326,12 @@ exports[`TypescriptApplicationProject with default settings > supports options 1
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
-      "project": "./tsconfig.dev.json",
+      "projectService": {
+        "allowDefaultProject": [
+          ".projenrc.ts",
+        ],
+        "defaultProject": "./tsconfig.json",
+      },
       "sourceType": "module",
     },
     "plugins": [
@@ -3358,7 +3523,7 @@ exports[`TypescriptApplicationProject with default settings > supports options 1
         "node": {},
         "typescript": {
           "alwaysTryTypes": true,
-          "project": "./tsconfig.dev.json",
+          "project": "./tsconfig.json",
         },
       },
     },
@@ -3394,8 +3559,9 @@ exports[`TypescriptApplicationProject with default settings > supports options 1
 /package.json linguist-generated
 /pnpm-lock.yaml linguist-generated
 /pnpm-workspace.yaml linguist-generated
+/projenrc/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /static-analysis.datadog.yaml linguist-generated
-/tsconfig.dev.json linguist-generated linguist-language=JSON-with-Comments
+/test/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /tsconfig.json linguist-generated linguist-language=JSON-with-Comments",
   ".github/pull_request_template.md": "Fixes #",
   ".github/workflows/build.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
@@ -3489,23 +3655,28 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Push changes
+        id: push_changes
         env:
           PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
         run: |-
@@ -3525,10 +3696,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -3548,10 +3721,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -3574,10 +3749,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -3598,10 +3775,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -3636,31 +3815,39 @@ jobs:
       url: \${{ steps.deployment.outputs.deployment_url }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.18.1
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile
       - name: Build
+        id: build
         run: pnpm run build
       - name: Setup pages
+        id: setup_pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
       - name: Upload artifact
+        id: upload_artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
         with:
           path: ./dist
       - name: Deploy to Github Pages
+        id: deploy_to_github_pages
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
 ",
   ".github/workflows/pull-request-lint.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
@@ -3684,7 +3871,8 @@ jobs:
       pull-requests: write
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
+      - id: auto_5940c89f
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -3719,8 +3907,10 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
@@ -3730,10 +3920,12 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
+        id: upgrade_dependencies
         run: pnpm exec projen upgrade
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -3749,6 +3941,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -3776,15 +3969,19 @@ jobs:
           permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -3824,6 +4021,7 @@ jobs:
 !/.projen/deps.json
 !/.projen/files.json
 !/.github/workflows/pull-request-lint.yml
+!/pnpm-workspace.yaml
 !/package.json
 !/LICENSE
 !/.npmignore
@@ -3858,11 +4056,12 @@ junit.xml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
-!/tsconfig.dev.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/tsconfig.json
 .scratch
 !/AGENTS.md
 !/docs/agents/issue-tracker.md
@@ -3870,7 +4069,6 @@ junit.xml
 !/docs/agents/domain.md
 !/.github/workflows/deploy-website.yml
 !/.npmrc
-!/pnpm-workspace.yaml
 !/.ncurc.js
 .idea
 *.iml
@@ -3892,7 +4090,7 @@ junit.xml
 /coverage/
 permissions-backup.acl
 /test/
-/tsconfig.dev.json
+/test/tsconfig.json
 /src/
 !/lib/
 !/lib/**/*.js
@@ -3905,6 +4103,7 @@ dist
 /.projenrc.js
 tsconfig.tsbuildinfo
 /.eslintrc.json
+/projenrc/tsconfig.json
 /.gitattributes
 /.projenrc.ts
 /projenrc
@@ -4004,9 +4203,9 @@ use-node-version=24.18.1
       "docs/agents/issue-tracker.md",
       "docs/agents/triage-labels.md",
       "LICENSE",
-      "pnpm-workspace.yaml",
+      "projenrc/tsconfig.json",
       "static-analysis.datadog.yaml",
-      "tsconfig.dev.json",
+      "test/tsconfig.json",
       "tsconfig.json",
     ],
   },
@@ -4015,6 +4214,7 @@ use-node-version=24.18.1
     "env": {
       "PATH": "$(pnpm -c exec "node --print process.env.PATH")",
     },
+    "manifestVersion": 3,
     "tasks": {
       "build": {
         "description": "Full release build",
@@ -4100,7 +4300,10 @@ use-node-version=24.18.1
         "name": "compile",
         "steps": [
           {
-            "exec": "tsc --build",
+            "execArgs": [
+              "tsc",
+              "--build",
+            ],
           },
         ],
       },
@@ -4109,7 +4312,12 @@ use-node-version=24.18.1
         "name": "default",
         "steps": [
           {
-            "exec": "ts-node --project tsconfig.dev.json .projenrc.ts",
+            "execArgs": [
+              "ts-node",
+              "--project",
+              "projenrc/tsconfig.json",
+              ".projenrc.ts",
+            ],
           },
         ],
       },
@@ -4162,10 +4370,19 @@ use-node-version=24.18.1
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist/js",
+            "execArgs": [
+              "mkdir",
+              "-p",
+              "dist/js",
+            ],
           },
           {
-            "exec": "pnpm pack --pack-destination dist/js",
+            "execArgs": [
+              "pnpm",
+              "pack",
+              "--pack-destination",
+              "dist/js",
+            ],
           },
         ],
       },
@@ -4207,7 +4424,7 @@ use-node-version=24.18.1
         "name": "test:compile",
         "steps": [
           {
-            "exec": "tsc --noEmit --project tsconfig.dev.json",
+            "exec": "tsc --noEmit --project projenrc/tsconfig.json",
           },
         ],
       },
@@ -4228,13 +4445,40 @@ use-node-version=24.18.1
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "execArgs": [
+              "pnpm",
+              "dlx",
+              "npm-check-updates@20",
+              "--upgrade",
+              "--target=latest",
+              "--peer",
+              "--no-deprecated",
+              "--dep=dev,prod,peer,optional",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            ],
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports projen ts-node typescript vitest",
+            "execArgs": [
+              "pnpm",
+              "update",
+              "@gplassard/projen-extensions",
+              "@stylistic/eslint-plugin",
+              "@types/node",
+              "@typescript-eslint/eslint-plugin",
+              "@typescript-eslint/parser",
+              "constructs",
+              "eslint",
+              "eslint-import-resolver-typescript",
+              "eslint-plugin-import",
+              "eslint-plugin-unused-imports",
+              "projen",
+              "ts-node",
+              "typescript",
+              "vitest",
+            ],
           },
           {
             "exec": "pnpm exec projen",
@@ -4249,7 +4493,11 @@ use-node-version=24.18.1
         "name": "watch",
         "steps": [
           {
-            "exec": "tsc --build -w",
+            "execArgs": [
+              "tsc",
+              "--build",
+              "-w",
+            ],
           },
         ],
       },
@@ -4599,13 +4847,27 @@ The five canonical triage roles and the strings they map to in our issue tracker
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
-allowBuilds:
-  esbuild: false
-  unrs-resolver: false
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@gplassard/projen-extensions"
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
 ",
+  "projenrc/tsconfig.json": {
+    "compilerOptions": {
+      "noEmit": true,
+      "rootDir": "..",
+    },
+    "exclude": [
+      "node_modules",
+    ],
+    "extends": "../tsconfig.json",
+    "include": [
+      "**/*.ts",
+      "../.projenrc.ts",
+    ],
+  },
   "static-analysis.datadog.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
 schema-version: v1
@@ -4661,45 +4923,18 @@ rulesets:
   - typescript-inclusive
   - typescript-node-security
 ",
-  "tsconfig.dev.json": {
+  "test/tsconfig.json": {
     "compilerOptions": {
-      "alwaysStrict": true,
-      "declaration": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "inlineSourceMap": true,
-      "inlineSources": true,
-      "lib": [
-        "es2020",
-      ],
-      "module": "CommonJS",
-      "noEmitOnError": false,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitAny": true,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": false,
-      "noUnusedParameters": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "stripInternal": true,
-      "target": "ES2020",
-      "types": [
-        "node",
-      ],
+      "noEmit": true,
+      "rootDir": "..",
     },
     "exclude": [
       "node_modules",
     ],
+    "extends": "../tsconfig.json",
     "include": [
-      "src/**/*.ts",
-      "test/**/*.ts",
+      "**/*.ts",
       "vitest.config.ts",
-      ".projenrc.ts",
-      "projenrc/**/*.ts",
     ],
   },
   "tsconfig.json": {
@@ -4734,7 +4969,9 @@ rulesets:
         "node",
       ],
     },
-    "exclude": [],
+    "exclude": [
+      "node_modules",
+    ],
     "include": [
       "src/**/*.ts",
     ],
@@ -4786,7 +5023,12 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2018,
-      "project": "./tsconfig.dev.json",
+      "projectService": {
+        "allowDefaultProject": [
+          ".projenrc.ts",
+        ],
+        "defaultProject": "./tsconfig.json",
+      },
       "sourceType": "module",
     },
     "plugins": [
@@ -4978,7 +5220,7 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
         "node": {},
         "typescript": {
           "alwaysTryTypes": true,
-          "project": "./tsconfig.dev.json",
+          "project": "./tsconfig.json",
         },
       },
     },
@@ -5009,8 +5251,9 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
 /package.json linguist-generated
 /pnpm-lock.yaml linguist-generated
 /pnpm-workspace.yaml linguist-generated
+/projenrc/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /static-analysis.datadog.yaml linguist-generated
-/tsconfig.dev.json linguist-generated linguist-language=JSON-with-Comments
+/test/tsconfig.json linguist-generated linguist-language=JSON-with-Comments
 /tsconfig.json linguist-generated linguist-language=JSON-with-Comments",
   ".github/pull_request_template.md": "Fixes #",
   ".github/workflows/build.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
@@ -5104,23 +5347,28 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Push changes
+        id: push_changes
         env:
           PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
         run: |-
@@ -5140,10 +5388,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -5163,10 +5413,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -5189,10 +5441,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -5213,10 +5467,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -5247,7 +5503,8 @@ jobs:
       pull-requests: write
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
+      - id: auto_5940c89f
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -5282,8 +5539,10 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
@@ -5293,10 +5552,12 @@ jobs:
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         run: pnpm i --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Upgrade dependencies
+        id: upgrade_dependencies
         run: pnpm exec projen upgrade
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
@@ -5312,6 +5573,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -5339,15 +5601,19 @@ jobs:
           permission-workflows: write
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -5387,6 +5653,7 @@ jobs:
 !/.projen/deps.json
 !/.projen/files.json
 !/.github/workflows/pull-request-lint.yml
+!/pnpm-workspace.yaml
 !/package.json
 !/LICENSE
 !/.npmignore
@@ -5421,13 +5688,13 @@ junit.xml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
-!/tsconfig.dev.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/tsconfig.json
 !/.npmrc
-!/pnpm-workspace.yaml
 !/.ncurc.js
 .idea
 *.iml
@@ -5449,7 +5716,7 @@ junit.xml
 /coverage/
 permissions-backup.acl
 /test/
-/tsconfig.dev.json
+/test/tsconfig.json
 /src/
 !/lib/
 !/lib/**/*.js
@@ -5462,6 +5729,7 @@ dist
 /.projenrc.js
 tsconfig.tsbuildinfo
 /.eslintrc.json
+/projenrc/tsconfig.json
 /.gitattributes
 /.projenrc.ts
 /projenrc
@@ -5556,9 +5824,9 @@ use-node-version=24.18.1
       ".projen/files.json",
       ".projen/tasks.json",
       "LICENSE",
-      "pnpm-workspace.yaml",
+      "projenrc/tsconfig.json",
       "static-analysis.datadog.yaml",
-      "tsconfig.dev.json",
+      "test/tsconfig.json",
       "tsconfig.json",
     ],
   },
@@ -5567,6 +5835,7 @@ use-node-version=24.18.1
     "env": {
       "PATH": "$(pnpm -c exec "node --print process.env.PATH")",
     },
+    "manifestVersion": 3,
     "tasks": {
       "build": {
         "description": "Full release build",
@@ -5652,7 +5921,10 @@ use-node-version=24.18.1
         "name": "compile",
         "steps": [
           {
-            "exec": "tsc --build",
+            "execArgs": [
+              "tsc",
+              "--build",
+            ],
           },
         ],
       },
@@ -5661,7 +5933,12 @@ use-node-version=24.18.1
         "name": "default",
         "steps": [
           {
-            "exec": "ts-node --project tsconfig.dev.json .projenrc.ts",
+            "execArgs": [
+              "ts-node",
+              "--project",
+              "projenrc/tsconfig.json",
+              ".projenrc.ts",
+            ],
           },
         ],
       },
@@ -5714,10 +5991,19 @@ use-node-version=24.18.1
         "name": "package",
         "steps": [
           {
-            "exec": "mkdir -p dist/js",
+            "execArgs": [
+              "mkdir",
+              "-p",
+              "dist/js",
+            ],
           },
           {
-            "exec": "pnpm pack --pack-destination dist/js",
+            "execArgs": [
+              "pnpm",
+              "pack",
+              "--pack-destination",
+              "dist/js",
+            ],
           },
         ],
       },
@@ -5759,7 +6045,7 @@ use-node-version=24.18.1
         "name": "test:compile",
         "steps": [
           {
-            "exec": "tsc --noEmit --project tsconfig.dev.json",
+            "exec": "tsc --noEmit --project projenrc/tsconfig.json",
           },
         ],
       },
@@ -5780,13 +6066,40 @@ use-node-version=24.18.1
         "name": "upgrade",
         "steps": [
           {
-            "exec": "pnpm dlx npm-check-updates@20 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            "execArgs": [
+              "pnpm",
+              "dlx",
+              "npm-check-updates@20",
+              "--upgrade",
+              "--target=latest",
+              "--peer",
+              "--no-deprecated",
+              "--dep=dev,prod,peer,optional",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+            ],
           },
           {
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @gplassard/projen-extensions @stylistic/eslint-plugin @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-unused-imports projen ts-node typescript vitest",
+            "execArgs": [
+              "pnpm",
+              "update",
+              "@gplassard/projen-extensions",
+              "@stylistic/eslint-plugin",
+              "@types/node",
+              "@typescript-eslint/eslint-plugin",
+              "@typescript-eslint/parser",
+              "constructs",
+              "eslint",
+              "eslint-import-resolver-typescript",
+              "eslint-plugin-import",
+              "eslint-plugin-unused-imports",
+              "projen",
+              "ts-node",
+              "typescript",
+              "vitest",
+            ],
           },
           {
             "exec": "pnpm exec projen",
@@ -5801,7 +6114,11 @@ use-node-version=24.18.1
         "name": "watch",
         "steps": [
           {
-            "exec": "tsc --build -w",
+            "execArgs": [
+              "tsc",
+              "--build",
+              "-w",
+            ],
           },
         ],
       },
@@ -6073,13 +6390,27 @@ use-node-version=24.18.1
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
-allowBuilds:
-  esbuild: false
-  unrs-resolver: false
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@gplassard/projen-extensions"
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
 ",
+  "projenrc/tsconfig.json": {
+    "compilerOptions": {
+      "noEmit": true,
+      "rootDir": "..",
+    },
+    "exclude": [
+      "node_modules",
+    ],
+    "extends": "../tsconfig.json",
+    "include": [
+      "**/*.ts",
+      "../.projenrc.ts",
+    ],
+  },
   "static-analysis.datadog.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
 schema-version: v1
@@ -6135,45 +6466,18 @@ rulesets:
   - typescript-inclusive
   - typescript-node-security
 ",
-  "tsconfig.dev.json": {
+  "test/tsconfig.json": {
     "compilerOptions": {
-      "alwaysStrict": true,
-      "declaration": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "inlineSourceMap": true,
-      "inlineSources": true,
-      "lib": [
-        "es2020",
-      ],
-      "module": "CommonJS",
-      "noEmitOnError": false,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitAny": true,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": false,
-      "noUnusedParameters": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "stripInternal": true,
-      "target": "ES2020",
-      "types": [
-        "node",
-      ],
+      "noEmit": true,
+      "rootDir": "..",
     },
     "exclude": [
       "node_modules",
     ],
+    "extends": "../tsconfig.json",
     "include": [
-      "src/**/*.ts",
-      "test/**/*.ts",
+      "**/*.ts",
       "vitest.config.ts",
-      ".projenrc.ts",
-      "projenrc/**/*.ts",
     ],
   },
   "tsconfig.json": {
@@ -6208,7 +6512,9 @@ rulesets:
         "node",
       ],
     },
-    "exclude": [],
+    "exclude": [
+      "node_modules",
+    ],
     "include": [
       "src/**/*.ts",
     ],
