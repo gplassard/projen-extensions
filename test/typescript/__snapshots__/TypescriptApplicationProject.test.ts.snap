@@ -792,7 +792,7 @@ use-node-version=24.18.1
         "type": "build",
       },
       {
-        "name": "ts-node",
+        "name": "tsx",
         "type": "build",
       },
       {
@@ -936,8 +936,17 @@ use-node-version=24.18.1
         "steps": [
           {
             "execArgs": [
-              "ts-node",
-              "--project",
+              "tsc",
+              "--noEmit",
+              "-p",
+              "projenrc/tsconfig.json",
+            ],
+            "name": "typecheck",
+          },
+          {
+            "execArgs": [
+              "tsx",
+              "--tsconfig",
               "projenrc/tsconfig.json",
               ".projenrc.ts",
             ],
@@ -1076,7 +1085,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
             ],
           },
           {
@@ -1097,7 +1106,7 @@ use-node-version=24.18.1
               "eslint-plugin-import",
               "eslint-plugin-unused-imports",
               "projen",
-              "ts-node",
+              "tsx",
               "typescript",
               "vitest",
             ],
@@ -1343,7 +1352,7 @@ use-node-version=24.18.1
       "eslint-plugin-import": "*",
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
-      "ts-node": "*",
+      "tsx": "*",
       "typescript": "*",
       "vitest": "*",
     },
@@ -2462,7 +2471,7 @@ use-node-version=24.18.1
         "type": "build",
       },
       {
-        "name": "ts-node",
+        "name": "tsx",
         "type": "build",
       },
       {
@@ -2647,8 +2656,17 @@ use-node-version=24.18.1
         "steps": [
           {
             "execArgs": [
-              "ts-node",
-              "--project",
+              "tsc",
+              "--noEmit",
+              "-p",
+              "projenrc/tsconfig.json",
+            ],
+            "name": "typecheck",
+          },
+          {
+            "execArgs": [
+              "tsx",
+              "--tsconfig",
               "projenrc/tsconfig.json",
               ".projenrc.ts",
             ],
@@ -2829,7 +2847,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
             ],
           },
           {
@@ -2851,7 +2869,7 @@ use-node-version=24.18.1
               "eslint-plugin-import",
               "eslint-plugin-unused-imports",
               "projen",
-              "ts-node",
+              "tsx",
               "typescript",
               "vitest",
             ],
@@ -3098,7 +3116,7 @@ use-node-version=24.18.1
       "eslint-plugin-import": "*",
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
-      "ts-node": "*",
+      "tsx": "*",
       "typescript": "*",
       "vitest": "*",
     },
@@ -4164,7 +4182,7 @@ use-node-version=24.18.1
         "type": "build",
       },
       {
-        "name": "ts-node",
+        "name": "tsx",
         "type": "build",
       },
       {
@@ -4313,8 +4331,17 @@ use-node-version=24.18.1
         "steps": [
           {
             "execArgs": [
-              "ts-node",
-              "--project",
+              "tsc",
+              "--noEmit",
+              "-p",
+              "projenrc/tsconfig.json",
+            ],
+            "name": "typecheck",
+          },
+          {
+            "execArgs": [
+              "tsx",
+              "--tsconfig",
               "projenrc/tsconfig.json",
               ".projenrc.ts",
             ],
@@ -4454,7 +4481,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
             ],
           },
           {
@@ -4475,7 +4502,7 @@ use-node-version=24.18.1
               "eslint-plugin-import",
               "eslint-plugin-unused-imports",
               "projen",
-              "ts-node",
+              "tsx",
               "typescript",
               "vitest",
             ],
@@ -4799,7 +4826,7 @@ The five canonical triage roles and the strings they map to in our issue tracker
       "eslint-plugin-import": "*",
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
-      "ts-node": "*",
+      "tsx": "*",
       "typescript": "*",
       "vitest": "*",
     },
@@ -5790,7 +5817,7 @@ use-node-version=24.18.1
         "type": "build",
       },
       {
-        "name": "ts-node",
+        "name": "tsx",
         "type": "build",
       },
       {
@@ -5934,8 +5961,17 @@ use-node-version=24.18.1
         "steps": [
           {
             "execArgs": [
-              "ts-node",
-              "--project",
+              "tsc",
+              "--noEmit",
+              "-p",
+              "projenrc/tsconfig.json",
+            ],
+            "name": "typecheck",
+          },
+          {
+            "execArgs": [
+              "tsx",
+              "--tsconfig",
               "projenrc/tsconfig.json",
               ".projenrc.ts",
             ],
@@ -6075,7 +6111,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,ts-node,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
             ],
           },
           {
@@ -6096,7 +6132,7 @@ use-node-version=24.18.1
               "eslint-plugin-import",
               "eslint-plugin-unused-imports",
               "projen",
-              "ts-node",
+              "tsx",
               "typescript",
               "vitest",
             ],
@@ -6342,7 +6378,7 @@ use-node-version=24.18.1
       "eslint-plugin-import": "*",
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
-      "ts-node": "*",
+      "tsx": "*",
       "typescript": "*",
       "vitest": "*",
     },
