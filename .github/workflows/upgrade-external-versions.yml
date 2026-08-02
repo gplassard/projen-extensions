@@ -16,35 +16,43 @@ jobs:
       patch_created: ${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.18.1
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile
       - name: Get latest NodeJS versions
+        id: get_latest_nodejs_versions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/nodejs/node/releases --jq 'map(select(.prerelease == false)) | {\"node20\": (map(select(.tag_name | startswith(\"v20.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node22\": (map(select(.tag_name | startswith(\"v22.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node24\": (map(select(.tag_name | startswith(\"v24.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}' > src/github/nodejs.json"
       - name: Get latest PNPM
+        id: get_latest_pnpm
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/pnpm/pnpm/releases --jq 'map(select(.prerelease == false)) | map({version: .tag_name})[0]' > src/github/pnpm.json"
       - name: Upgrade GitHub Actions and NCU
+        id: upgrade_github_actions_and_ncu
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run upgrade-github-versions
       - name: Upgrade Go and golangci-lint
+        id: upgrade_go_and_golangci-lint
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run upgrade-go-versions
@@ -56,6 +64,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -79,15 +88,19 @@ jobs:
           app-id: ${{ secrets.PROJEN_APP_ID }}
           private-key: ${{ secrets.PROJEN_APP_PRIVATE_KEY }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: ${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s ${{ runner.temp }}/repo.patch ] && git apply ${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

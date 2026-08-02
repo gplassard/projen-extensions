@@ -17,10 +17,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-iac-scanner-github-action@b5dc19b85ac4af53e56e02d430831fb6a87b6406
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -40,10 +42,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -66,10 +70,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
+        id: check_imported_libraries_are_secure_and_compliant
         uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -90,10 +96,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
+        id: check_code_meets_quality_and_security_standards
         uses: DataDog/datadog-static-analyzer-github-action@506d966f01f45874d7a53d00a0c300f650e91e39
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
@@ -130,23 +138,28 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.18.1
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile
       - name: Run projen
+        id: run_projen
         run: pnpm run projen
       - name: Find mutations
         id: self_mutation
@@ -156,6 +169,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.self_mutation.outputs.self_mutation_happened
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -164,6 +178,7 @@ jobs:
           overwrite: true
           retention-days: 1
       - name: Fail build on mutation
+        id: fail_build_on_mutation
         if: steps.self_mutation.outputs.self_mutation_happened
         run: |-
           echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."
@@ -186,23 +201,28 @@ jobs:
           permission-contents: write
           permission-workflows: write
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
       - name: Push changes
+        id: push_changes
         env:
           PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
         run: |-
@@ -231,7 +251,8 @@ jobs:
       pull-requests: write
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
+      - id: auto_5940c89f
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -269,6 +290,7 @@ jobs:
           permission-pull-requests: write
           permission-contents: write
       - name: Release Please
+        id: release_please
         uses: googleapis/release-please-action@8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5
         with:
           token: \${{ steps.generate_token.outputs.token }}
@@ -470,31 +492,38 @@ jobs:
       patch_created: \${{ steps.create_patch.outputs.patch_created }}
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
       - name: Setup pnpm
+        id: setup_pnpm
         uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 11.19.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 24.18.1
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
+        id: install_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile
       - name: Upgrade dependencies
+        id: upgrade_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm dlx npm-check-updates@23 --upgrade --target=latest
       - name: Install dependencies
+        id: install_dependencies_2
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --no-frozen-lockfile
       - name: Run projen
+        id: run_projen
         run: pnpm run projen
       - name: Find mutations
         id: create_patch
@@ -504,6 +533,7 @@ jobs:
         shell: bash
         working-directory: ./
       - name: Upload patch
+        id: upload_patch
         if: steps.create_patch.outputs.patch_created
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -526,15 +556,19 @@ jobs:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
       - name: Checkout
+        id: checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Download patch
+        id: download_patch
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: repo.patch
           path: \${{ runner.temp }}
       - name: Apply patch
+        id: apply_patch
         run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
       - name: Set git identity
+        id: set_git_identity
         run: |-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -618,6 +652,7 @@ target
   },
   ".projen/tasks.json": {
     "//": "~~ Generated by projen. To modify, edit .projenrc.js and run "npx projen".",
+    "manifestVersion": 3,
     "tasks": {
       "compile": {
         "description": "Only compile",
