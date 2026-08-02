@@ -66,6 +66,17 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
       workflowPackageCache: true,
+      pnpmOptions: {
+        workspaceYamlOptions: {
+          allowBuilds: {
+            'esbuild': false,
+            'unrs-resolver': false,
+            ...options.pnpmWorkspace?.allowBuilds,
+          },
+          minimumReleaseAge: options.pnpmWorkspace?.minimumReleaseAge ?? 4320, // 3 days in minutes
+          minimumReleaseAgeExclude: options.pnpmWorkspace?.minimumReleaseAgeExclude ?? ['@gplassard/projen-extensions'],
+        },
+      },
       buildWorkflowOptions: {
         workflowTriggers: {
           push: { branches: [options.defaultReleaseBranch ?? 'main'] },
@@ -121,17 +132,6 @@ export class TypescriptApplicationProject extends TypeScriptProject {
 
     this.npmrc.addRegistry('https://npm.pkg.github.com', '@gplassard');
     this.npmrc.addConfig('use-node-version', nodeVersion(options));
-    new YamlFile(Project.of(this).root, 'pnpm-workspace.yaml', {
-      obj: {
-        allowBuilds: {
-          'esbuild': false,
-          'unrs-resolver': false,
-          ...options.pnpmWorkspace?.allowBuilds,
-        },
-        minimumReleaseAge: options.pnpmWorkspace?.minimumReleaseAge ?? 4320, // 3 days in minutes
-        minimumReleaseAgeExclude: options.pnpmWorkspace?.minimumReleaseAgeExclude ?? ['@gplassard/projen-extensions'],
-      },
-    });
     new TextFile(this, '.ncurc.js', {
       lines: [
         'cooldown: packageName => (packageName == \'@gplassard/projen-extensions\' ? 0 : 3)',
