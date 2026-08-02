@@ -2,7 +2,7 @@ import { JsonPatch, SampleFile, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
-import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
+import { TypeScriptProject, TypeScriptProjectOptions, TypeScriptRunner } from 'projen/lib/typescript';
 import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides, DeployGithubPagesWorkflowOptions, DeployGithubPagesWorkflow } from '../github';
@@ -62,6 +62,9 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       release: false,
       projenrcTs: true,
       sampleCode: false,
+      runner: TypeScriptRunner.tsx({
+        typeCheck: true,
+      }),
       packageManager: NodePackageManager.PNPM,
       pnpmVersion: pnpmVersion(),
       workflowNodeVersion: nodeVersion(options),
