@@ -29,22 +29,22 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^5.10.0",
-    "@types/node": "^26.0.1",
-    "@typescript-eslint/eslint-plugin": "^8",
-    "@typescript-eslint/parser": "^8",
-    "commit-and-tag-version": "^12",
-    "constructs": "^10.6.0",
-    "eslint": "^9.39.4",
+    "@types/node": "^26.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "commit-and-tag-version": "^12.7.3",
+    "constructs": "^10.8.0",
+    "eslint": "^9.39.5",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "projen": "^0.99.80",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
-    "constructs": "^10.6.0",
+    "constructs": "^10.8.0",
     "projen": "^0.99.70"
   },
   "pnpm": {},
