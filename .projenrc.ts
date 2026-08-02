@@ -17,11 +17,11 @@ project.tsconfigDev.addInclude('scripts/**/*.ts');
 project.deps.removeDependency('@gplassard/projen-extensions');
 project.addTask('upgrade-github-versions', {
   description: 'Upgrade GitHub dependencies to latest versions',
-  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-github-versions.ts',
+  exec: 'tsx -P tsconfig.dev.json scripts/upgrade-github-versions.ts',
 });
 project.addTask('upgrade-go-versions', {
   description: 'Upgrade go dependencies to latest versions',
-  exec: 'ts-node -P tsconfig.dev.json scripts/upgrade-go-versions.ts',
+  exec: 'tsx -P tsconfig.dev.json scripts/upgrade-go-versions.ts',
 });
 
 const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
