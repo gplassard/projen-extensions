@@ -40,5 +40,20 @@ export class TypescriptLibraryProject extends TypescriptApplicationProject {
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_npm/steps/4/run', 'npx -p publib@latest publib-npm build-artifact/js'),
     );
+
+    // Fix release_github job: download to current dir instead of dist/
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_github/steps/1/with/path', '.'),
+    );
+
+    // Fix release_github restore permissions step
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_github/steps/2/run', 'setfacl --restore=permissions-backup.acl || true'),
+    );
+
+    // Fix release_github Release step: use build-artifact/ path instead of dist/
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_github/steps/3/run', 'errout=$(mktemp); gh release create $(cat build-artifact/releasetag.txt) -R $GITHUB_REPOSITORY -F build-artifact/changelog.md -t $(cat build-artifact/releasetag.txt) --target $GITHUB_SHA 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi'),
+    );
   }
 }
