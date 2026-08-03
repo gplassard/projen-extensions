@@ -146,12 +146,14 @@ jobs:
         id: restore_build_artifact_permissions
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
-      - name: List dist/js contents (debug)
+      - name: List dist and dist/js contents (debug)
         run: |-
-          echo "Listing dist/js"
-          ls -la dist/js || true
-          echo "Listing tarball globs"
-          ls -la dist/js/*.tgz || true
+          echo "=== Full dist/ listing ==="
+          ls -laR dist/ || true
+          echo "=== dist/js/ listing ==="
+          ls -la dist/js/ || true
+          echo "=== Looking for .tgz files ==="
+          find dist/ -name "*.tgz" -type f || true
       - name: Release
         id: release
         env:
@@ -159,4 +161,4 @@ jobs:
           NPM_REGISTRY: npm.pkg.github.com
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLIB_DRYRUN: ${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-npm
+        run: npx -p publib@latest publib-npm dist/js
