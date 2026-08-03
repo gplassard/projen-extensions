@@ -289,17 +289,13 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
-      - name: Setup pnpm
-        id: setup_pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - name: Setup pnpm with runtime
+        id: setup_pnpm_with_runtime
+        uses: pnpm/setup@v1
         with:
           version: 11.19.0
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: 24.18.1
-          registry-url: https://npm.pkg.github.com
-          cache: pnpm
+          runtime: node@24.18.1
+          cache: true
       - name: Install dependencies
         id: install_dependencies
         env:
@@ -437,17 +433,13 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
-      - name: Setup pnpm
-        id: setup_pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - name: Setup pnpm with runtime
+        id: setup_pnpm_with_runtime
+        uses: pnpm/setup@v1
         with:
           version: 11.19.0
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: 24.18.1
-          registry-url: https://npm.pkg.github.com
-          cache: pnpm
+          runtime: node@24.18.1
+          cache: true
       - name: Install dependencies
         id: install_dependencies
         env:
@@ -966,17 +958,13 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
-      - name: Setup pnpm
-        id: setup_pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - name: Setup pnpm with runtime
+        id: setup_pnpm_with_runtime
+        uses: pnpm/setup@v1
         with:
           version: 11.19.0
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: 24.18.1
-          registry-url: https://npm.pkg.github.com
-          cache: pnpm
+          runtime: node@24.18.1
+          cache: true
       - name: Install dependencies
         id: install_dependencies
         env:
@@ -1114,17 +1102,13 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
-      - name: Setup pnpm
-        id: setup_pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - name: Setup pnpm with runtime
+        id: setup_pnpm_with_runtime
+        uses: pnpm/setup@v1
         with:
           version: 11.19.0
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: 24.18.1
-          registry-url: https://npm.pkg.github.com
-          cache: pnpm
+          runtime: node@24.18.1
+          cache: true
       - name: Install dependencies
         id: install_dependencies
         env:
