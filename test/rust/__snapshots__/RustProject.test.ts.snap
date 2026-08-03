@@ -145,6 +145,8 @@ jobs:
       - name: Setup pnpm with runtime
         id: setup_pnpm_with_runtime
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
           version: 11.20.0
           runtime: node@24.19.0
@@ -495,6 +497,8 @@ jobs:
       - name: Setup pnpm with runtime
         id: setup_pnpm_with_runtime
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
           version: 11.20.0
           runtime: node@24.19.0
