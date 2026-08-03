@@ -25,7 +25,7 @@ export class WorkflowActionsX {
     };
   }
 
-  static setupPnpm(options: { pnpmVersion?: string; nodeVersion?: string; cache?: boolean }): JobStep {
+  static setupPnpm(options: { pnpmVersion?: string; nodeVersion?: string; cache?: boolean; install?: boolean }): JobStep {
     return {
       name: 'Setup pnpm',
       uses: githubAction('pnpm/setup'),
@@ -33,22 +33,7 @@ export class WorkflowActionsX {
         version: options.pnpmVersion ?? pnpmVersion(),
         runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
         cache: options.cache ?? true,
-      },
-    };
-  }
-
-  static setupPnpmRuntime(options: { nodeVersion?: string; pnpmVersion?: string; cache?: boolean; install?: boolean }): JobStep {
-    return {
-      name: 'Setup pnpm with runtime',
-      uses: githubAction('pnpm/setup'),
-      with: {
-        version: options.pnpmVersion ?? pnpmVersion(),
-        runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
-        cache: options.cache ?? true,
-        install: options.install ?? true,
-      },
-      env: {
-        NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+        install: options.install,
       },
     };
   }

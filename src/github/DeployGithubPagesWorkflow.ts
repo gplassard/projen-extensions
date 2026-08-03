@@ -42,7 +42,7 @@ export class DeployGithubPagesWorkflow extends Component {
       },
       steps: [
         WorkflowActionsX.checkout({}),
-        WorkflowActionsX.setupPnpmRuntime({ cache: true }),
+        WorkflowActionsX.setupPnpm({ cache: true, install: false }),
         WorkflowActionsX.installDependencies({}),
         {
           name: 'Build',
