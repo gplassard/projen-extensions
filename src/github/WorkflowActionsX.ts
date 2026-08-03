@@ -37,7 +37,7 @@ export class WorkflowActionsX {
     };
   }
 
-  static setupPnpmRuntime(options: { nodeVersion?: string; pnpmVersion?: string; cache?: boolean }): JobStep {
+  static setupPnpmRuntime(options: { nodeVersion?: string; pnpmVersion?: string; cache?: boolean; install?: boolean }): JobStep {
     return {
       name: 'Setup pnpm with runtime',
       uses: githubAction('pnpm/setup'),
@@ -45,6 +45,7 @@ export class WorkflowActionsX {
         version: options.pnpmVersion ?? pnpmVersion(),
         runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
         cache: options.cache ?? true,
+        install: options.install ?? true,
       },
       env: {
         NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
