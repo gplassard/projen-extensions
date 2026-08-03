@@ -141,19 +141,17 @@ jobs:
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           artifact-ids: ${{ needs.release.outputs.artifact_id }}
-          path: dist
+          path: .
       - name: Restore build artifact permissions
         id: restore_build_artifact_permissions
-        run: cd dist && setfacl --restore=permissions-backup.acl
+        run: setfacl --restore=permissions-backup.acl || true
         continue-on-error: true
-      - name: List dist and dist/js contents (debug)
+      - name: List build-artifact contents (debug)
         run: |-
-          echo "=== Full dist/ listing ==="
-          ls -laR dist/ || true
-          echo "=== dist/js/ listing ==="
-          ls -la dist/js/ || true
+          echo "=== Full listing ==="
+          ls -laR . || true
           echo "=== Looking for .tgz files ==="
-          find dist/ -name "*.tgz" -type f || true
+          find . -name "*.tgz" -type f || true
       - name: Release
         id: release
         env:
@@ -161,4 +159,4 @@ jobs:
           NPM_REGISTRY: npm.pkg.github.com
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLIB_DRYRUN: ${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-npm dist/js
+        run: npx -p publib@latest publib-npm build-artifact/js
