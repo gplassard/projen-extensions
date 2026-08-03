@@ -15,9 +15,9 @@
     "version": "v4",
     "hash": "49933ea5288caeca8642d1e84afbd3f7d6820020"
   },
-  "pnpm/action-setup": {
-    "version": "v4",
-    "hash": "f40ffcd9367d9f12939873eb1018b921a783ffaa"
+  "pnpm/setup": {
+    "version": "v1",
+    "hash": ""
   },
   "actions/create-github-app-token": {
     "version": "v2",

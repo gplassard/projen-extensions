@@ -25,12 +25,26 @@ export class WorkflowActionsX {
     };
   }
 
-  static setupPnpm(_options: {}): JobStep {
+  static setupPnpm(options: { pnpmVersion?: string; nodeVersion?: string; cache?: boolean }): JobStep {
     return {
       name: 'Setup pnpm',
-      uses: githubAction('pnpm/action-setup'),
+      uses: githubAction('pnpm/setup'),
       with: {
-        version: pnpmVersion(),
+        version: options.pnpmVersion ?? pnpmVersion(),
+        runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
+        cache: options.cache ?? true,
+      },
+    };
+  }
+
+  static setupPnpmRuntime(options: { nodeVersion?: string; pnpmVersion?: string; cache?: boolean }): JobStep {
+    return {
+      name: 'Setup pnpm with runtime',
+      uses: githubAction('pnpm/setup'),
+      with: {
+        version: options.pnpmVersion ?? pnpmVersion(),
+        runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
+        cache: options.cache ?? true,
       },
     };
   }
