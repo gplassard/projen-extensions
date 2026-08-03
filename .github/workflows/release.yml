@@ -42,10 +42,10 @@ jobs:
         id: setup_pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 11.19.0
+          version: 11.20.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.18.1
+          node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.18.1
+          node-version: 24.19.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
@@ -134,7 +134,7 @@ jobs:
     steps:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 24.18.1
+          node-version: 24.19.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
