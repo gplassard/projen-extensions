@@ -146,6 +146,12 @@ jobs:
         id: restore_build_artifact_permissions
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
+      - name: List dist/js contents (debug)
+        run: |-
+          echo "Listing dist/js"
+          ls -la dist/js || true
+          echo "Listing tarball globs"
+          ls -la dist/js/*.tgz || true
       - name: Release
         id: release
         env:
