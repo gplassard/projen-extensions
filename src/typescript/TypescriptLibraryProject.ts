@@ -18,41 +18,15 @@ export class TypescriptLibraryProject extends TypescriptApplicationProject {
     super(typescriptProjectOptions);
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', nodeVersion(options));
 
-    // Fix artifact download path: download to current dir instead of dist/ to avoid nesting
+    // Workaround for projen 0.101+ change: artifact name now defaults to artifactsDirectory ("dist"),
+    // which clashes with download path "dist" creating nested dist/dist/... structure.
+    // Download to "." instead to get ./dist/... (GitHub Actions extracts artifact name as subdir).
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_npm/steps/1/with/path', '.'),
-    );
-
-    // Fix restore permissions step: files are now in current dir, not dist/
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_npm/steps/2/run', 'setfacl --restore=permissions-backup.acl || true'),
-    );
-
-    // Update debug step to look in the correct location
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
-      JsonPatch.add('/jobs/release_npm/steps/3', {
-        name: 'List build-artifact contents (debug)',
-        run: 'echo "=== Full listing ==="\nls -laR . || true\necho "=== Looking for .tgz files ==="\nfind . -name "*.tgz" -type f || true',
-      }),
-    );
-
-    // Update publib-npm to look in build-artifact/js (where the artifact is extracted)
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
-      JsonPatch.replace('/jobs/release_npm/steps/4/run', 'npx -p publib@latest publib-npm build-artifact/js'),
-    );
-
-    // Fix release_github job: download to current dir instead of dist/
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_npm/steps/3/run', 'npx -p publib@latest publib-npm build-artifact/js'),
       JsonPatch.replace('/jobs/release_github/steps/1/with/path', '.'),
-    );
-
-    // Fix release_github restore permissions step
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_github/steps/2/run', 'setfacl --restore=permissions-backup.acl || true'),
-    );
-
-    // Fix release_github Release step: use build-artifact/ path instead of dist/
-    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_github/steps/3/run', 'errout=$(mktemp); gh release create $(cat build-artifact/releasetag.txt) -R $GITHUB_REPOSITORY -F build-artifact/changelog.md -t $(cat build-artifact/releasetag.txt) --target $GITHUB_SHA 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi'),
     );
   }
