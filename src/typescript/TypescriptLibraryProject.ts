@@ -18,17 +18,27 @@ export class TypescriptLibraryProject extends TypescriptApplicationProject {
     super(typescriptProjectOptions);
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', nodeVersion(options));
 
-    // Insert a debug step into the generated release workflow to list dist/js before publib runs.
+    // Fix artifact download path: download to current dir instead of dist/ to avoid nesting
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_npm/steps/1/with/path', '.'),
+    );
+
+    // Fix restore permissions step: files are now in current dir, not dist/
+    this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
+      JsonPatch.replace('/jobs/release_npm/steps/2/run', 'setfacl --restore=permissions-backup.acl || true'),
+    );
+
+    // Update debug step to look in the correct location
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.add('/jobs/release_npm/steps/3', {
-        name: 'List dist and dist/js contents (debug)',
-        run: 'echo "=== Full dist/ listing ==="\nls -laR dist/ || true\necho "=== dist/js/ listing ==="\nls -la dist/js/ || true\necho "=== Looking for .tgz files ==="\nfind dist/ -name "*.tgz" -type f || true',
+        name: 'List build-artifact contents (debug)',
+        run: 'echo "=== Full listing ==="\nls -laR . || true\necho "=== Looking for .tgz files ==="\nfind . -name "*.tgz" -type f || true',
       }),
     );
 
-    // Ensure publib-npm looks in dist/js (the expected location)
+    // Update publib-npm to look in build-artifact/js (where the artifact is extracted)
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
-      JsonPatch.replace('/jobs/release_npm/steps/4/run', 'npx -p publib@latest publib-npm dist/js'),
+      JsonPatch.replace('/jobs/release_npm/steps/4/run', 'npx -p publib@latest publib-npm build-artifact/js'),
     );
   }
 }
