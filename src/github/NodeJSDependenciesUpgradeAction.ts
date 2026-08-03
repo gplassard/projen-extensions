@@ -34,8 +34,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
       },
       steps: [
         WorkflowActionsX.checkout({}),
-        WorkflowActionsX.setupPnpm({}),
-        WorkflowActionsX.setupNode({ packageManager: 'pnpm' }),
+        WorkflowActionsX.setupPnpmRuntime({ cache: true }),
         WorkflowActionsX.installDependencies({}),
         {
           name: 'Upgrade dependencies',
