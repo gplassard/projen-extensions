@@ -366,7 +366,7 @@
             "--peer",
             "--no-deprecated",
             "--dep=dev,prod,peer,optional",
-            "--filter=@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest,constructs"
+            "--filter=@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,vitest,constructs"
           ]
         },
         {
