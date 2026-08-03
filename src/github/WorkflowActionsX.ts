@@ -46,6 +46,9 @@ export class WorkflowActionsX {
         runtime: `node@${options.nodeVersion ?? nodeVersion({})}`,
         cache: options.cache ?? true,
       },
+      env: {
+        NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
     };
   }
 
