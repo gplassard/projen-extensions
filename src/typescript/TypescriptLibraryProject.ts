@@ -18,8 +18,9 @@ export class TypescriptLibraryProject extends TypescriptApplicationProject {
     super(typescriptProjectOptions);
     this.tryFindObjectFile('.github/workflows/release.yml')?.addOverride('jobs.release_npm.steps.0.with.node-version', nodeVersion(options));
 
-    // Fix artifact path issue: download to current directory instead of dist/ to prevent
-    // nested structure (build-artifact/js/ vs dist/build-artifact/js/)
+    // Workaround for projen 0.101+ change: artifact name now defaults to artifactsDirectory ("dist"),
+    // which clashes with download path "dist" creating nested dist/dist/... structure.
+    // Download to "." instead to get ./dist/... (GitHub Actions extracts artifact name as subdir).
     this.tryFindObjectFile('.github/workflows/release.yml')?.patch(
       JsonPatch.replace('/jobs/release_npm/steps/1/with/path', '.'),
       JsonPatch.replace('/jobs/release_npm/steps/2/run', 'setfacl --restore=permissions-backup.acl || true'),
