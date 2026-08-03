@@ -1,4 +1,4 @@
-import { JsonPatch, SampleFile, TextFile } from 'projen';
+import { DependencyType, JsonPatch, SampleFile, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
@@ -123,6 +123,8 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       },
     };
     super(typescriptProjectOptions);
+    this.deps.removeDependency('typescript', DependencyType.BUILD);
+    this.deps.addDependency('typescript@^6', DependencyType.BUILD);
     if (this.github) {
       applyGithubActionsOverrides(this.github);
     }

@@ -798,6 +798,7 @@ use-node-version=24.18.1
       {
         "name": "typescript",
         "type": "build",
+        "version": "^6",
       },
       {
         "name": "vitest",
@@ -1085,7 +1086,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,vitest",
             ],
           },
           {
@@ -1353,7 +1354,7 @@ use-node-version=24.18.1
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
       "tsx": "*",
-      "typescript": "*",
+      "typescript": "^6",
       "vitest": "*",
     },
     "devEngines": {
@@ -2477,6 +2478,7 @@ use-node-version=24.18.1
       {
         "name": "typescript",
         "type": "build",
+        "version": "^6",
       },
       {
         "name": "vitest",
@@ -2847,7 +2849,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,vitest",
             ],
           },
           {
@@ -3117,7 +3119,7 @@ use-node-version=24.18.1
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
       "tsx": "*",
-      "typescript": "*",
+      "typescript": "^6",
       "vitest": "*",
     },
     "devEngines": {
@@ -4184,6 +4186,7 @@ use-node-version=24.18.1
       {
         "name": "typescript",
         "type": "build",
+        "version": "^6",
       },
       {
         "name": "vitest",
@@ -4477,7 +4480,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,vitest",
             ],
           },
           {
@@ -4823,7 +4826,7 @@ The five canonical triage roles and the strings they map to in our issue tracker
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
       "tsx": "*",
-      "typescript": "*",
+      "typescript": "^6",
       "vitest": "*",
     },
     "devEngines": {
@@ -5819,6 +5822,7 @@ use-node-version=24.18.1
       {
         "name": "typescript",
         "type": "build",
+        "version": "^6",
       },
       {
         "name": "vitest",
@@ -6107,7 +6111,7 @@ use-node-version=24.18.1
               "--peer",
               "--no-deprecated",
               "--dep=dev,prod,peer,optional",
-              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,typescript,vitest",
+              "--filter=@gplassard/projen-extensions,@stylistic/eslint-plugin,@types/node,eslint,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-unused-imports,projen,tsx,vitest",
             ],
           },
           {
@@ -6375,7 +6379,7 @@ use-node-version=24.18.1
       "eslint-plugin-unused-imports": "*",
       "projen": "*",
       "tsx": "*",
-      "typescript": "*",
+      "typescript": "^6",
       "vitest": "*",
     },
     "devEngines": {
