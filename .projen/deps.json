@@ -54,6 +54,7 @@
     },
     {
       "name": "typescript",
+      "version": "^6",
       "type": "build"
     },
     {
