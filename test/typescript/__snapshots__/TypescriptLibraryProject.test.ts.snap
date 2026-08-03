@@ -681,12 +681,6 @@ jobs:
         id: restore_build_artifact_permissions
         run: setfacl --restore=permissions-backup.acl || true
         continue-on-error: true
-      - name: List build-artifact contents (debug)
-        run: |-
-          echo "=== Full listing ==="
-          ls -laR . || true
-          echo "=== Looking for .tgz files ==="
-          find . -name "*.tgz" -type f || true
       - name: Release
         id: release
         env:
