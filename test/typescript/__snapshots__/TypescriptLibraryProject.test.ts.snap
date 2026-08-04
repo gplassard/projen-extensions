@@ -288,7 +288,7 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
@@ -296,7 +296,7 @@ jobs:
         uses: pnpm/action-setup@v5
         with:
           version: 11.20.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -308,7 +308,7 @@ jobs:
       - name: run projen
         run: pnpm run projen
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@4e7afb05b464fd349275e41e65a7f4de83e7f46b
+        uses: datadog/test-visibility-github-action@d6d648d87563e713b3d396bb3bfebb5e3cc93707
         with:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
@@ -329,7 +329,7 @@ jobs:
         working-directory: ./
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -350,7 +350,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -359,14 +359,14 @@ jobs:
           permission-workflows: write
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -400,7 +400,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
@@ -425,7 +425,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
@@ -453,12 +453,12 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Check imported libraries are secure and compliant
         id: check_imported_libraries_are_secure_and_compliant
-        uses: DataDog/datadog-sca-github-action@d871ffeaa1a9693e935d5e66f7440782320e74ea
+        uses: DataDog/datadog-sca-github-action@7462ed287c643c710d717a1e5f56bc5dea89dc06
         with:
           dd_app_key: \${{ secrets.DD_APP_KEY }}
           dd_api_key: \${{ secrets.DD_API_KEY }}
@@ -479,7 +479,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Check code meets quality and security standards
@@ -564,7 +564,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set git identity
@@ -577,7 +577,7 @@ jobs:
         uses: pnpm/action-setup@v5
         with:
           version: 11.20.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -588,7 +588,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@4e7afb05b464fd349275e41e65a7f4de83e7f46b
+        uses: datadog/test-visibility-github-action@d6d648d87563e713b3d396bb3bfebb5e3cc93707
         with:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
@@ -621,7 +621,7 @@ jobs:
       - name: Upload artifact
         id: upload_artifact
         if: \${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: build-artifact
           path: dist
@@ -637,13 +637,13 @@ jobs:
       contents: write
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: .
@@ -667,13 +667,13 @@ jobs:
       packages: write
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: .
@@ -710,7 +710,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: main
       - name: Setup pnpm
@@ -718,7 +718,7 @@ jobs:
         uses: pnpm/action-setup@v5
         with:
           version: 11.20.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -747,7 +747,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -764,7 +764,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -774,12 +774,12 @@ jobs:
           token: \${{ secrets.GITHUB_TOKEN }}
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: main
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -793,7 +793,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           commit-message: |-
