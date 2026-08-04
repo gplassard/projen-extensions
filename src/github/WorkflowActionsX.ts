@@ -14,6 +14,14 @@ export class WorkflowActionsX {
     };
   }
 
+  static setupPnpmSteps(_: {}): JobStep[] {
+    return [
+      this.setupPnpm({ install: false }),
+      this.setupNode({}),
+      this.installDependencies({}),
+    ];
+  }
+
   static setupNode(options: { nodeVersion?: string; packageManager?: string }): JobStep {
     return {
       uses: githubAction('actions/setup-node'),
