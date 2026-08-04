@@ -40,8 +40,7 @@ export class ProjenSynthAction extends Component {
       },
       steps: [
         WorkflowActionsX.checkout({}),
-        WorkflowActionsX.setupNode({}),
-        WorkflowActionsX.setupPnpm({}),
+        ...WorkflowActionsX.setupPnpmSteps({}),
         {
           name: 'Run projen',
           run: 'pnpm run projen',

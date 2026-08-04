@@ -34,8 +34,7 @@ export class NodeJSDependenciesUpgradeAction extends Component {
       },
       steps: [
         WorkflowActionsX.checkout({}),
-        WorkflowActionsX.setupNode({}),
-        WorkflowActionsX.setupPnpm({}),
+        ...WorkflowActionsX.setupPnpmSteps({}),
         {
           name: 'Upgrade dependencies',
           run: `pnpm dlx npm-check-updates@${ncuVersion()} --upgrade --target=latest`,
