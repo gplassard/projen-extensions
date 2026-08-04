@@ -30,7 +30,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -40,7 +40,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -84,7 +84,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -95,8 +95,8 @@ jobs:
           runtime: node@24.19.0
           cache: true
           install: false
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_8ece9c1e
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -119,7 +119,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -141,7 +141,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -150,14 +150,14 @@ jobs:
           permission-workflows: write
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -235,7 +235,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -245,7 +245,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -274,7 +274,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -284,7 +284,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -322,7 +322,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -333,8 +333,8 @@ jobs:
           runtime: node@24.19.0
           cache: true
           install: false
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_8ece9c1e
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -367,7 +367,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -383,16 +383,16 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -406,7 +406,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           commit-message: |-
@@ -563,7 +563,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -603,7 +603,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -614,8 +614,8 @@ jobs:
           runtime: node@24.19.0
           cache: true
           install: false
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_8ece9c1e
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -638,7 +638,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -660,7 +660,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -669,14 +669,14 @@ jobs:
           permission-workflows: write
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -754,7 +754,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -764,7 +764,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -793,7 +793,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -803,7 +803,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -841,7 +841,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -851,7 +851,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -880,7 +880,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set up JDK
@@ -890,7 +890,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100
+        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -928,7 +928,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -939,8 +939,8 @@ jobs:
           runtime: node@24.19.0
           cache: true
           install: false
-      - id: auto_f666a58d
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - id: auto_8ece9c1e
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.19.0
           registry-url: https://npm.pkg.github.com
@@ -973,7 +973,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -989,16 +989,16 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -1012,7 +1012,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           token: \${{ steps.generate_token.outputs.token }}
           commit-message: |-
