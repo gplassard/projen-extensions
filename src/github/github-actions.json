@@ -1,67 +1,67 @@
 {
   "actions/checkout": {
-    "version": "v6",
-    "hash": "d23441a48e516b6c34aea4fa41551a30e30af803"
+    "version": "v7",
+    "hash": "3d3c42e5aac5ba805825da76410c181273ba90b1"
   },
   "actions/configure-pages": {
-    "version": "v5",
-    "hash": "983d7736d9b0ae728b81ab479565c72886d7745b"
+    "version": "v6",
+    "hash": "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
   },
   "actions/deploy-pages": {
-    "version": "v4",
-    "hash": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e"
+    "version": "v5",
+    "hash": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128"
   },
   "actions/setup-node": {
-    "version": "v4",
-    "hash": "49933ea5288caeca8642d1e84afbd3f7d6820020"
+    "version": "v7",
+    "hash": "820762786026740c76f36085b0efc47a31fe5020"
   },
   "pnpm/setup": {
     "version": "v1",
     "hash": "f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8"
   },
   "actions/create-github-app-token": {
-    "version": "v2",
-    "hash": "fee1f7d63c2ff003460e3d139729b119787bc349"
+    "version": "v3",
+    "hash": "bcd2ba49218906704ab6c1aa796996da409d3eb1"
   },
   "actions/setup-java": {
     "version": "v5",
     "hash": "b6effb05e454b25005698d916606bdc6ffcbf961"
   },
   "aws-actions/configure-aws-credentials": {
-    "version": "v5",
-    "hash": "cabfdba3510de1431bac9dba27511d97497fc100"
+    "version": "v6",
+    "hash": "451ce2a72e8d729a59ebeaacab82dbce58e7af4c"
   },
   "dtolnay/rust-toolchain": {
     "version": "stable",
     "hash": "4cda84d5c5c54efe2404f9d843567869ab1699d4"
   },
   "actions/upload-artifact": {
-    "version": "v4",
-    "hash": "ea165f8d65b6e75b540449e92b4886f43607fa02"
+    "version": "v7",
+    "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
   },
   "actions/upload-pages-artifact": {
-    "version": "v3",
-    "hash": "56afc609e74202658d3ffba0e8f6dda462b719fa"
+    "version": "v5",
+    "hash": "fc324d3547104276b827a68afc52ff2a11cc49c9"
   },
   "actions/download-artifact": {
-    "version": "v4",
-    "hash": "d3f86a106a0bac45b974a628896c90dbdf5c8093"
+    "version": "v8",
+    "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
   },
   "EndBug/add-and-commit": {
-    "version": "v9",
-    "hash": "a94899bca583c204427a224a7af87c02f9b325d5"
+    "version": "v10",
+    "hash": "290ea2c423ad77ca9c62ae0f5b224379612c0321"
   },
   "actions/cache": {
-    "version": "v4",
-    "hash": "0057852bfaa89a56745cba8c7296529d2fc39830"
+    "version": "v6",
+    "hash": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9"
   },
   "datadog/test-visibility-github-action": {
-    "version": "v2",
-    "hash": "4e7afb05b464fd349275e41e65a7f4de83e7f46b"
+    "version": "v3",
+    "hash": "d6d648d87563e713b3d396bb3bfebb5e3cc93707"
   },
   "DataDog/datadog-sca-github-action": {
-    "version": "v2",
-    "hash": "d871ffeaa1a9693e935d5e66f7440782320e74ea"
+    "version": "v4",
+    "hash": "7462ed287c643c710d717a1e5f56bc5dea89dc06"
   },
   "DataDog/datadog-static-analyzer-github-action": {
     "version": "v3",
@@ -72,16 +72,16 @@
     "hash": "b5dc19b85ac4af53e56e02d430831fb6a87b6406"
   },
   "googleapis/release-please-action": {
-    "version": "v4",
-    "hash": "8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5"
+    "version": "v5",
+    "hash": "0dfd8538845b8e92600d271a895a5372865d4062"
   },
   "golangci/golangci-lint-action": {
     "version": "v9",
     "hash": "db9de0fc1a667e1a49d2291a1a042dff081d78f6"
   },
   "actions/setup-go": {
-    "version": "v6",
-    "hash": "924ae3a1cded613372ab5595356fb5720e22ba16"
+    "version": "v7",
+    "hash": "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e"
   },
   "tibdex/github-app-token": {
     "version": "v1.7.0",
@@ -92,8 +92,8 @@
     "hash": "48f256284bd46cdaab1048c3721360e808335d50"
   },
   "peter-evans/create-pull-request": {
-    "version": "v7",
-    "hash": "22a9089034f40e5a961c8808d113e2c98fb63676"
+    "version": "v8",
+    "hash": "5f6978faf089d4d20b00c7766989d076bb2fc7f1"
   },
   "actions/create-release": {
     "version": "v1",
