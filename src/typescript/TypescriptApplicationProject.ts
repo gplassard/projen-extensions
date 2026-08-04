@@ -27,6 +27,7 @@ type CustomProps = {
   releaseRank?: number;
   nodeVersion?: string;
   pnpmWorkspace?: {
+    packages?: string[];
     allowBuilds?: Record<string, boolean>;
     minimumReleaseAge?: number;
     minimumReleaseAgeExclude?: string[];
@@ -71,6 +72,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
       workflowPackageCache: true,
       pnpmOptions: {
         workspaceYamlOptions: {
+          packages: options.pnpmWorkspace?.packages,
           allowBuilds: {
             'esbuild': false,
             'unrs-resolver': false,

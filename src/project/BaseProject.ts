@@ -27,6 +27,7 @@ export interface BaseProjectProps extends ProjectOptions {
   readonly projenSynth?: boolean;
   readonly projenSynthOptions?: ProjenSynthActionProps;
   readonly pnpmWorkspace?: {
+    packages?: string[];
     allowBuilds?: Record<string, boolean>;
     minimumReleaseAge?: number;
     minimumReleaseAgeExclude?: string[];
@@ -54,6 +55,7 @@ export class BaseProject extends Project {
     new CustomGitignore(this, props.customGitignore);
     new YamlFile(Project.of(this).root, 'pnpm-workspace.yaml', {
       obj: {
+        packages: props.pnpmWorkspace?.packages,
         allowBuilds: {
           ...props.pnpmWorkspace?.allowBuilds,
         },
