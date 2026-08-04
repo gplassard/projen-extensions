@@ -46,7 +46,8 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
   },
   steps: [
     WorkflowActionsX.checkout({}),
-    WorkflowActionsX.setupPnpm({ cache: true, install: false }),
+    WorkflowActionsX.setupNode({}),
+    WorkflowActionsX.setupPnpm({}),
     WorkflowActionsX.installDependencies({}),
     {
       name: 'Get latest NodeJS versions',

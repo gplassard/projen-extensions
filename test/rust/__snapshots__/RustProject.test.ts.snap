@@ -142,6 +142,12 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.19.0
+          registry-url: https://npm.pkg.github.com
+          cache: pnpm
       - name: Setup pnpm
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
@@ -149,12 +155,6 @@ jobs:
           version: 11.20.0
           runtime: node@24.19.0
           cache: true
-          install: false
-      - name: Install dependencies
-        id: install_dependencies
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm i --frozen-lockfile
       - name: Run projen
         id: run_projen
         run: pnpm run projen
@@ -493,6 +493,12 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           fetch-depth: 0
+      - id: auto_f666a58d
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.19.0
+          registry-url: https://npm.pkg.github.com
+          cache: pnpm
       - name: Setup pnpm
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
@@ -500,19 +506,13 @@ jobs:
           version: 11.20.0
           runtime: node@24.19.0
           cache: true
-          install: false
-      - name: Install dependencies
-        id: install_dependencies
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm i --frozen-lockfile
       - name: Upgrade dependencies
         id: upgrade_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm dlx npm-check-updates@23 --upgrade --target=latest
       - name: Install dependencies
-        id: install_dependencies_2
+        id: install_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --no-frozen-lockfile
