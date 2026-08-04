@@ -1,4 +1,4 @@
-import { Project, ProjectOptions } from 'projen';
+import { Project, ProjectOptions, YamlFile } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
 import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
@@ -26,6 +26,11 @@ export interface BaseProjectProps extends ProjectOptions {
   readonly nodeJSDependenciesUpgradeOptions?: NodeJSDependenciesUpgradeActionProps;
   readonly projenSynth?: boolean;
   readonly projenSynthOptions?: ProjenSynthActionProps;
+  readonly pnpmWorkspace?: {
+    allowBuilds?: Record<string, boolean>;
+    minimumReleaseAge?: number;
+    minimumReleaseAgeExclude?: string[];
+  };
   readonly datadog?: {
     readonly softwareCompositionAnalysis?: boolean;
     readonly softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
@@ -47,6 +52,15 @@ export class BaseProject extends Project {
     }
 
     new CustomGitignore(this, props.customGitignore);
+    new YamlFile(Project.of(this).root, 'pnpm-workspace.yaml', {
+      obj: {
+        allowBuilds: {
+          ...props.pnpmWorkspace?.allowBuilds,
+        },
+        minimumReleaseAge: props.pnpmWorkspace?.minimumReleaseAge ?? 4320, // 3 days in minutes
+        minimumReleaseAgeExclude: props.pnpmWorkspace?.minimumReleaseAgeExclude ?? ['@gplassard/projen-extensions'],
+      },
+    });
 
     const github = GitHub.of(this) ?? new GitHub(this, {
       mergify: false,
