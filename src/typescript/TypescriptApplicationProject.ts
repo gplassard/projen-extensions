@@ -126,7 +126,7 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     };
     super(typescriptProjectOptions);
     this.deps.removeDependency('typescript', DependencyType.BUILD);
-    this.deps.addDependency('typescript@^6', DependencyType.BUILD);
+    this.deps.addDependency('typescript@^7', DependencyType.BUILD);
     if (this.github) {
       applyGithubActionsOverrides(this.github);
     }
