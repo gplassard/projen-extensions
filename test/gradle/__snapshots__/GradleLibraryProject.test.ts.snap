@@ -40,7 +40,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -91,14 +91,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -245,7 +245,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -284,7 +284,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -329,14 +329,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -610,14 +610,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -764,7 +764,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -803,7 +803,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -851,7 +851,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_READ_ROLE }}
           aws-region: us-east-1
@@ -890,7 +890,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@451ce2a72e8d729a59ebeaacab82dbce58e7af4c
+        uses: aws-actions/configure-aws-credentials@463133d79af6d001e45482f356e244208e65f0c5
         with:
           role-to-assume: arn:aws:iam::\${{ secrets.AWS_ACCOUNT_ID }}:role/\${{ secrets.CODE_ARTIFACT_WRITE_ROLE }}
           aws-region: us-east-1
@@ -935,14 +935,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
