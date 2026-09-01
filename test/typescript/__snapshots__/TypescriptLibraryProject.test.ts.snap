@@ -650,7 +650,7 @@ jobs:
           merge-multiple: true
       - name: Restore build artifact permissions
         id: restore_build_artifact_permissions
-        run: setfacl --restore=permissions-backup.acl || true
+        run: cd build-artifact && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Release
         id: release
@@ -681,7 +681,7 @@ jobs:
           merge-multiple: true
       - name: Restore build artifact permissions
         id: restore_build_artifact_permissions
-        run: setfacl --restore=permissions-backup.acl || true
+        run: cd build-artifact && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Release
         id: release

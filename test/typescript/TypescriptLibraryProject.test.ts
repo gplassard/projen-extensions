@@ -13,6 +13,7 @@ describe('TypescriptLibraryProject with default settings', () => {
     expect(releaseWorkflow).toContain('Publish to npm');
     expect(releaseWorkflow).toContain('path: build-artifact');
     expect(releaseWorkflow).toContain('merge-multiple: true');
+    expect(releaseWorkflow).toContain('cd build-artifact && setfacl --restore=permissions-backup.acl');
     expect(output).toMatchSnapshot();
   });
 });
