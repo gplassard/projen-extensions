@@ -9,6 +9,11 @@ describe('TypescriptLibraryProject with default settings', () => {
       packageName: 'test-project-package-name',
     });
     const output = Testing.synth(project);
+    const releaseWorkflow = output['.github/workflows/release.yml'];
+    expect(releaseWorkflow).toContain('Publish to npm');
+    expect(releaseWorkflow).toContain('path: build-artifact');
+    expect(releaseWorkflow).toContain('merge-multiple: true');
+    expect(releaseWorkflow).toContain('cd build-artifact && setfacl --restore=permissions-backup.acl');
     expect(output).toMatchSnapshot();
   });
 });
