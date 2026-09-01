@@ -646,7 +646,8 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
-          path: .
+          path: build-artifact
+          merge-multiple: true
       - name: Restore build artifact permissions
         id: restore_build_artifact_permissions
         run: setfacl --restore=permissions-backup.acl || true
@@ -676,7 +677,8 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
-          path: .
+          path: build-artifact
+          merge-multiple: true
       - name: Restore build artifact permissions
         id: restore_build_artifact_permissions
         run: setfacl --restore=permissions-backup.acl || true
