@@ -146,14 +146,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -332,7 +332,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install toolchain
-        uses: dtolnay/rust-toolchain@4cda84d5c5c54efe2404f9d843567869ab1699d4
+        uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
         with:
           targets: \${{ matrix.target }}
       - name: Build
@@ -503,14 +503,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 11.20.0
-          runtime: node@24.19.0
+          version: 12.2.1
+          runtime: node@24.20.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies

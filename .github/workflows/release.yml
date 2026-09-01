@@ -42,10 +42,10 @@ jobs:
         id: setup_pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 11.20.0
+          version: 12.2.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -54,12 +54,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@d6d648d87563e713b3d396bb3bfebb5e3cc93707
+        uses: datadog/test-visibility-github-action@d7e3562370d3742851764531da3cb54a743ebd63
         with:
           languages: js
           api_key: ${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 6.8.0
+          js-tracer-version: 6.13.0
       - name: build
         run: pnpm exec projen build:ci
       - name: release
@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
@@ -134,7 +134,7 @@ jobs:
     steps:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.19.0
+          node-version: 24.20.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
