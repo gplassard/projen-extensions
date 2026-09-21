@@ -318,9 +318,17 @@ jobs:
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             suffix: ""
+          - build: linux-arm
+            os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            suffix: ""
           - build: macos
             os: macos-latest
             target: x86_64-apple-darwin
+            suffix: ""
+          - build: macos-arm
+            os: macos-latest
+            target: aarch64-apple-darwin
             suffix: ""
           - build: windows-gnu
             os: windows-latest
@@ -381,12 +389,16 @@ jobs:
           set -euxo pipefail
           # Prepare asset files with desired names
           cp x86_64-unknown-linux-gnu-binaries/test-project test-project-x86_64-unknown-linux-gnu
+          cp aarch64-unknown-linux-gnu-binaries/test-project test-project-aarch64-unknown-linux-gnu
           cp x86_64-apple-darwin-binaries/test-project test-project-x86_64-apple-darwin
+          cp aarch64-apple-darwin-binaries/test-project test-project-aarch64-apple-darwin
           cp x86_64-pc-windows-gnu-binaries/test-project.exe test-project-x86_64-pc-windows-gnu.exe
           # Upload assets to the existing release created by release-please
           gh release upload "$TAG" \\
                       test-project-x86_64-unknown-linux-gnu \\
+                      test-project-aarch64-unknown-linux-gnu \\
                       test-project-x86_64-apple-darwin \\
+                      test-project-aarch64-apple-darwin \\
                       test-project-x86_64-pc-windows-gnu.exe \\
                       --clobber
 ",
