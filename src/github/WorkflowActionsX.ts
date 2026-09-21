@@ -78,6 +78,15 @@ export class WorkflowActionsX {
     };
   }
 
+  static setupMsvcDevCmd(options?: { if?: string; arch?: string }): JobStep {
+    return {
+      name: 'Set up MSVC dev cmd',
+      ...(options?.if ? { if: options.if } : {}),
+      uses: githubAction('ilammy/msvc-dev-cmd'),
+      ...(options?.arch ? { with: { arch: options.arch } } : {}),
+    };
+  }
+
   static configureAwsCredentials(roleName: string): JobStep {
     return {
       name: 'Configure AWS credentials',
