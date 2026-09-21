@@ -3,11 +3,11 @@ import { CARGO_TEST, cargoBuild, cargoCaches } from './utils';
 import { WorkflowActionsX, githubAction } from '../github';
 
 export interface RustBuildReleaseArtifactsProps {
-
+  readonly msvc?: boolean;
 }
 export class RustBuildReleaseArtifacts extends Component {
 
-  constructor(project: Project, _props?: RustBuildReleaseArtifactsProps) {
+  constructor(project: Project, props?: RustBuildReleaseArtifactsProps) {
     super(project);
 
     const buildMatrix = [
@@ -35,13 +35,25 @@ export class RustBuildReleaseArtifacts extends Component {
         target: 'aarch64-apple-darwin',
         suffix: '',
       },
-      {
-        build: 'windows-gnu',
-        os: 'windows-latest',
-        target: 'x86_64-pc-windows-gnu',
-        suffix: '.exe',
-      },
+      props?.msvc
+        ? {
+          build: 'windows-msvc',
+          os: 'windows-latest',
+          target: 'x86_64-pc-windows-msvc',
+          suffix: '.exe',
+        }
+        : {
+          build: 'windows-gnu',
+          os: 'windows-latest',
+          target: 'x86_64-pc-windows-gnu',
+          suffix: '.exe',
+        },
     ];
+
+    const copyCommands = buildMatrix.map(
+      (m) => `cp ${m.target}-binaries/${project.name}${m.suffix} ${project.name}-${m.target}${m.suffix}`,
+    );
+    const uploadFiles = buildMatrix.map((m) => `            ${project.name}-${m.target}${m.suffix}`);
 
     new YamlFile(project, '.github/workflows/rust-build-release-artifacts.yml', {
       obj: {
@@ -72,6 +84,11 @@ export class RustBuildReleaseArtifacts extends Component {
                   targets: '${{ matrix.target }}',
                 },
               },
+              ...(props?.msvc ? [
+                WorkflowActionsX.setupMsvcDevCmd({
+                  if: "contains(matrix.target, 'msvc')",
+                }),
+              ] : []),
               cargoBuild({ release: true, target: '${{ matrix.target }}' }),
               CARGO_TEST,
               ...cargoCaches({ cachePrefix: '${{ matrix.target }}-' }),
@@ -108,13 +125,9 @@ export class RustBuildReleaseArtifacts extends Component {
                 run: [
                   'set -euxo pipefail',
                   '# Prepare asset files with desired names',
-                  `cp x86_64-unknown-linux-gnu-binaries/${project.name} ${project.name}-x86_64-unknown-linux-gnu`,
-                  `cp aarch64-unknown-linux-gnu-binaries/${project.name} ${project.name}-aarch64-unknown-linux-gnu`,
-                  `cp x86_64-apple-darwin-binaries/${project.name} ${project.name}-x86_64-apple-darwin`,
-                  `cp aarch64-apple-darwin-binaries/${project.name} ${project.name}-aarch64-apple-darwin`,
-                  `cp x86_64-pc-windows-gnu-binaries/${project.name}.exe ${project.name}-x86_64-pc-windows-gnu.exe`,
+                  ...copyCommands,
                   '# Upload assets to the existing release created by release-please',
-                  `gh release upload "$TAG" \\\n            ${project.name}-x86_64-unknown-linux-gnu \\\n            ${project.name}-aarch64-unknown-linux-gnu \\\n            ${project.name}-x86_64-apple-darwin \\\n            ${project.name}-aarch64-apple-darwin \\\n            ${project.name}-x86_64-pc-windows-gnu.exe \\\n            --clobber`,
+                  `gh release upload "$TAG" \\\n${uploadFiles.join(' \\\n')} \\\n            --clobber`,
                 ].join('\n'),
               },
             ],

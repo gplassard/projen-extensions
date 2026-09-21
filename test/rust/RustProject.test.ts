@@ -11,3 +11,16 @@ describe('RustProject with default settings', () => {
     expect(output).toMatchSnapshot();
   });
 });
+
+describe('RustProject with msvc enabled', () => {
+  it('synthesizes', () => {
+    const project = new RustProject({
+      name: 'test-project',
+      rustBuildReleaseArtifactsAction: {
+        msvc: true,
+      },
+    });
+    const output = Testing.synth(project);
+    expect(output).toMatchSnapshot();
+  });
+});
