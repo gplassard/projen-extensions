@@ -49,7 +49,7 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
     ...WorkflowActionsX.setupPnpmSteps({}),
     {
       name: 'Get latest NodeJS versions',
-      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.prerelease == false)) | {"node20": (map(select(.tag_name | startswith("v20."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node22": (map(select(.tag_name | startswith("v22."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node24": (map(select(.tag_name | startswith("v24."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}\' > src/github/nodejs.json',
+      run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.prerelease == false)) | {"node26": (map(select(.tag_name | startswith("v26."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node22": (map(select(.tag_name | startswith("v22."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node24": (map(select(.tag_name | startswith("v24."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}\' > src/github/nodejs.json',
       env: {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },

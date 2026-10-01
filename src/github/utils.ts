@@ -11,9 +11,10 @@ export const NODEJS_VERSIONS = {
   NODEJS_20_X: '20.20.2', // Node 20 is EOL
   NODEJS_22_X: nodeJsVersions.node22.version.replace('v', ''),
   NODEJS_24_X: nodeJsVersions.node24.version.replace('v', ''),
+  NODEJS_26_X: nodeJsVersions.node26.version.replace('v', ''),
 };
 
-const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_24_X;
+const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_26_X;
 
 const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersionJson.version.replace('v', '');
 
