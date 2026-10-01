@@ -24,14 +24,14 @@ jobs:
         id: setup_pnpm
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
-          version: 12.2.1
-          runtime: node@24.20.0
+          version: 12.8.2
+          runtime: node@24.21.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.20.0
+          node-version: 24.21.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -115,7 +115,7 @@ jobs:
           commit-message: |-
             chore(deps): upgrade NodeJS, PNPM and other versions
 
-            Upgrades NodeJS (latest versions for Node.js 20, 22, and 24), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -126,7 +126,7 @@ jobs:
           title: "chore(deps): upgrade NodeJS, PNPM and other versions"
           labels: dependencies
           body: |-
-            Upgrades NodeJS (latest versions for Node.js 20, 22, and 24), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 

@@ -8,7 +8,7 @@ import pnpmDefaultVersionJson from './pnpm.json';
 
 
 export const NODEJS_VERSIONS = {
-  NODEJS_20_X: nodeJsVersions.node20.version.replace('v', ''),
+  NODEJS_20_X: '20.20.2', // Node 20 is EOL
   NODEJS_22_X: nodeJsVersions.node22.version.replace('v', ''),
   NODEJS_24_X: nodeJsVersions.node24.version.replace('v', ''),
 };

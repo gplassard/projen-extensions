@@ -92,7 +92,7 @@ upgradeExternalVersionsWorkflow.addJob('pr', {
     pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM and other versions',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS (latest versions for Node.js 20, 22, and 24), PNPM, GitHub Actions hashes and other tool versions.',
+      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions.',
     ].join('\n\n'),
   }),
   permissions: {
