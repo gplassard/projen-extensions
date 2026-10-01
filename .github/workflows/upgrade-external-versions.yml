@@ -25,13 +25,13 @@ jobs:
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
           version: 12.8.2
-          runtime: node@24.21.0
+          runtime: node@26.10.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.21.0
+          node-version: 26.10.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -43,7 +43,7 @@ jobs:
         id: get_latest_nodejs_versions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/nodejs/node/releases --jq 'map(select(.prerelease == false)) | {\"node20\": (map(select(.tag_name | startswith(\"v20.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node22\": (map(select(.tag_name | startswith(\"v22.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node24\": (map(select(.tag_name | startswith(\"v24.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}' > src/github/nodejs.json"
+        run: "gh api -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" /repos/nodejs/node/releases --jq 'map(select(.prerelease == false)) | {\"node26\": (map(select(.tag_name | startswith(\"v26.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node22\": (map(select(.tag_name | startswith(\"v22.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), \"node24\": (map(select(.tag_name | startswith(\"v24.\"))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}' > src/github/nodejs.json"
       - name: Get latest PNPM
         id: get_latest_pnpm
         env:

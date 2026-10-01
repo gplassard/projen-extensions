@@ -147,13 +147,13 @@ jobs:
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
           version: 12.8.2
-          runtime: node@24.21.0
+          runtime: node@26.10.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.21.0
+          node-version: 26.10.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -516,13 +516,13 @@ jobs:
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
           version: 12.8.2
-          runtime: node@24.21.0
+          runtime: node@26.10.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.21.0
+          node-version: 26.10.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -936,13 +936,13 @@ jobs:
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
           version: 12.8.2
-          runtime: node@24.21.0
+          runtime: node@26.10.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.21.0
+          node-version: 26.10.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -1308,13 +1308,13 @@ jobs:
         uses: pnpm/setup@f7d0e5f4b1b3089d2799ef9722859e7ba314c4c8
         with:
           version: 12.8.2
-          runtime: node@24.21.0
+          runtime: node@26.10.0
           cache: true
           install: false
       - id: auto_8ece9c1e
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: 24.21.0
+          node-version: 26.10.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
