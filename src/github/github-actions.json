@@ -106,5 +106,13 @@
   "actions/upload-release-asset": {
     "version": "v1",
     "hash": "e8f9f06c4b078e705bd2ea027f0926603fc9b4d5"
+  },
+  "docker/login-action": {
+    "version": "v3",
+    "hash": "9780b0c442fbb1117ed29e0efdff1e18412f7567"
+  },
+  "docker/build-push-action": {
+    "version": "v5",
+    "hash": "2cdde995de11925a030ce8070c3d77a52ffcf1c0"
   }
 }
