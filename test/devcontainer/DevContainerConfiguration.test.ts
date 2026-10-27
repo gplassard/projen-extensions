@@ -3,12 +3,13 @@ import { describe, it, expect } from 'vitest';
 import { BaseProject, DevContainerConfiguration, GoProject, GradleLibraryProject, RustProject, TypescriptApplicationProject, devContainerFeature } from '../../src';
 
 const FILE = '.devcontainer/devcontainer.json';
+const LOCKFILE = '.devcontainer/devcontainer-lock.json';
 const NODE = devContainerFeature('ghcr.io/devcontainers/features/node');
 const DOCKER_IN_DOCKER = devContainerFeature('ghcr.io/devcontainers/features/docker-in-docker');
 
 describe('devContainerFeature', () => {
-  it('pins the feature by digest from the registry', () => {
-    expect(NODE).toMatch(/^ghcr\.io\/devcontainers\/features\/node@sha256:[0-9a-f]{64}$/);
+  it('uses the tag of the registry', () => {
+    expect(NODE).toMatch(/^ghcr\.io\/devcontainers\/features\/node:\d+$/);
   });
 
   it('uses the tag when a version is given', () => {
@@ -53,14 +54,31 @@ describe('DevContainerConfiguration', () => {
     });
   });
 
-  it('uses the tag instead of the pinned digest when a feature version is given', () => {
+  it('uses the given tag when a feature version is given, without locking it', () => {
     const project = baseProject();
     new DevContainerConfiguration(project, { node: { version: '2' }, dockerInDocker: { enabled: true, version: '3' } });
-    const config = Testing.synth(project)[FILE];
-    expect(Object.keys(config.features)).toEqual([
+    const synth = Testing.synth(project);
+    expect(Object.keys(synth[FILE].features)).toEqual([
       'ghcr.io/devcontainers/features/node:2',
       'ghcr.io/devcontainers/features/docker-in-docker:3',
     ]);
+    expect(synth[LOCKFILE]).toBeUndefined();
+  });
+
+  it('generates a lockfile following the devcontainer spec', () => {
+    const project = baseProject();
+    new DevContainerConfiguration(project, {
+      dockerInDocker: { enabled: true },
+      features: { 'ghcr.io/devcontainers/features/github-cli:1': {} },
+    });
+    const lockfile = Testing.synth(project)[LOCKFILE];
+    expect(Object.keys(lockfile.features)).toEqual([NODE, DOCKER_IN_DOCKER]);
+    expect(lockfile.features[NODE]).toEqual({
+      version: expect.stringMatching(/^1\.\d+\.\d+$/),
+      resolved: expect.stringMatching(/^ghcr\.io\/devcontainers\/features\/node@sha256:[0-9a-f]{64}$/),
+      integrity: expect.stringMatching(/^sha256:[0-9a-f]{64}$/),
+    });
+    expect(lockfile.features[NODE].resolved).toBe(`ghcr.io/devcontainers/features/node@${lockfile.features[NODE].integrity}`);
   });
 
   it('can disable node feature and codespaces customizations', () => {

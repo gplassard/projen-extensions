@@ -1,5 +1,5 @@
 import { Component, JsonFile, Project } from 'projen';
-import { devContainerFeature } from './features';
+import { devContainerFeature, devContainerLockfileFeatures } from './features';
 import { nodeVersion, pnpmVersion } from '../github/utils';
 
 export const DEFAULT_DEV_CONTAINER_IMAGE = 'mcr.microsoft.com/devcontainers/base:ubuntu';
@@ -8,7 +8,7 @@ export type DevContainerFeatureOptions = Record<string, unknown>;
 
 export interface DevContainerManagedFeatureOptions {
   readonly enabled?: boolean;
-  /** Version tag of the feature, replaces the pinned digest of the registry */
+  /** Version tag of the feature, replaces the default tag of the registry (the feature is then not locked) */
   readonly version?: string;
   /** Raw options of the feature, merged on top of the defaults */
   readonly options?: DevContainerFeatureOptions;
@@ -64,6 +64,8 @@ export interface DevContainersProps {
 
 export class DevContainerConfiguration extends Component {
   public static readonly FILE_PATH = '.devcontainer/devcontainer.json';
+  /** Lockfile of the features, next to `devcontainer.json` as described by the devcontainer spec */
+  public static readonly LOCKFILE_PATH = '.devcontainer/devcontainer-lock.json';
 
   constructor(project: Project, options: DevContainerConfigurationOptions = {}) {
     super(project);
@@ -123,6 +125,14 @@ export class DevContainerConfiguration extends Component {
       },
       allowComments: true,
     });
+
+    const lockedFeatures = devContainerLockfileFeatures(Object.keys(features));
+    if (Object.keys(lockedFeatures).length > 0) {
+      new JsonFile(this.project, DevContainerConfiguration.LOCKFILE_PATH, {
+        obj: { features: lockedFeatures },
+        marker: false,
+      });
+    }
   }
 }
 

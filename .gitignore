@@ -60,6 +60,7 @@ junit.xml
 .vscode
 .DS_Store
 !/.devcontainer/devcontainer.json
+!/.devcontainer/devcontainer-lock.json
 !/.github/workflows/datadog-software-composition-analysis.yml
 !/.github/workflows/datadog-static-analysis.yml
 !/static-analysis.datadog.yaml
