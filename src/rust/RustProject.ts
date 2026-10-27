@@ -2,6 +2,7 @@ import { GitHub } from 'projen/lib/github';
 import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
 import { RustBuildReleaseArtifacts, RustBuildReleaseArtifactsProps } from './RustBuildReleaseArtifacts';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
+import { mergeDevContainers } from '../devcontainer';
 import { ReleasePlease, ReleasePleaseProps, ReleaseType } from '../github/ReleasePlease';
 import { BaseProject, BaseProjectProps } from '../project';
 
@@ -15,7 +16,12 @@ export interface RustProjectOptions extends BaseProjectProps {
 
 export class RustProject extends BaseProject {
   constructor(options: RustProjectOptions) {
-    super(options);
+    super({
+      ...options,
+      devContainers: mergeDevContainers(options.devContainers, {
+        features: { 'ghcr.io/devcontainers/features/rust:1': {} },
+      }),
+    });
     this.addGitIgnore('target');
 
     new RustBuildAction(this, options.rustBuildAction);

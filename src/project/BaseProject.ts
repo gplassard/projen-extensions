@@ -1,6 +1,7 @@
 import { Project, ProjectOptions, YamlFile } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
 import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
+import { DevContainerConfiguration, defaultRepository, DevContainersProps, resolveDevContainerOptions } from '../devcontainer';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import {
   DatadogSoftwareCompositionAnalysisAction,
@@ -21,6 +22,7 @@ export interface BaseProjectProps extends ProjectOptions {
   readonly agentConfigurationEnabled?: boolean;
   readonly agentConfiguration?: AgentConfigurationOptions;
   readonly customGitignore?: CustomGitignoreProps;
+  readonly devContainers?: DevContainersProps;
   readonly pullRequestLintOptions?: PullRequestLintOptions;
   readonly nodeJSDependenciesUpgrade?: boolean;
   readonly nodeJSDependenciesUpgradeOptions?: NodeJSDependenciesUpgradeActionProps;
@@ -53,6 +55,10 @@ export class BaseProject extends Project {
     }
 
     new CustomGitignore(this, props.customGitignore);
+    const devContainerOptions = resolveDevContainerOptions(props.devContainers, { repository: defaultRepository(props.name) });
+    if (devContainerOptions) {
+      new DevContainerConfiguration(this, devContainerOptions);
+    }
     new YamlFile(Project.of(this).root, 'pnpm-workspace.yaml', {
       obj: {
         packages: props.pnpmWorkspace?.packages,

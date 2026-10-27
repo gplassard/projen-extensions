@@ -4,6 +4,7 @@ import { AppPermission } from 'projen/lib/github/workflows-model';
 import { NodePackageManager, TypeScriptCompilerOptions, UpgradeDependenciesSchedule } from 'projen/lib/javascript';
 import { TypeScriptProject, TypeScriptProjectOptions, TypeScriptRunner } from 'projen/lib/typescript';
 import { AgentConfiguration, AgentConfigurationOptions } from '../agents';
+import { DevContainerConfiguration, defaultRepository, DevContainersProps, resolveDevContainerOptions } from '../devcontainer';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS, nodeVersion, pnpmVersion, ddTraceVersion, WorkflowActionsX, githubAction, applyGithubActionsOverrides, DeployGithubPagesWorkflowOptions, DeployGithubPagesWorkflow } from '../github';
 import { DatadogInfraAsCodeSecurityAction } from '../github/DatadogInfraAsCodeSecurityAction';
@@ -36,6 +37,7 @@ type CustomProps = {
   agentConfiguration?: AgentConfigurationOptions;
   deployGithubPagesWorkflowEnabled?: boolean;
   deployGithubPagesWorkflowOptions?: DeployGithubPagesWorkflowOptions;
+  devContainers?: DevContainersProps;
   datadog?: {
     softwareCompositionAnalysis?: boolean;
     softwareCompositionAnalysisOptions?: DatadogSoftwareCompositionAnalysisActionProps;
@@ -146,6 +148,14 @@ export class TypescriptApplicationProject extends TypeScriptProject {
     });
     // we get it through a transitive dependency to @gplassard/projen-extensions, maybe should be a peer dependency instead
     new CustomGitignore(this, options.customGitignore);
+
+    const devContainerOptions = resolveDevContainerOptions(options.devContainers, {
+      repository: defaultRepository(options.name),
+      node: { nodeVersion: nodeVersion(options) },
+    });
+    if (devContainerOptions) {
+      new DevContainerConfiguration(this, devContainerOptions);
+    }
 
     if (options.datadog?.softwareCompositionAnalysis ?? true) {
       new DatadogSoftwareCompositionAnalysisAction(this.github!, options.datadog?.softwareCompositionAnalysisOptions ?? {

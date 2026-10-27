@@ -1,6 +1,7 @@
 import { GitHub } from 'projen/lib/github';
 import { GoBuildWorkflow, GoBuildWorkflowProps } from './GoBuildWorkflow';
 import { GoLintWorkflow, GoLintWorkflowProps } from './GoLintWorkflow';
+import { mergeDevContainers } from '../devcontainer';
 import { BaseProject, BaseProjectProps } from '../project';
 
 export interface GoProjectOptions extends BaseProjectProps {
@@ -12,7 +13,12 @@ export interface GoProjectOptions extends BaseProjectProps {
 
 export class GoProject extends BaseProject {
   constructor(options: GoProjectOptions) {
-    super(options);
+    super({
+      ...options,
+      devContainers: mergeDevContainers(options.devContainers, {
+        features: { 'ghcr.io/devcontainers/features/go:1': {} },
+      }),
+    });
 
     const github = GitHub.of(this)!;
     if (options.goBuildWorkflow || options.goBuildWorkflow == undefined) {

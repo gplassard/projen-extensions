@@ -1,5 +1,6 @@
 export * from './agents';
 export * from './project';
+export * from './devcontainer';
 export * from './git';
 export * from './github';
 export * from './go';

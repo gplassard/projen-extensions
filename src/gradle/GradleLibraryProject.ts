@@ -2,6 +2,7 @@ import { Project, ProjectOptions } from 'projen';
 import { GitHub } from 'projen/lib/github';
 import { GradleBuildAction, GradleBuildActionProps } from './GradleBuildAction';
 import { GradleReleaseAction, GradleReleaseActionProps } from './GradleReleaseAction';
+import { DevContainerConfiguration, defaultRepository, DevContainersProps, resolveDevContainerOptions } from '../devcontainer';
 import { CustomGitignore, CustomGitignoreProps } from '../git';
 import { NodeJSDependenciesUpgradeAction, NodeJSDependenciesUpgradeActionProps, ProjenSynthAction, ProjenSynthActionProps, applyGithubActionsOverrides } from '../github';
 import { DEFAULT_PULL_REQUEST_LINT_OPTIONS } from '../github/utils';
@@ -18,6 +19,7 @@ export interface GradleLibraryProjectOptions extends ProjectOptions {
   projenSynthActionOptions?: ProjenSynthActionProps;
 
   customGitignore?: CustomGitignoreProps;
+  devContainers?: DevContainersProps;
 }
 
 export class GradleLibraryProject extends Project {
@@ -32,6 +34,13 @@ export class GradleLibraryProject extends Project {
         ...(options.customGitignore?.additionalGitignore ?? []),
       ],
     });
+    const devContainerOptions = resolveDevContainerOptions(options.devContainers, {
+      repository: defaultRepository(options.name),
+      features: { 'ghcr.io/devcontainers/features/java:1': { installGradle: true } },
+    });
+    if (devContainerOptions) {
+      new DevContainerConfiguration(this, devContainerOptions);
+    }
     this.github = new GitHub(this, {
       mergify: false,
       pullRequestLint: options.githubLint || options.githubLint == undefined,
