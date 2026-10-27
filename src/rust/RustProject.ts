@@ -2,7 +2,7 @@ import { GitHub } from 'projen/lib/github';
 import { RustBuildAction, RustBuildActionProps } from './RustBuildAction';
 import { RustBuildReleaseArtifacts, RustBuildReleaseArtifactsProps } from './RustBuildReleaseArtifacts';
 import { RustLintAction, RustLintActionProps } from './RustLintAction';
-import { mergeDevContainers } from '../devcontainer';
+import { devContainerFeature, mergeDevContainers } from '../devcontainer';
 import { ReleasePlease, ReleasePleaseProps, ReleaseType } from '../github/ReleasePlease';
 import { BaseProject, BaseProjectProps } from '../project';
 
@@ -19,7 +19,7 @@ export class RustProject extends BaseProject {
     super({
       ...options,
       devContainers: mergeDevContainers(options.devContainers, {
-        features: { 'ghcr.io/devcontainers/features/rust:1': {} },
+        features: { [devContainerFeature('ghcr.io/devcontainers/features/rust')]: {} },
       }),
     });
     this.addGitIgnore('target');

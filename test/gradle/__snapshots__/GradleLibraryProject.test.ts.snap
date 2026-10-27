@@ -16,10 +16,10 @@ exports[`GradleLibraryProject > synthesizes 1`] = `
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/java:1": {
+      "ghcr.io/devcontainers/features/java@sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe": {
         "installGradle": true,
       },
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },
@@ -580,10 +580,10 @@ exports[`GradleLibraryProject > synthesizes with subprojects 1`] = `
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/java:1": {
+      "ghcr.io/devcontainers/features/java@sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe": {
         "installGradle": true,
       },
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },

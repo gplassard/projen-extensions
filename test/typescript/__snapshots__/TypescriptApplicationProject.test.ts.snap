@@ -16,7 +16,7 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },
@@ -1574,7 +1574,7 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },
@@ -3379,7 +3379,7 @@ exports[`TypescriptApplicationProject with default settings > supports options 1
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },
@@ -5114,7 +5114,7 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
       },
     },
     "features": {
-      "ghcr.io/devcontainers/features/node:1": {
+      "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6": {
         "pnpmVersion": "12.8.2",
         "version": "26.10.0",
       },
