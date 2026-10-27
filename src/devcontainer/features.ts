@@ -1,23 +1,49 @@
 import featuresRegistry from './devcontainer-features.json';
 
-interface DevContainerFeatureRegistryEntry {
+/**
+ * Entry of `devcontainer-lock.json`, see
+ * https://github.com/devcontainers/spec/blob/main/docs/specs/devcontainer-lockfile.md
+ */
+export interface DevContainerLockfileFeature {
   readonly version: string;
-  readonly hash?: string;
-  readonly pinned?: boolean;
+  readonly resolved: string;
+  readonly integrity: string;
+  readonly dependsOn?: string[];
 }
 
-export type DevContainerFeatureName = keyof typeof featuresRegistry;
+type RegistryKey = keyof typeof featuresRegistry;
+type FeatureNameOf<K extends string> = K extends `${infer Name}:${string}` ? Name : never;
 
-const registry: Record<DevContainerFeatureName, DevContainerFeatureRegistryEntry> = featuresRegistry;
+export type DevContainerFeatureName = FeatureNameOf<RegistryKey>;
+
+const registry: Record<string, DevContainerLockfileFeature> = featuresRegistry;
 
 /**
- * Returns the feature id to use in `devcontainer.json`.
- * The digest from the registry is used unless an explicit version is requested.
+ * Returns the feature id to use in `devcontainer.json`: the feature name with its tag (the major version of the
+ * registry unless an explicit version is requested).
  */
 export function devContainerFeature(name: DevContainerFeatureName, version?: string): string {
-  const feature = registry[name];
-  if (version === undefined && feature.hash) {
-    return `${name}@${feature.hash}`;
+  if (version !== undefined) {
+    return `${name}:${version}`;
   }
-  return `${name}:${version ?? feature.version}`;
+  const key = Object.keys(registry).find(k => k.startsWith(`${name}:`));
+  if (!key) {
+    throw new Error(`Unknown devcontainer feature ${name}`);
+  }
+  return key;
+}
+
+/**
+ * Returns the `devcontainer-lock.json` entries for the given feature ids of a `devcontainer.json`.
+ * Keys are lowercased as required by the spec, features missing from the registry are not locked.
+ */
+export function devContainerLockfileFeatures(featureIds: string[]): Record<string, DevContainerLockfileFeature> {
+  const features: Record<string, DevContainerLockfileFeature> = {};
+  for (const featureId of featureIds) {
+    const key = featureId.toLowerCase();
+    if (registry[key]) {
+      features[key] = registry[key];
+    }
+  }
+  return features;
 }

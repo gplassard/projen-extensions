@@ -1,22 +1,27 @@
 {
-  "ghcr.io/devcontainers/features/node": {
-    "version": "1",
-    "hash": "sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6"
+  "ghcr.io/devcontainers/features/node:1": {
+    "version": "1.7.1",
+    "resolved": "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6",
+    "integrity": "sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6"
   },
-  "ghcr.io/devcontainers/features/docker-in-docker": {
-    "version": "2",
-    "hash": "sha256:25b9f05705ffba7dbe503230ac76081419306f8c8bc88e0ce78c4ecd99a0c78c"
+  "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    "version": "2.17.0",
+    "resolved": "ghcr.io/devcontainers/features/docker-in-docker@sha256:25b9f05705ffba7dbe503230ac76081419306f8c8bc88e0ce78c4ecd99a0c78c",
+    "integrity": "sha256:25b9f05705ffba7dbe503230ac76081419306f8c8bc88e0ce78c4ecd99a0c78c"
   },
-  "ghcr.io/devcontainers/features/go": {
-    "version": "1",
-    "hash": "sha256:3b2c7acfdb24de88292283d10eb7517ccc45f60ae22a97030f1cf4fbd03634f3"
+  "ghcr.io/devcontainers/features/go:1": {
+    "version": "1.4.0",
+    "resolved": "ghcr.io/devcontainers/features/go@sha256:3b2c7acfdb24de88292283d10eb7517ccc45f60ae22a97030f1cf4fbd03634f3",
+    "integrity": "sha256:3b2c7acfdb24de88292283d10eb7517ccc45f60ae22a97030f1cf4fbd03634f3"
   },
-  "ghcr.io/devcontainers/features/rust": {
-    "version": "1",
-    "hash": "sha256:846c949f52c9dea98d4f90a11957cbf152fb3f6e8a70ddd7cb83014a7d1d0c98"
+  "ghcr.io/devcontainers/features/rust:1": {
+    "version": "1.6.0",
+    "resolved": "ghcr.io/devcontainers/features/rust@sha256:846c949f52c9dea98d4f90a11957cbf152fb3f6e8a70ddd7cb83014a7d1d0c98",
+    "integrity": "sha256:846c949f52c9dea98d4f90a11957cbf152fb3f6e8a70ddd7cb83014a7d1d0c98"
   },
-  "ghcr.io/devcontainers/features/java": {
-    "version": "1",
-    "hash": "sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe"
+  "ghcr.io/devcontainers/features/java:1": {
+    "version": "1.8.3",
+    "resolved": "ghcr.io/devcontainers/features/java@sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe",
+    "integrity": "sha256:61a839211feda1e2a1f10646648a948e733e4d98d770f3a4b6698a3c5fc92abe"
   }
 }
