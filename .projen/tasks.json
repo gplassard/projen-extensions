@@ -400,6 +400,15 @@
         }
       ]
     },
+    "upgrade-devcontainer-features": {
+      "name": "upgrade-devcontainer-features",
+      "description": "Upgrade devcontainer features to the latest versions",
+      "steps": [
+        {
+          "exec": "tsx scripts/upgrade-devcontainer-features.ts"
+        }
+      ]
+    },
     "upgrade-github-versions": {
       "name": "upgrade-github-versions",
       "description": "Upgrade GitHub dependencies to latest versions",

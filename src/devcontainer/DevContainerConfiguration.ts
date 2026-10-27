@@ -1,17 +1,14 @@
 import { Component, JsonFile, Project } from 'projen';
+import { devContainerFeature } from './features';
 import { nodeVersion, pnpmVersion } from '../github/utils';
 
 export const DEFAULT_DEV_CONTAINER_IMAGE = 'mcr.microsoft.com/devcontainers/base:ubuntu';
-export const NODE_FEATURE_ID = 'ghcr.io/devcontainers/features/node';
-export const DOCKER_IN_DOCKER_FEATURE_ID = 'ghcr.io/devcontainers/features/docker-in-docker';
-export const DEFAULT_NODE_FEATURE_VERSION = '1';
-export const DEFAULT_DOCKER_IN_DOCKER_FEATURE_VERSION = '2';
 
 export type DevContainerFeatureOptions = Record<string, unknown>;
 
 export interface DevContainerManagedFeatureOptions {
   readonly enabled?: boolean;
-  /** Major version tag of the feature (the part after the colon in the feature id) */
+  /** Version tag of the feature, replaces the pinned digest of the registry */
   readonly version?: string;
   /** Raw options of the feature, merged on top of the defaults */
   readonly options?: DevContainerFeatureOptions;
@@ -74,7 +71,7 @@ export class DevContainerConfiguration extends Component {
     const features: Record<string, DevContainerFeatureOptions> = {};
 
     if (options.node?.enabled ?? true) {
-      features[`${NODE_FEATURE_ID}:${options.node?.version ?? DEFAULT_NODE_FEATURE_VERSION}`] = {
+      features[devContainerFeature('ghcr.io/devcontainers/features/node', options.node?.version)] = {
         version: nodeVersion({ nodeVersion: options.node?.nodeVersion }),
         pnpmVersion: options.node?.pnpmVersion ?? pnpmVersion(),
         ...options.node?.options,
@@ -82,7 +79,7 @@ export class DevContainerConfiguration extends Component {
     }
 
     if (options.dockerInDocker?.enabled ?? false) {
-      features[`${DOCKER_IN_DOCKER_FEATURE_ID}:${options.dockerInDocker?.version ?? DEFAULT_DOCKER_IN_DOCKER_FEATURE_VERSION}`] = {
+      features[devContainerFeature('ghcr.io/devcontainers/features/docker-in-docker', options.dockerInDocker?.version)] = {
         ...options.dockerInDocker?.options,
       };
     }

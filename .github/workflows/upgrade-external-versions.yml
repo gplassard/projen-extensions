@@ -54,6 +54,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run upgrade-github-versions
+      - name: Upgrade devcontainer features
+        id: upgrade_devcontainer_features
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm run upgrade-devcontainer-features
       - name: Upgrade Go and golangci-lint
         id: upgrade_go_and_golangci-lint
         env:
@@ -115,7 +120,7 @@ jobs:
           commit-message: |-
             chore(deps): upgrade NodeJS, PNPM and other versions
 
-            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -126,7 +131,7 @@ jobs:
           title: "chore(deps): upgrade NodeJS, PNPM and other versions"
           labels: dependencies
           body: |-
-            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
