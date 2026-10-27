@@ -19,6 +19,10 @@ project.addTask('upgrade-github-versions', {
   description: 'Upgrade GitHub dependencies to latest versions',
   exec: 'tsx scripts/upgrade-github-versions.ts',
 });
+project.addTask('upgrade-devcontainer-features', {
+  description: 'Upgrade devcontainer features to the latest versions',
+  exec: 'tsx scripts/upgrade-devcontainer-features.ts',
+});
 project.addTask('upgrade-go-versions', {
   description: 'Upgrade go dependencies to latest versions',
   exec: 'tsx scripts/upgrade-go-versions.ts',
@@ -69,6 +73,13 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
       },
     },
     {
+      name: 'Upgrade devcontainer features',
+      run: 'pnpm run upgrade-devcontainer-features',
+      env: {
+        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    },
+    {
       name: 'Upgrade Go and golangci-lint',
       run: 'pnpm run upgrade-go-versions',
       env: {
@@ -92,7 +103,7 @@ upgradeExternalVersionsWorkflow.addJob('pr', {
     pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM and other versions',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes and other tool versions.',
+      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions.',
     ].join('\n\n'),
   }),
   permissions: {
