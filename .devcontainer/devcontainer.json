@@ -6,6 +6,9 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "26.10.0",
       "pnpmVersion": "12.8.2"
+    },
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
     }
   },
   "customizations": {

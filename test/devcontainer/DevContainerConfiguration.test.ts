@@ -19,7 +19,7 @@ describe('devContainerFeature', () => {
 
 describe('DevContainerConfiguration', () => {
   const baseProject = () => new BaseProject({ name: 'test-project', devContainers: { enabled: false } });
-  it('generates node feature and codespaces permissions by default', () => {
+  it('generates node and sshd features and codespaces permissions by default', () => {
     const project = baseProject();
     new DevContainerConfiguration(project, {
       repository: 'gplassard/test-project',
@@ -28,6 +28,7 @@ describe('DevContainerConfiguration', () => {
     const config = Testing.synth(project)[FILE];
     expect(config.features).toEqual({
       [NODE]: { version: '22.1.0', pnpmVersion: '10.0.0' },
+      'ghcr.io/devcontainers/features/sshd:1': { version: 'latest' },
     });
     expect(config.customizations.codespaces.repositories).toEqual({
       'gplassard/test-project': { permissions: { packages: 'read', contents: 'write' } },
@@ -56,7 +57,7 @@ describe('DevContainerConfiguration', () => {
 
   it('uses the given tag when a feature version is given, without locking it', () => {
     const project = baseProject();
-    new DevContainerConfiguration(project, { node: { version: '2' }, dockerInDocker: { enabled: true, version: '3' } });
+    new DevContainerConfiguration(project, { node: { version: '2' }, dockerInDocker: { enabled: true, version: '3' }, sshd: { enabled: false } });
     const synth = Testing.synth(project);
     expect(Object.keys(synth[FILE].features)).toEqual([
       'ghcr.io/devcontainers/features/node:2',
@@ -69,6 +70,7 @@ describe('DevContainerConfiguration', () => {
     const project = baseProject();
     new DevContainerConfiguration(project, {
       dockerInDocker: { enabled: true },
+      sshd: { enabled: false },
       features: { 'ghcr.io/devcontainers/features/github-cli:1': {} },
     });
     const lockfile = Testing.synth(project)[LOCKFILE];
@@ -81,11 +83,12 @@ describe('DevContainerConfiguration', () => {
     expect(lockfile.features[NODE].resolved).toBe(`ghcr.io/devcontainers/features/node@${lockfile.features[NODE].integrity}`);
   });
 
-  it('can disable node feature and codespaces customizations', () => {
+  it('can disable node feature and sshd feature and codespaces customizations', () => {
     const project = baseProject();
     new DevContainerConfiguration(project, {
       repository: 'gplassard/test-project',
       node: { enabled: false },
+      sshd: { enabled: false },
       codespaces: false,
     });
     const config = Testing.synth(project)[FILE];
@@ -99,9 +102,9 @@ describe('devcontainer in other projects', () => {
     ['go', () => new GoProject({ name: 'test-project' }), devContainerFeature('ghcr.io/devcontainers/features/go')],
     ['rust', () => new RustProject({ name: 'test-project' }), devContainerFeature('ghcr.io/devcontainers/features/rust')],
     ['gradle', () => new GradleLibraryProject({ name: 'test-project' }), devContainerFeature('ghcr.io/devcontainers/features/java')],
-  ])('%s project has node, its language feature and codespaces permissions', (_name, create, feature) => {
+  ])('%s project has node, sshd and its language feature and codespaces permissions', (_name, create, feature) => {
     const config = Testing.synth(create())[FILE];
-    expect(Object.keys(config.features)).toEqual([NODE, feature]);
+    expect(Object.keys(config.features).sort()).toEqual([NODE, 'ghcr.io/devcontainers/features/sshd:1', feature].sort());
     expect(config.customizations.codespaces.repositories['gplassard/test-project'].permissions).toEqual({
       packages: 'read',
       contents: 'write',
@@ -121,13 +124,14 @@ describe('devcontainer in other projects', () => {
 });
 
 describe('TypescriptApplicationProject devcontainer', () => {
-  it('has node, pnpm and codespaces permissions by default, without docker in docker', () => {
+  it('has node, sshd, pnpm and codespaces permissions by default, without docker in docker', () => {
     const project = new TypescriptApplicationProject({ name: 'test-project' });
     const config = Testing.synth(project)[FILE];
     const featureIds = Object.keys(config.features);
-    expect(featureIds).toEqual([NODE]);
+    expect(featureIds).toEqual([NODE, 'ghcr.io/devcontainers/features/sshd:1']);
     expect(config.features[NODE].version).toBeDefined();
     expect(config.features[NODE].pnpmVersion).toBeDefined();
+    expect(config.features['ghcr.io/devcontainers/features/sshd:1'].version).toBe('latest');
     expect(config.customizations.codespaces.repositories['gplassard/test-project'].permissions).toEqual({
       packages: 'read',
       contents: 'write',
