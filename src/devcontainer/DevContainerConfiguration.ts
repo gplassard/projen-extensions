@@ -41,6 +41,8 @@ export interface DevContainerConfigurationOptions {
   readonly repository?: string;
   /** Enabled by default */
   readonly node?: DevContainerNodeFeatureOptions;
+  /** Enabled by default */
+  readonly sshd?: DevContainerManagedFeatureOptions;
   /** Disabled by default */
   readonly dockerInDocker?: DevContainerManagedFeatureOptions;
   /** Extra features, keyed by full feature id including version */
@@ -83,6 +85,13 @@ export class DevContainerConfiguration extends Component {
     if (options.dockerInDocker?.enabled ?? false) {
       features[devContainerFeature('ghcr.io/devcontainers/features/docker-in-docker', options.dockerInDocker?.version)] = {
         ...options.dockerInDocker?.options,
+      };
+    }
+
+    if (options.sshd?.enabled ?? true) {
+      features[devContainerFeature('ghcr.io/devcontainers/features/sshd', options.sshd?.version)] = {
+        version: 'latest',
+        ...options.sshd?.options,
       };
     }
 
@@ -147,6 +156,7 @@ export function mergeDevContainers(props: DevContainersProps | undefined, defaul
       ...defaults,
       ...options,
       node: { ...defaults.node, ...options?.node },
+      sshd: { ...defaults.sshd, ...options?.sshd },
       features: { ...defaults.features, ...options?.features },
     },
   };
