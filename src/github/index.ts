@@ -2,6 +2,7 @@ export * from './DatadogSoftwareCompositionAnalysisAction';
 export * from './DatadogStaticAnalysisAction';
 export * from './DeployGithubPagesWorkflow';
 export * from './NodeJSDependenciesUpgradeAction';
+export * from './PreviewWorkflow';
 export * from './ProjenSynthAction';
 export * from './ReleasePlease';
 export * from './utils';
