@@ -1,4 +1,4 @@
 {
-  "helm-operator": "2.27.0",
-  "dd-trace-js": "6.19.0"
+  "helm-operator": "2.31.0",
+  "dd-trace-js": "6.21.0"
 }

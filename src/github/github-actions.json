@@ -13,7 +13,7 @@
   },
   "actions/setup-node": {
     "version": "v7",
-    "hash": "820762786026740c76f36085b0efc47a31fe5020"
+    "hash": "949feb2413d6458794dcd2491c4babbbce0c15c1"
   },
   "pnpm/setup": {
     "version": "v1",
@@ -21,7 +21,7 @@
   },
   "actions/create-github-app-token": {
     "version": "v3",
-    "hash": "bcd2ba49218906704ab6c1aa796996da409d3eb1"
+    "hash": "64ab729a6294000f5aa4a4bc0b73d1f32bc45510"
   },
   "actions/setup-java": {
     "version": "v5",
@@ -33,11 +33,11 @@
   },
   "dtolnay/rust-toolchain": {
     "version": "stable",
-    "hash": "6bed0761d98439e5a578e2877258200ad565ba87"
+    "hash": "b725eda525362e7cf34af9a7243cac1e3f01a7ec"
   },
   "actions/upload-artifact": {
     "version": "v7",
-    "hash": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+    "hash": "cf430e030ddbb5b0abf93d22962f4752f3646cd9"
   },
   "actions/upload-pages-artifact": {
     "version": "v5",
@@ -45,7 +45,7 @@
   },
   "actions/download-artifact": {
     "version": "v8",
-    "hash": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
+    "hash": "9000827ccba6bdab643e8b6fd33ac0654aef8333"
   },
   "EndBug/add-and-commit": {
     "version": "v10",
@@ -57,7 +57,7 @@
   },
   "datadog/test-visibility-github-action": {
     "version": "v3",
-    "hash": "1abae93083b69778facd7ee11f89184306c999e6"
+    "hash": "7ce545f228901e4ac4ef0b45d946120f1c4124e0"
   },
   "DataDog/datadog-sca-github-action": {
     "version": "v4",
@@ -109,10 +109,10 @@
   },
   "docker/login-action": {
     "version": "v3",
-    "hash": "9780b0c442fbb1117ed29e0efdff1e18412f7567"
+    "hash": "c94ce9fb468520275223c153574b00df6fe4bcc9"
   },
   "docker/build-push-action": {
     "version": "v5",
-    "hash": "2cdde995de11925a030ce8070c3d77a52ffcf1c0"
+    "hash": "ca052bb54ab0790a636c9b5f226502c73d547a25"
   }
 }

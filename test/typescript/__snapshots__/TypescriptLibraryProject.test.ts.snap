@@ -31,8 +31,8 @@ exports[`TypescriptLibraryProject with default settings > synthesizes 1`] = `
     },
     "features": {
       "ghcr.io/devcontainers/features/node:1": {
-        "pnpmVersion": "12.8.2",
-        "version": "26.10.0",
+        "pnpmVersion": "12.17.0",
+        "version": "26.9.0",
       },
       "ghcr.io/devcontainers/features/sshd:1": {
         "version": "latest",
@@ -336,10 +336,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 12.8.2
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+          version: 12.17.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: 26.10.0
+          node-version: 26.9.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -349,12 +349,12 @@ jobs:
       - name: run projen
         run: pnpm run projen
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@1abae93083b69778facd7ee11f89184306c999e6
+        uses: datadog/test-visibility-github-action@7ce545f228901e4ac4ef0b45d946120f1c4124e0
         with:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 6.19.0
+          js-tracer-version: 6.21.0
       - name: build
         run: pnpm exec projen build:ci
       - name: build-tests
@@ -370,7 +370,7 @@ jobs:
         working-directory: ./
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: repo.patch
           path: repo.patch
@@ -391,7 +391,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -407,7 +407,7 @@ jobs:
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -617,10 +617,10 @@ jobs:
         id: setup_pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 12.8.2
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+          version: 12.17.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: 26.10.0
+          node-version: 26.9.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -629,12 +629,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@1abae93083b69778facd7ee11f89184306c999e6
+        uses: datadog/test-visibility-github-action@7ce545f228901e4ac4ef0b45d946120f1c4124e0
         with:
           languages: js
           api_key: \${{secrets.DD_API_KEY}}
           site: datadoghq.eu
-          js-tracer-version: 6.19.0
+          js-tracer-version: 6.21.0
       - name: build
         run: pnpm exec projen build:ci
       - name: release
@@ -662,7 +662,7 @@ jobs:
       - name: Upload artifact
         id: upload_artifact
         if: \${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: build-artifact
           path: dist
@@ -678,13 +678,13 @@ jobs:
       contents: write
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: 26.10.0
+          node-version: 26.9.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: build-artifact
@@ -709,13 +709,13 @@ jobs:
       packages: write
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: 26.10.0
+          node-version: 26.9.0
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: build-artifact
@@ -760,10 +760,10 @@ jobs:
         id: setup_pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 12.8.2
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+          version: 12.17.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: 26.10.0
+          node-version: 26.9.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
       - name: Install dependencies
@@ -790,7 +790,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: repo.patch
           path: repo.patch
@@ -807,7 +807,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510
         with:
           app-id: \${{ secrets.PROJEN_APP_ID }}
           private-key: \${{ secrets.PROJEN_APP_PRIVATE_KEY }}
@@ -822,7 +822,7 @@ jobs:
           ref: main
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -961,7 +961,7 @@ tsconfig.tsbuildinfo
   ".npmrc": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
 @gplassard:registry=https://npm.pkg.github.com
-use-node-version=26.10.0
+use-node-version=26.9.0
 ",
   ".projen/deps.json": {
     "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".",
@@ -1710,13 +1710,13 @@ use-node-version=26.10.0
       "packageManager": {
         "name": "pnpm",
         "onFail": "ignore",
-        "version": "12.8.2",
+        "version": "12.17.0",
       },
     },
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "test-project-package-name",
-    "packageManager": "pnpm@12.8.2",
+    "packageManager": "pnpm@12.17.0",
     "pnpm": {},
     "publishConfig": {
       "access": "public",
@@ -1751,8 +1751,8 @@ use-node-version=26.10.0
     "types": "lib/index.d.ts",
     "version": "0.0.0",
     "volta": {
-      "node": "26.10.0",
-      "pnpm": "12.8.2",
+      "node": "26.9.0",
+      "pnpm": "12.17.0",
     },
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
