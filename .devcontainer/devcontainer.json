@@ -4,8 +4,8 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "26.10.0",
-      "pnpmVersion": "12.8.2"
+      "version": "26.9.0",
+      "pnpmVersion": "12.17.0"
     },
     "ghcr.io/devcontainers/features/sshd:1": {
       "version": "latest"
