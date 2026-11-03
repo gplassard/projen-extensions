@@ -1,9 +1,9 @@
 import { Component } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { PreviewWorkflow } from './PreviewWorkflow';
 import { githubAction } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
-import { PreviewWorkflow } from './PreviewWorkflow';
 
 export interface DeployGithubPagesWorkflowOptions {
   /**
