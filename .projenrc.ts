@@ -27,6 +27,10 @@ project.addTask('upgrade-go-versions', {
   description: 'Upgrade go dependencies to latest versions',
   exec: 'tsx scripts/upgrade-go-versions.ts',
 });
+project.addTask('upgrade-helm-charts', {
+  description: 'Upgrade helm chart versions to latest',
+  exec: 'tsx scripts/upgrade-helm-charts.ts',
+});
 
 const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
 upgradeExternalVersionsWorkflow.on({
@@ -86,6 +90,13 @@ upgradeExternalVersionsWorkflow.addJob('upgrade', {
         GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
       },
     },
+    {
+      name: 'Upgrade helm charts',
+      run: 'pnpm run upgrade-helm-charts',
+      env: {
+        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+      },
+    },
     ...WorkflowActions.uploadGitPatch({
       stepId: 'create_patch',
       outputName: 'patch_created',
@@ -100,10 +111,10 @@ upgradeExternalVersionsWorkflow.addJob('pr', {
       outputName: 'patch_created',
     },
     workflowName: 'upgrade-external-versions',
-    pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM and other versions',
+    pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM, helm charts and other versions',
     labels: ['dependencies'],
     pullRequestDescription: [
-      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions.',
+      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions.',
     ].join('\n\n'),
   }),
   permissions: {

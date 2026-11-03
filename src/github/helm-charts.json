@@ -1,0 +1,5 @@
+{
+  "cert-manager": "v1.0.0",
+  "dd-helm-operator": "1.0.0",
+  "tailscale-operator": "1.0.0"
+}
