@@ -1,6 +1,7 @@
 import { Component } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { PreviewWorkflow } from './PreviewWorkflow';
 import { githubAction } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
@@ -115,6 +116,13 @@ export class DeployGithubPagesWorkflow extends Component {
       ],
     });
 
+    // When previews are enabled, also create the preview workflow that builds PR previews
+    if (includePreviews) {
+      new PreviewWorkflow(scope, {
+        previewsBranch: previewsBranch,
+        previewsBasePath: '/' + previewsDir,
+      });
+    }
   }
 
   private generateIncludePreviewsScript(artifactPath: string, previewsBranch: string, previewsDir: string): string {
