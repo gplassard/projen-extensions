@@ -427,6 +427,15 @@
         }
       ]
     },
+    "upgrade-helm-charts": {
+      "name": "upgrade-helm-charts",
+      "description": "Upgrade helm chart versions to latest",
+      "steps": [
+        {
+          "exec": "tsx scripts/upgrade-helm-charts.ts"
+        }
+      ]
+    },
     "watch": {
       "name": "watch",
       "description": "Watch & compile in the background",
