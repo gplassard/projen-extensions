@@ -18,13 +18,6 @@ export interface PreviewWorkflowOptions {
   previewOutputDir?: string;
 
   /**
-   * The command to build the preview
-   * This command should use the previewOutputDir and previewsBasePath
-   * @default 'pnpm run build'
-   */
-  buildPreviewCommand?: string;
-
-  /**
    * The directory to build the main site into
    * @default 'dist'
    */
@@ -92,8 +85,7 @@ export interface PreviewWorkflowOptions {
  * const github = project.github!;
  * new PreviewWorkflow(github, {
  *   previewsBasePath: '/my-project/previews',
- *   buildPreviewCommand: 'pnpm run build:preview',
- * });
+   * });
  * ```
  */
 export class PreviewWorkflow extends Component {
@@ -109,7 +101,6 @@ export class PreviewWorkflow extends Component {
     this.options = {
       previewsBasePath: options.previewsBasePath ?? '/previews',
       previewOutputDir: options.previewOutputDir ?? 'dist-preview',
-      buildPreviewCommand: options.buildPreviewCommand ?? 'pnpm run build',
       siteOutputDir: options.siteOutputDir ?? 'dist',
       buildSiteCommand: options.buildSiteCommand ?? 'pnpm run build',
       previewExpirySeconds: options.previewExpirySeconds ?? 604800,
@@ -253,12 +244,11 @@ export class PreviewWorkflow extends Component {
   }
 
   private generateBuildPreviewScript(): string {
-    const buildCmd = this.options.buildPreviewCommand;
     const basePath = this.options.previewsBasePath;
     const outDir = this.options.previewOutputDir;
     const lines = [
       'PR_NUMBER=${{ github.event.pull_request.number }}',
-      'pnpm exec tsc && ' + buildCmd + ' --base=' + basePath + '/pr-$PR_NUMBER/ --outDir ' + outDir,
+      'pnpm exec tsc && pnpm exec vite build --base=' + basePath + '/pr-$PR_NUMBER/ --outDir ' + outDir,
       'echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"',
     ];
     return lines.join('\n');

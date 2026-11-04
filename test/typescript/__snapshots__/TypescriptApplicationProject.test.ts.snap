@@ -3948,7 +3948,7 @@ on:
   workflow_dispatch: {}
 concurrency:
   group: deploy-website
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   deploy:
     name: deploy
@@ -3986,11 +3986,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile
-      - name: Install dependencies
-        id: install_dependencies_2
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm i --frozen-lockfile
       - name: Build
         id: build
         run: pnpm run build
@@ -4001,9 +3996,9 @@ jobs:
         run: |-
           REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"
           if git ls-remote --exit-code --heads "$REPO_URL" previews > /dev/null 2>&1; then
-            git clone --depth 1 --single-branch --branch previews "$REPO_URL" "\${{ runner.temp }}/previews"
+            git clone --depth 1 --single-branch --branch previews "$REPO_URL" "\${RUNNER_TEMP}/previews"
             mkdir -p ./dist/previews
-            rsync -a --exclude=.git "\${{ runner.temp }}/previews/" ./dist/previews/
+            rsync -a --exclude=.git "\${RUNNER_TEMP}/previews/" ./dist/previews/
           else
             echo 'No preview environments to include'
           fi
@@ -4081,7 +4076,7 @@ jobs:
           PR_NUMBER: \${{ github.event.pull_request.number }}
         run: |-
           PR_NUMBER=\${{ github.event.pull_request.number }}
-          pnpm exec tsc && pnpm run build --base=/previews/pr-$PR_NUMBER/ --outDir dist-preview
+          pnpm exec tsc && pnpm exec vite build --base=/previews/pr-$PR_NUMBER/ --outDir dist-preview
           echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - name: Publish preview
         id: publish
@@ -5916,7 +5911,7 @@ on:
   workflow_dispatch: {}
 concurrency:
   group: deploy-website
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   deploy:
     name: deploy
@@ -5951,11 +5946,6 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         id: install_dependencies
-        env:
-          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm i --frozen-lockfile
-      - name: Install dependencies
-        id: install_dependencies_2
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: pnpm i --frozen-lockfile

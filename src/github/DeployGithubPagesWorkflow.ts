@@ -37,6 +37,13 @@ export interface DeployGithubPagesWorkflowOptions {
    * @default 'previews'
    */
   previewsDir?: string;
+
+  /**
+   * The base path for preview URLs (e.g., '/my-project/previews').
+   * This is used for both the Vite build base and the preview URL.
+   * @default '/previews'
+   */
+  previewsBasePath?: string;
 }
 
 export class DeployGithubPagesWorkflow extends Component {
@@ -46,13 +53,14 @@ export class DeployGithubPagesWorkflow extends Component {
     const previewsBranch = options.previewsBranch ?? 'previews';
     const includePreviews = options.includePreviews ?? false;
     const previewsDir = options.previewsDir ?? 'previews';
+    const previewsBasePath = options.previewsBasePath ?? '/' + previewsDir;
     const artifactPath = options.artifactPath ?? './dist';
 
     const workflow = new GithubWorkflow(scope, 'deploy-website', {
       limitConcurrency: true,
       concurrencyOptions: {
         group: 'deploy-website',
-        cancelInProgress: false,
+        cancelInProgress: true,
       },
     });
     workflow.on({
@@ -77,13 +85,6 @@ export class DeployGithubPagesWorkflow extends Component {
       steps: [
         WorkflowActionsX.checkout({ 'fetch-depth': 0 }),
         ...WorkflowActionsX.setupPnpmSteps({}),
-        {
-          name: 'Install dependencies',
-          run: 'pnpm i --frozen-lockfile',
-          env: {
-            NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-          },
-        },
         {
           name: 'Build',
           run: options.buildCommand ?? 'pnpm run build',
@@ -120,7 +121,7 @@ export class DeployGithubPagesWorkflow extends Component {
     if (includePreviews) {
       new PreviewWorkflow(scope, {
         previewsBranch: previewsBranch,
-        previewsBasePath: '/' + previewsDir,
+        previewsBasePath: previewsBasePath,
       });
     }
   }
@@ -131,9 +132,9 @@ export class DeployGithubPagesWorkflow extends Component {
     const lines = [
       'REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"',
       'if git ls-remote --exit-code --heads "$REPO_URL" ' + previewsBranch + ' > /dev/null 2>&1; then',
-      '  git clone --depth 1 --single-branch --branch ' + previewsBranch + ' "$REPO_URL" "${{ runner.temp }}/previews"',
+      '  git clone --depth 1 --single-branch --branch ' + previewsBranch + ' "$REPO_URL" "${RUNNER_TEMP}/previews"',
       '  mkdir -p ' + artifactPath + '/' + previewsDir,
-      '  rsync -a --exclude=.git "${{ runner.temp }}/previews/" ' + artifactPath + '/' + previewsDir + '/',
+      '  rsync -a --exclude=.git "${RUNNER_TEMP}/previews/" ' + artifactPath + '/' + previewsDir + '/',
       'else',
       "  echo 'No preview environments to include'",
       'fi',
