@@ -1,6 +1,4 @@
-import { GithubWorkflow, WorkflowJobs, GithubCredentials, WorkflowActions } from 'projen/lib/github';
-import { JobPermission } from 'projen/lib/github/workflows-model';
-import { TypescriptLibraryProject, WorkflowActionsX } from './src';
+import { TypescriptLibraryProject, ScheduledUpgradeWorkflow } from './src';
 
 const project = new TypescriptLibraryProject({
   name: 'projen-extensions',
@@ -32,94 +30,36 @@ project.addTask('upgrade-helm-charts', {
   exec: 'tsx scripts/upgrade-helm-charts.ts',
 });
 
-const upgradeExternalVersionsWorkflow = new GithubWorkflow(project.github!, 'upgrade-external-versions', {});
-upgradeExternalVersionsWorkflow.on({
-  workflowDispatch: {},
-  schedule: [{
-    cron: '0 0 1 * *',
-  }],
-});
-upgradeExternalVersionsWorkflow.addJob('upgrade', {
-  name: 'Upgrade',
-  runsOn: ['ubuntu-latest'],
-  outputs: {
-    patch_created: {
-      outputName: 'patch_created',
-      stepId: 'create_patch',
-    },
-  },
-  permissions: {
-    contents: JobPermission.READ,
-    packages: JobPermission.READ,
-  },
-  steps: [
-    WorkflowActionsX.checkout({}),
-    ...WorkflowActionsX.setupPnpmSteps({}),
+new ScheduledUpgradeWorkflow(project.github!, {
+  workflowName: 'upgrade-external-versions',
+  cronSchedule: '0 0 1 * *',
+  pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM, helm charts and other versions',
+  pullRequestDescription: 'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions.',
+  upgradeSteps: [
     {
       name: 'Get latest NodeJS versions',
       run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/nodejs/node/releases --jq \'map(select(.prerelease == false)) | {"node26": (map(select(.tag_name | startswith("v26."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node22": (map(select(.tag_name | startswith("v22."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0]), "node24": (map(select(.tag_name | startswith("v24."))) | sort_by(.tag_name) | reverse | map({version: .tag_name})[0])}\' > src/github/nodejs.json',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
     {
       name: 'Get latest PNPM',
       run: 'gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/pnpm/pnpm/releases --jq \'map(select(.prerelease == false)) | map({version: .tag_name})[0]\' > src/github/pnpm.json',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
     {
       name: 'Upgrade GitHub Actions and NCU',
       run: 'pnpm run upgrade-github-versions',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
     {
       name: 'Upgrade devcontainer features',
       run: 'pnpm run upgrade-devcontainer-features',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
     {
       name: 'Upgrade Go and golangci-lint',
       run: 'pnpm run upgrade-go-versions',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
     {
       name: 'Upgrade helm charts',
       run: 'pnpm run upgrade-helm-charts',
-      env: {
-        GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
-      },
     },
-    ...WorkflowActions.uploadGitPatch({
-      stepId: 'create_patch',
-      outputName: 'patch_created',
-    }),
   ],
-});
-upgradeExternalVersionsWorkflow.addJob('pr', {
-  ...WorkflowJobs.pullRequestFromPatch( {
-    credentials: GithubCredentials.fromApp(),
-    patch: {
-      jobId: 'upgrade',
-      outputName: 'patch_created',
-    },
-    workflowName: 'upgrade-external-versions',
-    pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM, helm charts and other versions',
-    labels: ['dependencies'],
-    pullRequestDescription: [
-      'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions.',
-    ].join('\n\n'),
-  }),
-  permissions: {
-    contents: JobPermission.WRITE,
-    pullRequests: JobPermission.WRITE,
-  },
 });
 project.synth();

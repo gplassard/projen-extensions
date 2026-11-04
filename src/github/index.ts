@@ -5,5 +5,6 @@ export * from './NodeJSDependenciesUpgradeAction';
 export * from './PreviewWorkflow';
 export * from './ProjenSynthAction';
 export * from './ReleasePlease';
+export * from './ScheduledUpgradeWorkflow';
 export * from './utils';
 export * from './WorkflowActionsX';
