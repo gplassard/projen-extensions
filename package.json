@@ -26,7 +26,6 @@
     "upgrade-devcontainer-features": "projen upgrade-devcontainer-features",
     "upgrade-github-versions": "projen upgrade-github-versions",
     "upgrade-go-versions": "projen upgrade-go-versions",
-    "upgrade-helm-charts": "projen upgrade-helm-charts",
     "watch": "projen watch",
     "projen": "projen"
   },

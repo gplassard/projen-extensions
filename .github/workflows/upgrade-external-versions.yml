@@ -64,11 +64,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run upgrade-go-versions
-      - name: Upgrade helm charts
-        id: upgrade_helm_charts
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm run upgrade-helm-charts
       - name: Find mutations
         id: create_patch
         run: |-
@@ -123,9 +118,9 @@ jobs:
         with:
           token: ${{ steps.generate_token.outputs.token }}
           commit-message: |-
-            chore(deps): upgrade NodeJS, PNPM, helm charts and other versions
+            chore(deps): upgrade NodeJS, PNPM, devcontainer features and other versions
 
-            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -133,10 +128,10 @@ jobs:
 
             *Automatically created by projen via the "upgrade-external-versions" workflow*
           branch: github-actions/upgrade-external-versions
-          title: "chore(deps): upgrade NodeJS, PNPM, helm charts and other versions"
+          title: "chore(deps): upgrade NodeJS, PNPM, devcontainer features and other versions"
           labels: dependencies
           body: |-
-            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions. See details in [workflow run].
+            Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions. See details in [workflow run].
 
             [Workflow Run]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
