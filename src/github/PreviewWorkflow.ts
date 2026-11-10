@@ -1,6 +1,7 @@
 import { Component } from 'projen';
 import { GitHub, GithubWorkflow } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { githubAction } from './utils';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 export interface PreviewWorkflowOptions {
@@ -144,7 +145,7 @@ export class PreviewWorkflow extends Component {
         idToken: JobPermission.WRITE,
       },
       environment: {
-        name: '${{ format(\'{0}-{1}\', options.environmentNamePrefix, github.event.pull_request.number) }}',
+        name: `${this.options.environmentNamePrefix}-\${{ github.event.pull_request.number }}`,
         url: '${{ steps.publish.outputs.url }}',
       },
       if: 'github.event_name == \'pull_request\' && github.event.action != \'closed\' && github.event.pull_request.head.repo.full_name == github.repository',
@@ -155,7 +156,9 @@ export class PreviewWorkflow extends Component {
           'ref': '${{ github.event.pull_request.head.ref }}',
           'repository': '${{ github.event.pull_request.head.repo.full_name }}',
         }),
-        ...WorkflowActionsX.setupPnpmSteps({}),
+        WorkflowActionsX.setupPnpm({ install: false }),
+        WorkflowActionsX.setupNode({}),
+        WorkflowActionsX.installDependencies({ noFrozenLockfile: true }),
         // Build the preview
         {
           name: 'Build preview',
@@ -175,6 +178,49 @@ export class PreviewWorkflow extends Component {
           },
           run: this.generatePublishPreviewScript(),
         },
+        ...(this.options.deployPreviews ? [
+          {
+            name: 'Checkout main',
+            id: 'checkout_main',
+            run: 'git checkout --force origin/main',
+          },
+          {
+            name: 'Install main dependencies',
+            id: 'install_main_dependencies',
+            env: {
+              NODE_AUTH_TOKEN: '${{ secrets.GITHUB_TOKEN }}',
+            },
+            run: 'pnpm i --no-frozen-lockfile',
+          },
+          {
+            name: 'Build main site',
+            id: 'build_main_site',
+            run: this.options.buildSiteCommand,
+          },
+          {
+            name: 'Assemble previews into site',
+            id: 'assemble_previews_into_site',
+            run: this.generateAssemblePreviewsScript(),
+          },
+          {
+            name: 'Setup pages',
+            id: 'setup_pages',
+            uses: githubAction('actions/configure-pages'),
+          },
+          {
+            name: 'Upload artifact',
+            id: 'upload_artifact',
+            uses: githubAction('actions/upload-pages-artifact'),
+            with: {
+              path: this.options.siteOutputDir,
+            },
+          },
+          {
+            name: 'Deploy to Github Pages',
+            id: 'deploy_to_github_pages',
+            uses: githubAction('actions/deploy-pages'),
+          },
+        ] : []),
         // Post preview URL as comment
         {
           name: 'Comment preview url',
@@ -204,15 +250,57 @@ export class PreviewWorkflow extends Component {
       if: 'github.event_name == \'pull_request\' && github.event.action == \'closed\' && github.event.pull_request.head.repo.full_name == github.repository',
       steps: [
         WorkflowActionsX.checkout({ 'fetch-depth': 0 }),
-        ...WorkflowActionsX.setupPnpmSteps({}),
+        WorkflowActionsX.setupPnpm({ install: false }),
+        WorkflowActionsX.setupNode({}),
+        ...(this.options.deployPreviews ? [
+          {
+            name: 'Checkout main',
+            id: 'checkout_main',
+            run: 'git checkout --force origin/main',
+          },
+          WorkflowActionsX.installDependencies({}),
+        ] : [
+          WorkflowActionsX.installDependencies({}),
+        ]),
         {
           name: 'Remove preview',
+          id: 'remove_preview',
           env: {
             PR_NUMBER: '${{ github.event.pull_request.number }}',
             GH_TOKEN: '${{ github.token }}',
           },
           run: this.generateRemovePreviewScript(),
         },
+        ...(this.options.deployPreviews ? [
+          {
+            name: 'Build main site',
+            id: 'build_main_site',
+            run: this.options.buildSiteCommand,
+          },
+          {
+            name: 'Assemble previews into site',
+            id: 'assemble_previews_into_site',
+            run: this.generateAssemblePreviewsScript(),
+          },
+          {
+            name: 'Setup pages',
+            id: 'setup_pages',
+            uses: githubAction('actions/configure-pages'),
+          },
+          {
+            name: 'Upload artifact',
+            id: 'upload_artifact',
+            uses: githubAction('actions/upload-pages-artifact'),
+            with: {
+              path: this.options.siteOutputDir,
+            },
+          },
+          {
+            name: 'Deploy to Github Pages',
+            id: 'deploy_to_github_pages',
+            uses: githubAction('actions/deploy-pages'),
+          },
+        ] : []),
       ],
     });
 
@@ -229,14 +317,56 @@ export class PreviewWorkflow extends Component {
       if: 'github.event_name == \'schedule\'',
       steps: [
         WorkflowActionsX.checkout({ 'fetch-depth': 0 }),
-        ...WorkflowActionsX.setupPnpmSteps({}),
+        WorkflowActionsX.setupPnpm({ install: false }),
+        WorkflowActionsX.setupNode({}),
+        ...(this.options.deployPreviews ? [
+          {
+            name: 'Checkout main',
+            id: 'checkout_main',
+            run: 'git checkout --force origin/main',
+          },
+          WorkflowActionsX.installDependencies({}),
+        ] : [
+          WorkflowActionsX.installDependencies({}),
+        ]),
         {
           name: 'Prune expired previews',
+          id: 'prune_expired_previews',
           env: {
             GH_TOKEN: '${{ github.token }}',
           },
           run: this.generatePrunePreviewsScript(),
         },
+        ...(this.options.deployPreviews ? [
+          {
+            name: 'Build main site',
+            id: 'build_main_site',
+            run: this.options.buildSiteCommand,
+          },
+          {
+            name: 'Assemble previews into site',
+            id: 'assemble_previews_into_site',
+            run: this.generateAssemblePreviewsScript(),
+          },
+          {
+            name: 'Setup pages',
+            id: 'setup_pages',
+            uses: githubAction('actions/configure-pages'),
+          },
+          {
+            name: 'Upload artifact',
+            id: 'upload_artifact',
+            uses: githubAction('actions/upload-pages-artifact'),
+            with: {
+              path: this.options.siteOutputDir,
+            },
+          },
+          {
+            name: 'Deploy to Github Pages',
+            id: 'deploy_to_github_pages',
+            uses: githubAction('actions/deploy-pages'),
+          },
+        ] : []),
       ],
     });
 
@@ -244,11 +374,11 @@ export class PreviewWorkflow extends Component {
   }
 
   private generateBuildPreviewScript(): string {
-    const basePath = this.options.previewsBasePath;
+    const basePath = this.options.previewsBasePath.startsWith('/') ? this.options.previewsBasePath : '/' + this.options.previewsBasePath;
     const outDir = this.options.previewOutputDir;
     const lines = [
       'PR_NUMBER=${{ github.event.pull_request.number }}',
-      'pnpm exec tsc && pnpm exec vite build --base=' + basePath + '/pr-$PR_NUMBER/ --outDir ' + outDir,
+      'pnpm exec tsc && pnpm exec vite build --base=/${GITHUB_REPOSITORY#*/}' + basePath + '/pr-$PR_NUMBER/ --outDir ' + outDir,
       'echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"',
     ];
     return lines.join('\n');
@@ -257,9 +387,9 @@ export class PreviewWorkflow extends Component {
   private generatePublishPreviewScript(): string {
     const branch = this.options.previewsBranch;
     const outDir = this.options.previewOutputDir;
-    const basePath = this.options.previewsBasePath;
+    const basePath = this.options.previewsBasePath.startsWith('/') ? this.options.previewsBasePath : '/' + this.options.previewsBasePath;
     const lines = [
-      'REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"',
+      'REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"',
       'PUSHED=false',
       'for attempt in 1 2 3 4 5; do',
       '  rm -rf preview-site',
@@ -274,7 +404,7 @@ export class PreviewWorkflow extends Component {
       '  mkdir -p "preview-site/pr-$PR_NUMBER"',
       '  cp -r ' + outDir + '/. "preview-site/pr-$PR_NUMBER"',
       '  date +%s > "preview-site/pr-$PR_NUMBER/.preview-updated"',
-      '  echo "url=https://\${GITHUB_REPOSITORY_OWNER}.github.io/\${GITHUB_REPOSITORY#*/}' + basePath + '/pr-$PR_NUMBER/" >> "$GITHUB_OUTPUT"',
+      '  echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}' + basePath + '/pr-$PR_NUMBER/" >> "$GITHUB_OUTPUT"',
       '  git -C preview-site config user.name "github-actions[bot]"',
       '  git -C preview-site config user.email "41898282+github-actions[bot]@users.noreply.github.com"',
       '  git -C preview-site add -A',
@@ -301,7 +431,7 @@ export class PreviewWorkflow extends Component {
   private generateRemovePreviewScript(): string {
     const branch = this.options.previewsBranch;
     const lines = [
-      'REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"',
+      'REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"',
       'PUSHED=false',
       'for attempt in 1 2 3 4 5; do',
       '  rm -rf preview-site',
@@ -339,7 +469,7 @@ export class PreviewWorkflow extends Component {
     const branch = this.options.previewsBranch;
     const expiry = this.options.previewExpirySeconds;
     const lines = [
-      'REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"',
+      'REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"',
       'PUSHED=false',
       'for attempt in 1 2 3 4 5; do',
       '  rm -rf preview-site',
@@ -378,6 +508,15 @@ export class PreviewWorkflow extends Component {
       '  echo "Failed to publish previews branch" >&2',
       '  exit 1',
       'fi',
+    ];
+    return lines.join('\n');
+  }
+
+  private generateAssemblePreviewsScript(): string {
+    const siteOutputDir = this.options.siteOutputDir;
+    const lines = [
+      `mkdir -p ${siteOutputDir}/previews`,
+      `rsync -a --exclude=.git preview-site/ ${siteOutputDir}/previews/`,
     ];
     return lines.join('\n');
   }
