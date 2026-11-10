@@ -114,9 +114,5 @@
   "docker/build-push-action": {
     "version": "v5",
     "hash": "ca052bb54ab0790a636c9b5f226502c73d547a25"
-  },
-  "azure/setup-helm": {
-    "version": "v5",
-    "hash": "59b1c81c6280f5abebb1fb1bc585696daa7dfb42"
   }
 }

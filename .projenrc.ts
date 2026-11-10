@@ -25,16 +25,12 @@ project.addTask('upgrade-go-versions', {
   description: 'Upgrade go dependencies to latest versions',
   exec: 'tsx scripts/upgrade-go-versions.ts',
 });
-project.addTask('upgrade-helm-charts', {
-  description: 'Upgrade helm chart versions to latest',
-  exec: 'tsx scripts/upgrade-helm-charts.ts',
-});
 
 new ScheduledUpgradeWorkflow(project.github!, {
   workflowName: 'upgrade-external-versions',
   cronSchedule: '0 0 1 * *',
-  pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM, helm charts and other versions',
-  pullRequestDescription: 'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features, helm charts and other tool versions.',
+  pullRequestTitle: 'chore(deps): upgrade NodeJS, PNPM, devcontainer features and other versions',
+  pullRequestDescription: 'Upgrades NodeJS (latest versions for Node.js), PNPM, GitHub Actions hashes, devcontainer features and other tool versions.',
   upgradeSteps: [
     {
       name: 'Get latest NodeJS versions',
@@ -55,10 +51,6 @@ new ScheduledUpgradeWorkflow(project.github!, {
     {
       name: 'Upgrade Go and golangci-lint',
       run: 'pnpm run upgrade-go-versions',
-    },
-    {
-      name: 'Upgrade helm charts',
-      run: 'pnpm run upgrade-helm-charts',
     },
   ],
 });

@@ -2,7 +2,6 @@ import { Component, YamlFile } from 'projen';
 import { GitHub, PullRequestLintOptions } from 'projen/lib/github';
 import ddVersionsJson from './datadog.json';
 import githubActionsVersions from './github-actions.json';
-import helmChartsVersions from './helm-charts.json';
 import ncuDefaultVersionJson from './ncu.json';
 import nodeJsVersions from './nodejs.json';
 import pnpmDefaultVersionJson from './pnpm.json';
@@ -20,10 +19,6 @@ const DEFAULT_NODE_VERSION: string = NODEJS_VERSIONS.NODEJS_26_X;
 const DEFAULT_PNPM_VERSION: string = pnpmDefaultVersionJson.version.replace('v', '');
 
 const DEFAULT_DD_TRACE_VERSION: string = ddVersionsJson['dd-trace-js'];
-
-const DEFAULT_CERT_MANAGER_VERSION: string = helmChartsVersions['cert-manager'];
-const DEFAULT_DD_HELM_OPERATOR_VERSION: string = helmChartsVersions['dd-helm-operator'];
-const DEFAULT_TAILSCALE_OPERATOR_VERSION: string = helmChartsVersions['tailscale-operator'];
 
 const DEFAULT_NCU_VERSION: string = ncuDefaultVersionJson.version;
 
@@ -99,18 +94,6 @@ class RetentionDaysComponent extends Component {
 
 export function ddTraceVersion(options: { ddTraceVersion?: string }): string {
   return options?.ddTraceVersion ?? DEFAULT_DD_TRACE_VERSION;
-}
-
-export function ddHelmOperatorVersion(options?: { ddHelmOperatorVersion?: string }): string {
-  return options?.ddHelmOperatorVersion ?? DEFAULT_DD_HELM_OPERATOR_VERSION;
-}
-
-export function certManagerVersion(options?: { certManagerVersion?: string }): string {
-  return options?.certManagerVersion ?? DEFAULT_CERT_MANAGER_VERSION;
-}
-
-export function tailscaleOperatorVersion(options?: { tailscaleOperatorVersion?: string }): string {
-  return options?.tailscaleOperatorVersion ?? DEFAULT_TAILSCALE_OPERATOR_VERSION;
 }
 
 export function ncuVersion(): string {

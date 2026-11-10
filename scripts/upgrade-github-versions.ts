@@ -133,7 +133,7 @@ async function main() {
     writeFileSync(ncuPath, JSON.stringify(ncu, null, 2) + '\n');
   }
 
-  // Update datadog (dd-trace and helm-operator)
+  // Update datadog (dd-trace)
   const datadogPath = path.join(__dirname, '../src/github/datadog.json');
   const datadog = JSON.parse(readFileSync(datadogPath, 'utf8'));
 
@@ -152,40 +152,6 @@ async function main() {
       }
     } catch (e) {
       console.error('  Failed to fetch dd-trace version');
-    }
-
-    // Update helm-operator
-    console.log('Refreshing datadog-operator version');
-    try {
-      const lsRemoteOutput = execSync('git ls-remote --tags https://github.com/DataDog/helm-charts').toString();
-      const tags = lsRemoteOutput.split('\n')
-        .map(line => line.split('refs/tags/')[1])
-        .filter(tag => tag && tag.startsWith('datadog-operator-') && !tag.includes('-dev') && !tag.includes('^'))
-        .map(tag => tag.replace('datadog-operator-', '').trim());
-      tags.sort((a, b) => {
-        const pa = a.split('.').map(Number);
-        const pb = b.split('.').map(Number);
-        for (let i = 0; i < 3; i++) {
-          if (pa[i] > pb[i]) return 1;
-          if (pa[i] < pb[i]) return -1;
-        }
-        return 0;
-      });
-      let latest: string | undefined;
-      for (const tag of [...tags].reverse()) {
-        const commitDate = fetchCommitDate('DataDog/helm-charts', `datadog-operator-${tag}`);
-        if (isOldEnough(commitDate)) {
-          latest = tag;
-          break;
-        }
-        console.log(`  Skipping datadog-operator ${tag} (${commitDate}), less than ${COOLDOWN_DAYS} days old`);
-      }
-      if (latest) {
-        datadog['helm-operator'] = latest;
-        console.log(`  New datadog-operator version: ${datadog['helm-operator']}`);
-      }
-    } catch (e) {
-      console.error('  Failed to fetch datadog-operator version');
     }
     writeFileSync(datadogPath, JSON.stringify(datadog, null, 2) + '\n');
   }
