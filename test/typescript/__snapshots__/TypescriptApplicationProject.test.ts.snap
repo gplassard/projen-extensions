@@ -3988,7 +3988,7 @@ jobs:
         run: pnpm i --frozen-lockfile
       - name: Build
         id: build
-        run: pnpm run build
+        run: pnpm run build:prod
       - name: Include preview environments
         id: include_preview_environments
         env:
@@ -3997,8 +3997,8 @@ jobs:
           REPO_URL="https://x-access-token:\${GH_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"
           if git ls-remote --exit-code --heads "$REPO_URL" previews > /dev/null 2>&1; then
             git clone --depth 1 --single-branch --branch previews "$REPO_URL" "\${RUNNER_TEMP}/previews"
-            mkdir -p ./dist/previews
-            rsync -a --exclude=.git "\${RUNNER_TEMP}/previews/" ./dist/previews/
+            mkdir -p ./custom-dist/previews
+            rsync -a --exclude=.git "\${RUNNER_TEMP}/previews/" ./custom-dist/previews/
           else
             echo 'No preview environments to include'
           fi
@@ -4009,7 +4009,7 @@ jobs:
         id: upload_artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
-          path: ./dist
+          path: ./custom-dist
       - name: Deploy to Github Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
@@ -4040,7 +4040,7 @@ jobs:
       pages: write
       id-token: write
     environment:
-      name: \${{ format('{0}-{1}', options.environmentNamePrefix, github.event.pull_request.number) }}
+      name: preview-pr-\${{ github.event.pull_request.number }}
       url: \${{ steps.publish.outputs.url }}
     if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
     steps:
@@ -4069,14 +4069,14 @@ jobs:
         id: install_dependencies
         env:
           NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: pnpm i --frozen-lockfile
+        run: pnpm i --no-frozen-lockfile
       - name: Build preview
         id: build_preview
         env:
           PR_NUMBER: \${{ github.event.pull_request.number }}
         run: |-
           PR_NUMBER=\${{ github.event.pull_request.number }}
-          pnpm exec tsc && pnpm exec vite build --base=/previews/pr-$PR_NUMBER/ --outDir dist-preview
+          pnpm exec tsc && pnpm exec vite build --base=/\${GITHUB_REPOSITORY#*/}/previews/pr-$PR_NUMBER/ --outDir dist-preview
           echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - name: Publish preview
         id: publish
@@ -4119,6 +4119,33 @@ jobs:
             echo "Failed to publish previews branch" >&2
             exit 1
           fi
+      - name: Checkout main
+        id: checkout_main
+        run: git checkout --force origin/main
+      - name: Install main dependencies
+        id: install_main_dependencies
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+        run: pnpm i --no-frozen-lockfile
+      - name: Build main site
+        id: build_main_site
+        run: pnpm run build:prod
+      - name: Assemble previews into site
+        id: assemble_previews_into_site
+        run: |-
+          mkdir -p ./custom-dist/previews
+          rsync -a --exclude=.git preview-site/ ./custom-dist/previews/
+      - name: Setup pages
+        id: setup_pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+      - name: Upload artifact
+        id: upload_artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: ./custom-dist
+      - name: Deploy to Github Pages
+        id: deploy_to_github_pages
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
       - name: Comment preview url
         id: comment_preview_url
         env:
@@ -4174,6 +4201,9 @@ jobs:
           node-version: 26.9.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
+      - name: Checkout main
+        id: checkout_main
+        run: git checkout --force origin/main
       - name: Install dependencies
         id: install_dependencies
         env:
@@ -4215,6 +4245,25 @@ jobs:
             echo "Failed to publish previews branch" >&2
             exit 1
           fi
+      - name: Build main site
+        id: build_main_site
+        run: pnpm run build:prod
+      - name: Assemble previews into site
+        id: assemble_previews_into_site
+        run: |-
+          mkdir -p ./custom-dist/previews
+          rsync -a --exclude=.git preview-site/ ./custom-dist/previews/
+      - name: Setup pages
+        id: setup_pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+      - name: Upload artifact
+        id: upload_artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: ./custom-dist
+      - name: Deploy to Github Pages
+        id: deploy_to_github_pages
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
   prune:
     name: prune
     runs-on: ubuntu-latest
@@ -4244,6 +4293,9 @@ jobs:
           node-version: 26.9.0
           registry-url: https://npm.pkg.github.com
           cache: pnpm
+      - name: Checkout main
+        id: checkout_main
+        run: git checkout --force origin/main
       - name: Install dependencies
         id: install_dependencies
         env:
@@ -4293,6 +4345,25 @@ jobs:
             echo "Failed to publish previews branch" >&2
             exit 1
           fi
+      - name: Build main site
+        id: build_main_site
+        run: pnpm run build:prod
+      - name: Assemble previews into site
+        id: assemble_previews_into_site
+        run: |-
+          mkdir -p ./custom-dist/previews
+          rsync -a --exclude=.git preview-site/ ./custom-dist/previews/
+      - name: Setup pages
+        id: setup_pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+      - name: Upload artifact
+        id: upload_artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: ./custom-dist
+      - name: Deploy to Github Pages
+        id: deploy_to_github_pages
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
 ",
   ".github/workflows/pull-request-lint.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 

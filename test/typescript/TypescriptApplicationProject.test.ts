@@ -31,6 +31,8 @@ describe('TypescriptApplicationProject with default settings', () => {
       deployGithubPagesWorkflowEnabled: true,
       deployGithubPagesWorkflowOptions: {
         includePreviews: true,
+        buildCommand: 'pnpm run build:prod',
+        artifactPath: './custom-dist',
       },
     });
     const output = Testing.synth(project);
@@ -40,14 +42,28 @@ describe('TypescriptApplicationProject with default settings', () => {
     expect(output['.github/workflows/deploy-website.yml']).toBeDefined();
     expect(output['.github/workflows/preview-website.yml']).toBeDefined();
 
-    // Verify the deploy workflow includes the preview step
-    expect(output['.github/workflows/deploy-website.yml']).toContain('Include preview environments');
+    // Verify the deploy workflow includes the preview step and custom options
+    const deployWorkflow = output['.github/workflows/deploy-website.yml'];
+    expect(deployWorkflow).toContain('Include preview environments');
+    expect(deployWorkflow).toContain('pnpm run build:prod');
 
-    // Verify the preview workflow has the expected jobs
+    // Verify the preview workflow has the expected jobs and steps
     const previewWorkflow = output['.github/workflows/preview-website.yml'];
     expect(previewWorkflow).toContain('preview:');
     expect(previewWorkflow).toContain('cleanup:');
     expect(previewWorkflow).toContain('prune:');
+
+    // Verify environment name evaluation
+    expect(previewWorkflow).toContain('name: preview-pr-${{ github.event.pull_request.number }}');
+
+    // Verify base path prefix for Vite preview build and comment url
+    expect(previewWorkflow).toContain('--base=/${GITHUB_REPOSITORY#*/}/previews/pr-$PR_NUMBER/');
+    expect(previewWorkflow).toContain('https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/previews/pr-$PR_NUMBER/');
+
+    // Verify GitHub Pages deployment in preview workflow with forwarded build command and artifact path
+    expect(previewWorkflow).toContain('pnpm run build:prod');
+    expect(previewWorkflow).toContain('path: ./custom-dist');
+    expect(previewWorkflow).toContain('uses: actions/deploy-pages@');
   });
 
   it('can still use yarn', () => {

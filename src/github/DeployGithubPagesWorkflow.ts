@@ -122,6 +122,8 @@ export class DeployGithubPagesWorkflow extends Component {
       new PreviewWorkflow(scope, {
         previewsBranch: previewsBranch,
         previewsBasePath: previewsBasePath,
+        buildSiteCommand: options.buildCommand,
+        siteOutputDir: artifactPath,
       });
     }
   }
