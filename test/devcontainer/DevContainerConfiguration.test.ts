@@ -31,7 +31,19 @@ describe('DevContainerConfiguration', () => {
       'ghcr.io/devcontainers/features/sshd:1': { version: 'latest' },
     });
     expect(config.customizations.codespaces.repositories).toEqual({
-      'gplassard/test-project': { permissions: { packages: 'read', contents: 'write' } },
+      'gplassard/projen-extensions': { permissions: { packages: 'read' } },
+      'gplassard/test-project': { permissions: { contents: 'write' } },
+    });
+  });
+
+  it('overrides gplassard/projen-extensions permissions when it is the current repository', () => {
+    const project = baseProject();
+    new DevContainerConfiguration(project, {
+      repository: 'gplassard/projen-extensions',
+    });
+    const config = Testing.synth(project)[FILE];
+    expect(config.customizations.codespaces.repositories).toEqual({
+      'gplassard/projen-extensions': { permissions: { contents: 'write' } },
     });
   });
 
@@ -50,6 +62,7 @@ describe('DevContainerConfiguration', () => {
     expect(config.features[DOCKER_IN_DOCKER]).toEqual({ moby: false });
     expect(config.features['ghcr.io/devcontainers/features/github-cli:1']).toEqual({});
     expect(config.customizations.codespaces.repositories).toEqual({
+      'gplassard/projen-extensions': { permissions: { packages: 'read' } },
       'gplassard/test-project': { permissions: { contents: 'read' } },
       'gplassard/other': { permissions: { packages: 'read' } },
     });
@@ -109,6 +122,9 @@ describe('devcontainer in other projects', () => {
       packages: 'read',
       contents: 'write',
     });
+    expect(config.customizations.codespaces.repositories['gplassard/projen-extensions'].permissions).toEqual({
+      packages: 'read',
+    });
   });
 
   it('can enable docker in docker and disable the devcontainer', () => {
@@ -135,6 +151,9 @@ describe('TypescriptApplicationProject devcontainer', () => {
     expect(config.customizations.codespaces.repositories['gplassard/test-project'].permissions).toEqual({
       packages: 'read',
       contents: 'write',
+    });
+    expect(config.customizations.codespaces.repositories['gplassard/projen-extensions'].permissions).toEqual({
+      packages: 'read',
     });
   });
 

@@ -16,7 +16,6 @@
       "repositories": {
         "gplassard/projen-extensions": {
           "permissions": {
-            "packages": "read",
             "contents": "write"
           }
         }
