@@ -20,10 +20,14 @@ exports[`TypescriptApplicationProject with default settings > can still use yarn
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -1598,10 +1602,14 @@ exports[`TypescriptApplicationProject with default settings > can work with rele
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -3423,10 +3431,14 @@ exports[`TypescriptApplicationProject with default settings > creates preview wo
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -5454,10 +5466,14 @@ exports[`TypescriptApplicationProject with default settings > supports options 1
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -7209,10 +7225,14 @@ exports[`TypescriptApplicationProject with default settings > synthesizes 1`] = 
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },

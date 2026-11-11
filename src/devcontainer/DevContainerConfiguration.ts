@@ -103,10 +103,13 @@ export class DevContainerConfiguration extends Component {
     }
     if (options.codespaces !== false) {
       const repositories: Record<string, DevContainerCodespacesRepositoryOptions> = {
+        'gplassard/projen-extensions': {
+          permissions: { packages: 'read' },
+        },
         ...(options.repository
           ? {
             [options.repository]: {
-              permissions: options.codespaces?.currentRepositoryPermissions ?? { packages: 'read', contents: 'write' },
+              permissions: options.codespaces?.currentRepositoryPermissions ?? { contents: 'write' },
             },
           }
           : {}),
