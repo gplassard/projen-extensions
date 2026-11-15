@@ -25,10 +25,14 @@ exports[`GradleLibraryProject > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -613,10 +617,14 @@ exports[`GradleLibraryProject > synthesizes with subprojects 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/root-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },

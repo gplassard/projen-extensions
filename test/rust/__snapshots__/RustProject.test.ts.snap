@@ -25,10 +25,14 @@ exports[`RustProject with default settings > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -864,10 +868,14 @@ exports[`RustProject with msvc enabled > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },

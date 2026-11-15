@@ -25,10 +25,14 @@ exports[`GoProject with custom versions > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project-custom-versions": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
@@ -767,10 +771,14 @@ exports[`GoProject with default settings > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },

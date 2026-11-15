@@ -27,7 +27,7 @@ export interface DevContainerCodespacesRepositoryOptions {
 
 export interface DevContainerCodespacesOptions {
   readonly repositories?: Record<string, DevContainerCodespacesRepositoryOptions>;
-  /** @default { packages: 'read', contents: 'write' } */
+  /** @default { contents: 'write' } */
   readonly currentRepositoryPermissions?: Record<string, string>;
   /** Merged at the root of `customizations.codespaces` */
   readonly additional?: Record<string, unknown>;
@@ -103,10 +103,13 @@ export class DevContainerConfiguration extends Component {
     }
     if (options.codespaces !== false) {
       const repositories: Record<string, DevContainerCodespacesRepositoryOptions> = {
+        'gplassard/projen-extensions': {
+          permissions: { packages: 'read' },
+        },
         ...(options.repository
           ? {
             [options.repository]: {
-              permissions: options.codespaces?.currentRepositoryPermissions ?? { packages: 'read', contents: 'write' },
+              permissions: options.codespaces?.currentRepositoryPermissions ?? { contents: 'write' },
             },
           }
           : {}),

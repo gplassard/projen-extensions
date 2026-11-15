@@ -20,10 +20,14 @@ exports[`TypescriptLibraryProject with default settings > synthesizes 1`] = `
     "customizations": {
       "codespaces": {
         "repositories": {
+          "gplassard/projen-extensions": {
+            "permissions": {
+              "packages": "read",
+            },
+          },
           "gplassard/test-project": {
             "permissions": {
               "contents": "write",
-              "packages": "read",
             },
           },
         },
