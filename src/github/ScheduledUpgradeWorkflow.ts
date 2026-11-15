@@ -1,6 +1,6 @@
 import { Component } from 'projen';
 import { GitHub, GithubWorkflow, WorkflowActions, WorkflowJobs, GithubCredentials } from 'projen/lib/github';
-import { JobPermission } from 'projen/lib/github/workflows-model';
+import { JobStep, JobPermission } from 'projen/lib/github/workflows-model';
 import { WorkflowActionsX } from './WorkflowActionsX';
 
 /**
@@ -46,6 +46,44 @@ export interface ScheduledUpgradeWorkflowOptions {
   readonly upgradeSteps: ScheduledUpgradeStep[];
 
   /**
+   * Extra job steps to run before the upgrade steps (e.g. apt-get installs).
+   * @default - no setup steps
+   */
+  readonly setupSteps?: JobStep[];
+
+  /**
+   * Whether to include the usual pnpm, Node.js and dependency installation
+   * steps. When disabled, the caller provides everything via `setupSteps`.
+   * @default true
+   */
+  readonly installDependencies?: boolean;
+
+  /**
+   * The maximum number of minutes to let the upgrade job run before GitHub
+   * automatically cancels it.
+   * @default - GitHub default (360)
+   */
+  readonly timeoutMinutes?: number;
+
+  /**
+   * Whether to limit concurrency of the workflow.
+   * @default false
+   */
+  readonly limitConcurrency?: boolean;
+
+  /**
+   * Concurrency group of the workflow.
+   * @default - the workflow name
+   */
+  readonly concurrencyGroup?: string;
+
+  /**
+   * Whether to cancel in-progress runs of the same concurrency group.
+   * @default true
+   */
+  readonly cancelInProgress?: boolean;
+
+  /**
    * Title of the pull request to create.
    * @default 'chore: scheduled upgrade'
    */
@@ -89,12 +127,13 @@ export interface ScheduledUpgradeWorkflowOptions {
 }
 
 /**
- * A reusable workflow component that creates a scheduled upgrade job
- * and automatically opens a pull request with the changes.
+ * A reusable workflow component that creates a scheduled job, runs
+ * customizable work steps (e.g. dependency upgrades or data refresh
+ * pipelines) and opens a pull request with the changes.
  *
  * This wraps the common pattern of:
  * 1. Checkout and setup environment
- * 2. Run a series of upgrade commands
+ * 2. Run a series of commands (with optional setup steps)
  * 3. Upload a git patch artifact
  * 4. Create a pull request from the patch
  */
@@ -108,8 +147,15 @@ export class ScheduledUpgradeWorkflow extends Component {
     const workflowDispatch = options.workflowDispatch ?? true;
     const credentials = options.credentials ?? GithubCredentials.fromApp();
     const commonEnv = options.commonEnv ?? {};
+    const installDependencies = options.installDependencies ?? true;
 
-    const workflow = new GithubWorkflow(scope, workflowName, {});
+    const workflow = new GithubWorkflow(scope, workflowName, {
+      limitConcurrency: options.limitConcurrency ?? false,
+      concurrencyOptions: {
+        group: options.concurrencyGroup ?? workflowName,
+        cancelInProgress: options.cancelInProgress ?? true,
+      },
+    });
 
     // Triggers: schedule + optional manual dispatch
     const triggers: Record<string, unknown> = {
@@ -123,7 +169,8 @@ export class ScheduledUpgradeWorkflow extends Component {
     // Build the upgrade steps as job steps
     const upgradeJobSteps = [
       WorkflowActionsX.checkout({}),
-      ...WorkflowActionsX.setupPnpmSteps({}),
+      ...(installDependencies ? WorkflowActionsX.setupPnpmSteps({}) : []),
+      ...(options.setupSteps ?? []),
       ...options.upgradeSteps.map(step => ({
         name: step.name,
         run: step.run,
@@ -143,6 +190,7 @@ export class ScheduledUpgradeWorkflow extends Component {
     workflow.addJob('upgrade', {
       name: 'Upgrade',
       runsOn,
+      ...(options.timeoutMinutes ? { timeoutMinutes: options.timeoutMinutes } : {}),
       outputs: {
         patch_created: {
           outputName: 'patch_created',
