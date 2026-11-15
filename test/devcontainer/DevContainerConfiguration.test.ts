@@ -119,7 +119,6 @@ describe('devcontainer in other projects', () => {
     const config = Testing.synth(create())[FILE];
     expect(Object.keys(config.features).sort()).toEqual([NODE, 'ghcr.io/devcontainers/features/sshd:1', feature].sort());
     expect(config.customizations.codespaces.repositories['gplassard/test-project'].permissions).toEqual({
-      packages: 'read',
       contents: 'write',
     });
     expect(config.customizations.codespaces.repositories['gplassard/projen-extensions'].permissions).toEqual({
@@ -149,7 +148,6 @@ describe('TypescriptApplicationProject devcontainer', () => {
     expect(config.features[NODE].pnpmVersion).toBeDefined();
     expect(config.features['ghcr.io/devcontainers/features/sshd:1'].version).toBe('latest');
     expect(config.customizations.codespaces.repositories['gplassard/test-project'].permissions).toEqual({
-      packages: 'read',
       contents: 'write',
     });
     expect(config.customizations.codespaces.repositories['gplassard/projen-extensions'].permissions).toEqual({

@@ -27,7 +27,7 @@ export interface DevContainerCodespacesRepositoryOptions {
 
 export interface DevContainerCodespacesOptions {
   readonly repositories?: Record<string, DevContainerCodespacesRepositoryOptions>;
-  /** @default { packages: 'read', contents: 'write' } */
+  /** @default { contents: 'write' } */
   readonly currentRepositoryPermissions?: Record<string, string>;
   /** Merged at the root of `customizations.codespaces` */
   readonly additional?: Record<string, unknown>;
