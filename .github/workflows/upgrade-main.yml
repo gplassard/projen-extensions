@@ -22,7 +22,7 @@ jobs:
           ref: main
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1

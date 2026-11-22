@@ -1920,7 +1920,7 @@ jobs:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -2201,7 +2201,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -2307,7 +2307,7 @@ jobs:
           ref: main
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -3750,7 +3750,7 @@ jobs:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -4438,7 +4438,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -5788,7 +5788,7 @@ jobs:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -6112,7 +6112,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -7542,7 +7542,7 @@ jobs:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -7803,7 +7803,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3
         with:
           version: 12.17.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
