@@ -114,5 +114,33 @@
   "docker/build-push-action": {
     "version": "v5",
     "hash": "ca052bb54ab0790a636c9b5f226502c73d547a25"
+  },
+  "docker/setup-qemu-action": {
+    "version": "v3",
+    "hash": "c7c53464625b32c7a7e944ae62b3e17d2b600130"
+  },
+  "docker/setup-buildx-action": {
+    "version": "v3",
+    "hash": "8d2750c68a42422c14e847fe6c8ac0403b4cbd6f"
+  },
+  "pnpm/action-setup": {
+    "version": "v6.0.10",
+    "hash": "ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3"
+  },
+  "actions/github-script": {
+    "version": "v7",
+    "hash": "f28e40c7f34bde8b3046d885e986cb6290c5673b"
+  },
+  "actions/delete-package-versions": {
+    "version": "v5",
+    "hash": "25ad4af5be03aef10e0b3376b248688b7a44c40b"
+  },
+  "bazel-contrib/setup-bazel": {
+    "version": "0.19.2",
+    "hash": "e1614ab8b64f375e8e1d6885bc7d47f72e8bd0b1"
+  },
+  "devcontainers/action": {
+    "version": "v1",
+    "hash": "bef2cf2d1a019b00b45e184f83035e01bd1972f3"
   }
 }
